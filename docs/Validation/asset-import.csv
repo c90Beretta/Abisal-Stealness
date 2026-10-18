@@ -1,0 +1,18 @@
+path,meshes,renderers,clips,avatar_valid,avatar_human
+Assets/ThirdParty/Kenney/BlasterKit/Models/FBX format/blaster-a.fbx,2,2,0,False,False
+Assets/ThirdParty/Kenney/BlasterKit/Models/FBX format/blaster-b.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/BlasterKit/Models/FBX format/blaster-c.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/BlasterKit/Models/FBX format/clip-small.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/BlasterKit/Models/FBX format/crate-small.fbx,2,2,6,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/cables.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/corridor.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/corridor-corner.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/corridor-junction.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/gate-door.fbx,2,2,6,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/room-small.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/stairs.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/template-floor.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/ModularSpaceKit/Models/FBX format/template-wall.fbx,1,1,0,False,False
+Assets/ThirdParty/Kenney/Survivors/Animations/idle.fbx,0,0,4,False,False
+Assets/ThirdParty/Kenney/Survivors/Animations/run.fbx,0,0,4,False,False
+Assets/ThirdParty/Kenney/Survivors/Model/characterMedium.fbx,1,1,0,False,False

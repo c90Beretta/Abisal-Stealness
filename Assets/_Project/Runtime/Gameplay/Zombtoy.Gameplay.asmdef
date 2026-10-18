@@ -1,0 +1,5 @@
+{
+  "name": "Zombtoy.Gameplay",
+  "rootNamespace": "Zombtoy.Gameplay",
+  "references": ["Zombtoy.Core", "Unity.InputSystem", "UnityEngine.UI"]
+}

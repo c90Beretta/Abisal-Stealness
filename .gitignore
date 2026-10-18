@@ -121,3 +121,10 @@ InitTestScene*.unity*
 /TestResults/
 /Artifacts/
 
+# User supplied visual references stay local; rights were not supplied for public redistribution.
+/docs/Refs/*.png
+/docs/Refs/ORIGINAL_BRIEF.md
+
+# Unity performance test metadata (generated during test/build runs)
+/Assets/Resources/PerformanceTestRunInfo.json*
+

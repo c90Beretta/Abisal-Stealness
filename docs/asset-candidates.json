@@ -1,0 +1,303 @@
+[
+  {
+    "id": "REF-01",
+    "category": "3D ASSETS",
+    "name": "SCIFY",
+    "url": "https://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-old-rusty-props-pbr-200267",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-02",
+    "category": "3D ASSETS",
+    "name": "WAREHOUSE",
+    "url": "https://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-construction-kit-modular-159280",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-03",
+    "category": "3D ASSETS",
+    "name": "ELEMENTAL",
+    "url": "https://assetstore.unity.com/packages/vfx/free-urp-flipbook-vfx-bundle-lite-395420",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-04",
+    "category": "3D ASSETS",
+    "name": "MAP",
+    "url": "https://assetstore.unity.com/packages/3d/environments/sci-fi/modular-sci-fi-corridor-142811",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-05",
+    "category": "3D ASSETS",
+    "name": "STRUCTURAL",
+    "url": "https://assetstore.unity.com/packages/3d/environments/sci-fi/modular-scifi-pack-146-objects-lowpoly-354154",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-06",
+    "category": "3D ASSETS",
+    "name": "STRUCTURAL",
+    "url": "https://assetstore.unity.com/packages/3d/props/vending-machines-lowpoly-3d-pixel-art-pack-308759",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-07",
+    "category": "3D ASSETS",
+    "name": "FIREWEAPONS",
+    "url": "https://assetstore.unity.com/packages/3d/props/weapons/low-poly-ar-weapon-pack-1-276916",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-08",
+    "category": "3D ASSETS",
+    "name": "FIREWEAPONS",
+    "url": "https://assetstore.unity.com/packages/3d/props/guns/low-poly-shotgun-weapon-pack-1-283665",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-09",
+    "category": "3D ASSETS",
+    "name": "FIREWEAPONS",
+    "url": "https://assetstore.unity.com/packages/3d/props/guns/assault-rifle-a3-2107",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-10",
+    "category": "ENEMY MODELS",
+    "name": "ZOMBIEDOG",
+    "url": "https://sketchfab.com/3d-models/zombie-dog-d786e6a8b5d6485ea543e57682d4a470",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-11",
+    "category": "ENEMY MODELS",
+    "name": "BLOATER",
+    "url": "https://sketchfab.com/3d-models/a-big-zombie-unity3d-and-unreal-engine-ready-978dd65c51c1442db25465d3a5a3d8aa",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-12",
+    "category": "ENEMY MODELS",
+    "name": "Kaiyu",
+    "url": "https://sketchfab.com/3d-models/kaiju-universe-lauroth-the-moonlight-beast-82b070b7659b400b8c259624ad34b558",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-13",
+    "category": "ENEMY MODELS",
+    "name": "Doberman",
+    "url": "https://sketchfab.com/3d-models/zombie-dog-a0570f82ac974a6bb3214364b0e2b16d",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-14",
+    "category": "ENEMY MODELS",
+    "name": "Idle zombie",
+    "url": "https://sketchfab.com/3d-models/zombie-73ef58af341e46afba1da53366ed79cf",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-15",
+    "category": "ENEMY MODELS",
+    "name": "Running Zombie",
+    "url": "https://sketchfab.com/3d-models/zombie-the-burnt-263514e15f3c4ef792796399876ca8a8",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-16",
+    "category": "ENEMY MODELS",
+    "name": "Bloated Zombie",
+    "url": "https://sketchfab.com/3d-models/zombie-5255e8c1c264450c94ff28676200bcbb",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-17",
+    "category": "ENEMY MODELS",
+    "name": "Civilian Zombie",
+    "url": "https://sketchfab.com/3d-models/zombie-woman-4cd9c13dabcc4181b4546e976e444068",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-18",
+    "category": "ENEMY MODELS",
+    "name": "DIESELPUNK RIDER",
+    "url": "https://sketchfab.com/3d-models/dieselpunk-rider-700110ba4ae94078bea41963b027de75",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-19",
+    "category": "ENEMY MODELS",
+    "name": "HUMAN ENEMY",
+    "url": "https://sketchfab.com/3d-models/specimen-aftermath-enemy-human-1-e3b463e7533948cfa75ae5c65f2f9bc8",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-20",
+    "category": "ENEMY MODELS",
+    "name": "SHY GUY",
+    "url": "https://sketchfab.com/3d-models/bicho-low-poly-pbr-ed08d1b953694b6280429fe9030d71a2",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-21",
+    "category": "ENEMY MODELS",
+    "name": "Decraniated",
+    "url": "https://sketchfab.com/3d-models/decraniated-low-poly-retro-pixel-2e551e0991e147489152e17ce15f2d4d",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-22",
+    "category": "ENEMY MODELS",
+    "name": "BACKROUND CHAINSAW",
+    "url": "https://sketchfab.com/3d-models/low-poly-chainsaw-jonniemadeit-aae9bb6be2ff455bb7a2658f09c8703c",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-23",
+    "category": "ENEMY MODELS",
+    "name": "ENEMY ANT",
+    "url": "https://sketchfab.com/3d-models/stylized-insect-monster-pbr-low-poly-game-ready-ecfe06377ddd4059bb12b50f5d3af5f1",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-24",
+    "category": "ENEMY MODELS",
+    "name": "MOTHMAN",
+    "url": "https://sketchfab.com/3d-models/mothman-psx-rigged-a8185f7220214b36a2e0a3717fdbea1b",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-25",
+    "category": "ENEMY MODELS",
+    "name": "STARFISH",
+    "url": "https://sketchfab.com/3d-models/tentacle-monster-low-poly-game-ready-358f22e072e14d5898b234ac815183ae",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-26",
+    "category": "ENEMY MODELS",
+    "name": "GLITCHBUG",
+    "url": "https://sketchfab.com/3d-models/small-glytchbug-3aac9057f3d34959910cf7d725438565",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-27",
+    "category": "ENEMY MODELS",
+    "name": "SHADOWSTALKER",
+    "url": "https://sketchfab.com/3d-models/skinlessman-otherworld-entity-106c0b9ee94a48eb942b2c937b8751f6",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-28",
+    "category": "ENGINE",
+    "name": "SURVIVAL ENGINE",
+    "url": "https://assetstore.unity.com/packages/templates/systems/zara-survival-engine-182386#reviews",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-29",
+    "category": "ENGINE",
+    "name": "PIXEL CAMERA",
+    "url": "https://assetstore.unity.com/packages/tools/camera/perfect-pixel-camera-by-gg-ez-100000",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-30",
+    "category": "ENGINE",
+    "name": "UI MENU",
+    "url": "https://assetstore.unity.com/packages/tools/gui/3d-modern-menu-ui-116144",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-31",
+    "category": "ENGINE",
+    "name": "EASY CENSOR",
+    "url": "https://assetstore.unity.com/packages/vfx/shaders/easy-censor-urp-365718",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-32",
+    "category": "ENGINE",
+    "name": "SHOOTER",
+    "url": "https://github.com/ieatyoursushi/Zombtoy",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-33",
+    "category": "SOUND EFFECTS",
+    "name": "AGGRESIVE GROWL",
+    "url": "https://pixabay.com/es/sound-effects/pel%C3%ADculas-y-efectos-especiales-sfx-aggressive-low-frequency-growl-sound-effects-608306/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-34",
+    "category": "SOUND EFFECTS",
+    "name": "CREEPY",
+    "url": "https://pixabay.com/sound-effects/musical-creepy-industrial-sounds-ambience-482892/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-35",
+    "category": "SOUND EFFECTS",
+    "name": "AGRESIVE SEA",
+    "url": "https://pixabay.com/sound-effects/nature-deep-sea-underwater-ambience-472383/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-36",
+    "category": "SOUND EFFECTS",
+    "name": "MENU THEME",
+    "url": "https://pixabay.com/sound-effects/film-special-effects-drone-unsettling-feeling-creepy-ambient-background-527676/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-37",
+    "category": "SOUND EFFECTS",
+    "name": "AIR VENT",
+    "url": "https://pixabay.com/sound-effects/nature-air-vent-ambience-noise-504010/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-38",
+    "category": "SOUND EFFECTS",
+    "name": "FOOTSTEPS CONCRETE",
+    "url": "https://pixabay.com/sound-effects/film-special-effects-footsteps-on-hard-floor-356919/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-39",
+    "category": "SOUND EFFECTS",
+    "name": "FOOTSTEPS LIMPING *NEEDS  ADJUSTING",
+    "url": "https://pixabay.com/sound-effects/film-special-effects-footstep-drag-indoors-104989/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-40",
+    "category": "SOUND EFFECTS",
+    "name": "RUNNING",
+    "url": "https://pixabay.com/sound-effects/film-special-effects-concrete-footsteps-6752/",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  },
+  {
+    "id": "REF-41",
+    "category": "WEAPON MODELS",
+    "name": "BOLTER",
+    "url": "https://sketchfab.com/3d-models/bolter-52283077360f4244921af1a065899efc",
+    "status": "EXCLUIDO del MVP — sustituir por arma original/CC0"
+  },
+  {
+    "id": "REF-42",
+    "category": "WEAPON MODELS",
+    "name": "BOLTGUN",
+    "url": "https://sketchfab.com/3d-models/bolt-gun-from-warhammer-40000-33509ec0545c4be2a99d9c5d3fff0a2c",
+    "status": "EXCLUIDO del MVP — sustituir por arma original/CC0"
+  },
+  {
+    "id": "REF-43",
+    "category": "WEAPON MODELS",
+    "name": "MP5",
+    "url": "https://sketchfab.com/3d-models/weapon-mp5-low-polly-122bc26c2e5444718b1bfd298a18fe36",
+    "status": "CANDIDATO — licencia/archivo no verificados"
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "pack": "ModularSpaceKit",
+    "page": "https://kenney.nl/assets/modular-space-kit",
+    "download": "https://kenney.nl/media/pages/assets/modular-space-kit/8261428a47-1771146076/kenney_modular-space-kit_1.0.zip",
+    "archiveSha256": "f394f7fd9eaf29c9de7e090e55b69926f699841af33b0b116f5cc0088de8a4dc",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "files": [
+      "Models/FBX format/corridor.fbx",
+      "Models/FBX format/corridor-corner.fbx",
+      "Models/FBX format/corridor-junction.fbx",
+      "Models/FBX format/gate-door.fbx",
+      "Models/FBX format/room-small.fbx",
+      "Models/FBX format/stairs.fbx",
+      "Models/FBX format/template-floor.fbx",
+      "Models/FBX format/template-wall.fbx",
+      "Models/FBX format/cables.fbx",
+      "Models/FBX format/Textures/colormap.png",
+      "License.txt"
+    ],
+    "fileSha256": {
+      "Models/FBX format/corridor.fbx": "a5759a447835fc068518cc10b51439d7526396510bf5daa2907259de19438982",
+      "Models/FBX format/corridor-corner.fbx": "0da5fb1d53815e1ec1d4a9d3aaf8a7d4e4213c106158fea2043b7064bafd3f96",
+      "Models/FBX format/corridor-junction.fbx": "45dae584a7b5907b8a11b61d2c427ddcb3f688397f5d0b95487fa7a9e3b76f61",
+      "Models/FBX format/gate-door.fbx": "33d009a31901382b943e65efdb6960fb92e2ec400390c2aa4ed17aa01ffda8c7",
+      "Models/FBX format/room-small.fbx": "0837ba1942a1c09aed3cbdd341273f002cc8b444cff409a95757270df6a0d233",
+      "Models/FBX format/stairs.fbx": "2574e1dc9ba87413d6d7808ebaad1b78da3e3294f1d236c2ccb07b8c58b5653e",
+      "Models/FBX format/template-floor.fbx": "2639e1630d5e467c09763a29c5f1f879da91b3490795f2db3cad6b640ee7dcdf",
+      "Models/FBX format/template-wall.fbx": "40d782094c9e1c7a131a5c2dc04ab9c1bbb703292d980fb7fff57d8d3310fc20",
+      "Models/FBX format/cables.fbx": "5f162556aff6d47577a41ed95e80af787fab3521c3e0d761b5c089621636c445",
+      "Models/FBX format/Textures/colormap.png": "5aa7d186416e85310d99308c8e5510ededda181f3354ba9f4887cd56273f2b1e",
+      "License.txt": "38d94a4c79768cf5dc65e55b85f2dedd9f4bad35e325db1d0e5898fc1b7c5bbb"
+    }
+  },
+  {
+    "pack": "BlasterKit",
+    "page": "https://kenney.nl/assets/blaster-kit",
+    "download": "https://kenney.nl/media/pages/assets/blaster-kit/261d80a716-1753959510/kenney_blaster-kit_2.1.zip",
+    "archiveSha256": "91e3093e95427d59625e7e2ce2d0399b861600160fd0b4ada7714796b67cea8c",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "files": [
+      "Models/FBX format/blaster-a.fbx",
+      "Models/FBX format/blaster-b.fbx",
+      "Models/FBX format/blaster-c.fbx",
+      "Models/FBX format/crate-small.fbx",
+      "Models/FBX format/clip-small.fbx",
+      "Models/FBX format/Textures/colormap.png",
+      "License.txt"
+    ],
+    "fileSha256": {
+      "Models/FBX format/blaster-a.fbx": "7656ec60fbe8e02b713f7bd359708a6d4ad626f4fb4eda78c9beb7dc14fa6ec6",
+      "Models/FBX format/blaster-b.fbx": "0f75d644ab2f9812e99651a8e58fa9eaa3aa43a0efa5b84bd06103b38fd37e6f",
+      "Models/FBX format/blaster-c.fbx": "3ba34fd53bebd22ec14b48704fc89ffb6d64652285bfff4b663ae96bd040c7a5",
+      "Models/FBX format/crate-small.fbx": "69920a39cc7bf4dd759ac9844a0cb9935196e3488ae85dc8a63a0450483e0ff6",
+      "Models/FBX format/clip-small.fbx": "ffaac442b1e63cae4c5b011b3bdb2ad6145264e829f2983f6a4026117cf060f8",
+      "Models/FBX format/Textures/colormap.png": "4d0867c3c3c8c539106f91fbc0987d0e1b7d2811362d1daed593169c7d3b0fdc",
+      "License.txt": "bece5f4d99cca9dcf86931221a69909862ff6cc95e1735462ee678516a1063e2"
+    }
+  },
+  {
+    "pack": "ImpactSounds",
+    "page": "https://kenney.nl/assets/impact-sounds",
+    "download": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "archiveSha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "files": [
+      "Audio/footstep_concrete_000.ogg",
+      "Audio/footstep_concrete_001.ogg",
+      "Audio/impactMetal_light_000.ogg",
+      "Audio/impactGeneric_light_000.ogg",
+      "License.txt"
+    ],
+    "fileSha256": {
+      "Audio/footstep_concrete_000.ogg": "d7267e183067757c92c169de2a379abea592cfca6b39bb2e8feea15221ad79fe",
+      "Audio/footstep_concrete_001.ogg": "507a75eb19b897087855a3be3cf11a12d7fa37d143ad535eeebe0b8031c7325d",
+      "Audio/impactMetal_light_000.ogg": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
+      "Audio/impactGeneric_light_000.ogg": "f0e982611e97512fee5f777986b67e8b435434b601f94992ec044f7e89fb5acb",
+      "License.txt": "b49aa9c56b04528b95913de13e506a0f7c5e807b9925db9bfef86af1f91120db"
+    }
+  },
+  {
+    "pack": "Survivors",
+    "page": "https://kenney.nl/assets/animated-characters-survivors",
+    "download": "https://kenney.nl/media/pages/assets/animated-characters-survivors/27b16052a7-1774772958/kenney_animated-characters-survivors.zip",
+    "archiveSha256": "fdadced07a0454c9b7f0b46507be6144a072b4d03b4ffa37f225893c76c62845",
+    "license": "CC0-1.0",
+    "author": "Kenney",
+    "files": [
+      "Model/characterMedium.fbx",
+      "Animations/idle.fbx",
+      "Animations/run.fbx",
+      "Skins/survivorMaleB.png",
+      "Skins/zombieA.png",
+      "Skins/zombieC.png",
+      "License.txt"
+    ],
+    "fileSha256": {
+      "Model/characterMedium.fbx": "18835fef534eede635b081ee7fe647d01a885550a591d2e6bf071010906167d8",
+      "Animations/idle.fbx": "c8a24e0294376ee5a195c56752a13310e1c0b5f8588a4db50e094120e3e4cc74",
+      "Animations/run.fbx": "e635461fc8dace85ec67a7f7941e949a7c3f108b51ae4d2da1557e6e01749df8",
+      "Skins/survivorMaleB.png": "fe64a677e96dee1e63a6df554fb5ebad4abddf3348cb2f40f32e2ba09660a762",
+      "Skins/zombieA.png": "99d7c2a0e96327c8a1aa68b2990100208dab6ff84a439ff694f8fb65ad195ad1",
+      "Skins/zombieC.png": "afb69107879e65e7b688aa88c4eddcafe613275f21bc31437880b8a03bbf9bd7",
+      "License.txt": "8eab20a1fa97308ae50443f6b8a0fabc4dd1fc37062988cd635fc74c8f1be21c"
+    }
+  }
+]

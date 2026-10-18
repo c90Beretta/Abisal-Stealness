@@ -1,0 +1,36 @@
+{
+  "modular-space-kit": [
+    "Models/FBX format/corridor.fbx",
+    "Models/FBX format/corridor-corner.fbx",
+    "Models/FBX format/corridor-junction.fbx",
+    "Models/FBX format/gate-door.fbx",
+    "Models/FBX format/room-small.fbx",
+    "Models/FBX format/stairs.fbx",
+    "Models/FBX format/template-floor.fbx",
+    "Models/FBX format/template-wall.fbx",
+    "Models/FBX format/cables.fbx",
+    "Models/FBX format/Textures/colormap.png"
+  ],
+  "blaster-kit": [
+    "Models/FBX format/blaster-a.fbx",
+    "Models/FBX format/blaster-b.fbx",
+    "Models/FBX format/blaster-c.fbx",
+    "Models/FBX format/crate-small.fbx",
+    "Models/FBX format/clip-small.fbx",
+    "Models/FBX format/Textures/colormap.png"
+  ],
+  "impact-sounds": [
+    "Audio/footstep_concrete_000.ogg",
+    "Audio/footstep_concrete_001.ogg",
+    "Audio/impactMetal_light_000.ogg",
+    "Audio/impactGeneric_light_000.ogg"
+  ],
+  "animated-characters-survivors": [
+    "Model/characterMedium.fbx",
+    "Animations/idle.fbx",
+    "Animations/run.fbx",
+    "Skins/survivorMaleB.png",
+    "Skins/zombieA.png",
+    "Skins/zombieC.png"
+  ]
+}

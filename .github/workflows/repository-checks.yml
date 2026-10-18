@@ -1,0 +1,19 @@
+name: Repository checks
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  repository:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Verify assets, metadata and package lock
+        run: python3 tools/check_repository.py
+      - name: Verify LFS objects
+        run: git lfs fsck

@@ -1,0 +1,7 @@
+{
+  "name": "Zombtoy.Tests.EditMode",
+  "rootNamespace": "Zombtoy.Tests",
+  "references": ["Zombtoy.Core", "Zombtoy.Gameplay"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

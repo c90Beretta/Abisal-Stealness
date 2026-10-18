@@ -169,3 +169,6 @@ Packages/packages-lock.json linguist-generated
 
 # Exceptions for .asset files such as lightning pre-baking
 LightingData.asset     binary
+
+# Preserve vendor license bytes so cross-platform checkouts match the intake hashes.
+Assets/ThirdParty/**/License.txt -text
