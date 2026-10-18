@@ -46,6 +46,9 @@ En el proveedor, proteger main (PR, 1 aprobación, checks), bloquear force-push 
 dar acceso por mínimo rol necesario. Configurar licencias Unity de CI mediante
 secretos del proveedor si se automatizan builds; nunca guardarlas en archivos.
 La validación local no necesita credenciales de GitHub ni de servicios externos.
+La protección de main ya está configurada: 1 aprobación, check `repository`,
+conversaciones resueltas, sin force-push ni borrado. Admin conserva bypass para
+bootstrap/recuperación; el trabajo normal del equipo se revisa por PR.
 El workflow `Repository checks` valida assets, metadatos y LFS en GitHub sin licencia
 Unity. Las pruebas/build de Unity se ejecutan con `tools/Invoke-Unity.ps1`; no se
 declaran ejecutadas en CI sin configurar un runner/licencia de Unity.

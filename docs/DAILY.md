@@ -21,3 +21,8 @@
   estaba vacío y público. Sin sobrescribir historial ajeno.
 - Siguiente trabajo de producto: G01–G04, inventario, save, IA NavMesh y pipeline
   PSX; asignar personas/revisores y ejecutar el primer playtest de la semana1.
+- Validación cerrada: 16 EditMode + 2 PlayMode pasan; build Windows con 0 errores
+  y 2 advertencias de API obsoleta. Captura revisada. Checkout LF y Git LFS verificados.
+- Rama publicada y CI GitHub/Ubuntu verde en `da6892c`. Protección main aplicada
+  (1 revisión, check repository, conversaciones, sin force-push/borrado; admin con bypass).
+  Etiqueta de preparación: v0.1.0-foundation. Los límites pendientes figuran en VALIDATION.
