@@ -26,3 +26,15 @@
 - Rama publicada y CI GitHub/Ubuntu verde en `da6892c`. Protección main aplicada
   (1 revisión, check repository, conversaciones, sin force-push/borrado; admin con bypass).
   Etiqueta de preparación: v0.1.0-foundation. Los límites pendientes figuran en VALIDATION.
+
+## 18 octubre 2026 — primer mapa de puerto
+
+- Rama `codex/first-port-map`, a partir de la fundación publicada.
+- Escena Level01_Port con muelle56×44m, patio de seis contenedores, almacén,
+  generador, control, pasarela y submarino. Geometría en prefab propio y NavMesh horneado.
+- Misión: repuesto → energía → autorización en control → embarque. Caja opcional
+  de munición/suero de un solo uso. Seis encuentros, con búsqueda de ruta sobre NavMesh.
+- Interacciones bloqueadas por paredes, objetivos fuera de orden rechazados,
+  recuperación de caída al agua y ocultación de muros/contenedores que tapan al jugador.
+- Se conserva el sandbox; el build arranca en el puerto. Sin nuevas dependencias
+  ni assets externos. Pruebas, captura y build se registran en PORT_VALIDATION.

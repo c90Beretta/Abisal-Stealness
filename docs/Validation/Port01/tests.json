@@ -1,0 +1,110 @@
+[
+  {
+    "suite": "editmode",
+    "result": "Passed",
+    "total": 17,
+    "passed": 17,
+    "failed": 0,
+    "end_utc": "2026-10-18 23:29:04Z",
+    "cases": [
+      {
+        "name": "AddressableAssets.DocExampleCode.TestStub.RequiredTest",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.FoundationAssetTests.SceneHasNoMissingScriptsAndHasRequiredBindings(\"Assets/_Project/Scenes/MVP_Sandbox.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.FoundationAssetTests.SceneHasNoMissingScriptsAndHasRequiredBindings(\"Assets/_Project/Scenes/Level01_Port.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.DeadAndPausedSimulationDoNotConsumeResources",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.InjectionClampsAndConsumesOneDose",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.InjectionsOutsideWindowDoNotTriggerMania",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.MaximumInfectionTriggersOnceAndCanExpire",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.OnlyLowSerumIncreasesInfection",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(0,0)",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(29,0)",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(30,1)",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(64,1)",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(65,2)",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(99,2)",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(100,3)",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.SixSecondsConsumeOneSerumPoint",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.TwoInjectionsAtWindowBoundaryTriggerManiaAndLock",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "suite": "playmode",
+    "result": "Passed",
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "end_utc": "2026-10-18 23:31:41Z",
+    "cases": [
+      {
+        "name": "Zombtoy.Tests.FoundationPlayTests.InjectionsWaitForAnimationAndDoNotCreateAmmo",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.FoundationPlayTests.SandboxLoadsAndObjectiveCanBeCompleted",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.PortMapTests.ArrivalHasFloorAndWaterFallReturnsPlayerSafely",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.PortMapTests.ObjectivesRequireFuseAndPowerBeforeBoarding",
+        "result": "Passed"
+      },
+      {
+        "name": "Zombtoy.Tests.PortMapTests.SuppliesCannotBeDuplicatedAndWallsBlockInteractions",
+        "result": "Passed"
+      }
+    ]
+  }
+]

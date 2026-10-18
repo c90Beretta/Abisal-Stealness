@@ -1,6 +1,6 @@
 {
   "name": "Zombtoy.Editor",
   "rootNamespace": "Zombtoy.Editor",
-  "references": ["Zombtoy.Core", "Zombtoy.Gameplay", "Unity.RenderPipelines.Universal.Runtime"],
+  "references": ["Zombtoy.Core", "Zombtoy.Gameplay", "Unity.RenderPipelines.Universal.Runtime", "Unity.AI.Navigation"],
   "includePlatforms": ["Editor"]
 }

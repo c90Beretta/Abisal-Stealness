@@ -1,17 +1,19 @@
 # Zombtoy — survival horror isométrico
 
 Proyecto Unity 6 / URP. Meta de producción: 4 niveles, economía de suero y munición,
-IA por percepción y estética PSX. La entrega de esta preparación es una **fundación
-técnica y sandbox**, no la certificación del juego final ni de sus KPI.
+IA por percepción y estética PSX. Incluye una **primera versión jugable del puerto**
+y el sandbox técnico. El juego completo y sus KPI de producción siguen en desarrollo.
 
 ## Empezar
 
 1. Instala Git, Git LFS y **Unity 6000.5.9f1**, Windows Build Support (Mono).
-2. `git clone <URL-del-repositorio>`; `git lfs install`; `git lfs pull`.
+2. `git clone https://github.com/c90Beretta/Abisal-Stealness.git`; `git lfs install`; `git lfs pull`.
 3. Abre esta carpeta (la que contiene `Assets`, `Packages`, `ProjectSettings`) en Unity Hub.
-4. Espera la resolución de paquetes. Abre `Assets/_Project/Scenes/MVP_Sandbox.unity`.
-   Si falta, usa **Zombtoy > Generate foundation sandbox**. Play para explorar.
-5. Consulta los controles que aparecen en pantalla y el estado en [VALIDATION](docs/VALIDATION.md).
+4. Espera la resolución de paquetes. Abre `Assets/_Project/Scenes/Level01_Port.unity` y pulsa Play.
+5. WASD mover, ratón apuntar, clic disparar, R recargar, Q suero, E interactuar y Esc pausa.
+   Recoge el repuesto del almacén, repara el generador, activa control y embarca.
+6. Consulta el [mapa y recorrido](docs/LEVEL01_PORT.md), la [validación del puerto](docs/PORT_VALIDATION.md)
+   y la [validación inicial de la fundación](docs/VALIDATION.md).
 
 Remoto del equipo: https://github.com/c90Beretta/Abisal-Stealness.
 Revisa `docs/VALIDATION.md` para el estado verificado de la publicación.

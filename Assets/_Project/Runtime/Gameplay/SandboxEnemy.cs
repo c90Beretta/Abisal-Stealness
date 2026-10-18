@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Zombtoy.Gameplay
 {
@@ -9,12 +10,19 @@ namespace Zombtoy.Gameplay
         public float speed = 1.2f;
         public float health = 70f;
         public float sightRange = 7f;
+        public bool useNavigation;
         private CharacterController controller;
         private Vector3 lastHeard;
         private float alertUntil;
         private float nextAttack;
+        private float nextPath;
+        private NavMeshPath path;
 
-        private void Awake() => controller = GetComponent<CharacterController>();
+        private void Awake()
+        {
+            controller = GetComponent<CharacterController>();
+            path = new NavMeshPath();
+        }
 
         public void Hear(Vector3 position, float radius)
         {
@@ -41,6 +49,18 @@ namespace Zombtoy.Gameplay
             chase.y = 0;
             if (chase.magnitude > 1.1f)
             {
+                if (useNavigation)
+                {
+                    if (Time.time >= nextPath)
+                    {
+                        nextPath = Time.time + 0.35f;
+                        NavMesh.CalculatePath(transform.position, lastHeard, NavMesh.AllAreas, path);
+                    }
+                    if (path.status != NavMeshPathStatus.PathComplete || path.corners.Length < 2) return;
+                    chase = path.corners[1] - transform.position;
+                    chase.y = 0;
+                    if (chase.sqrMagnitude < 0.01f) return;
+                }
                 transform.rotation = Quaternion.LookRotation(chase);
                 controller.Move((chase.normalized * speed + Vector3.down * 8f) * Time.deltaTime);
             }

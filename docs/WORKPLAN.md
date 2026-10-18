@@ -3,6 +3,11 @@
 Fecha: 18 octubre 2026. Ventana solicitada: **19 octubre–13 diciembre 2026**.
 Fuente: `Refs/ORIGINAL_BRIEF.md`; decisiones de ejecución: `DECISIONS.md`.
 
+Estado del primer mapa: `Level01_Port` ya tiene trazado, misión repuesto/energía/
+control/embarque, suministros opcionales, seis encuentros y NavMesh. Véanse
+`LEVEL01_PORT.md` y `PORT_VALIDATION.md`. L01 avanza como prototipo; su duración,
+balance y aceptación del MVP requieren playtests humanos.
+
 ## Entregas separadas
 
 **F0, preparación actual:** proyecto preservado en Git, assets mínimos importables,

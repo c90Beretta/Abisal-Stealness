@@ -12,6 +12,8 @@ namespace Zombtoy.Gameplay
         public Transform terminal;
         public Transform extraction;
         public Material tracerMaterial;
+        public PortMission portMission;
+        public string missionTitle = "ZOMBTOY / SANDBOX DE FUNDACION";
         public SurvivalState State = new SurvivalState();
         public int rounds = 12;
         public int reserve = 36;
@@ -29,7 +31,7 @@ namespace Zombtoy.Gameplay
 
         private void Start()
         {
-            enemies = FindObjectsByType<SandboxEnemy>(FindObjectsSortMode.None);
+            enemies = FindObjectsByType<SandboxEnemy>();
             Application.targetFrameRate = 60;
         }
 
@@ -87,6 +89,12 @@ namespace Zombtoy.Gameplay
 
         public void Interact()
         {
+            if (!Running) return;
+            if (portMission != null)
+            {
+                portMission.Interact();
+                return;
+            }
             if (Vector3.Distance(player.transform.position, terminal.position) < 2.5f)
             {
                 terminalActivated = true;
@@ -98,6 +106,14 @@ namespace Zombtoy.Gameplay
                 if (terminalActivated) { completed = true; message = "Ruta completada. Enter: repetir."; }
                 else message = "Extraccion bloqueada: activa primero la terminal.";
             }
+        }
+
+        public void SetMessage(string value) => message = value;
+
+        public void CompleteRoute(string value)
+        {
+            completed = true;
+            message = value;
         }
 
         public void EmitNoise(Vector3 position, float radius)
@@ -115,7 +131,7 @@ namespace Zombtoy.Gameplay
             float scale = Mathf.Max(0.65f, Screen.height / 720f);
             GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
             GUI.Box(new Rect(18, 18, 450, 212), GUIContent.none);
-            GUI.Label(new Rect(32, 28, 420, 25), "ZOMBTOY / SANDBOX DE FUNDACION", text);
+            GUI.Label(new Rect(32, 28, 420, 25), missionTitle, text);
             GUI.Label(new Rect(32, 62, 420, 60), $"SALUD {State.health:0}    SUERO {State.serum:0}    FASE {State.Phase}\nDOSIS {State.doses}    MUNICION {rounds}/{reserve}    BAJAS {Kills}", text);
             GUI.Label(new Rect(32, 120, 420, 85), paused ? "PAUSA / Esc para volver" :
                 State.health <= 0 ? "HAS MUERTO. Enter: reiniciar." :
@@ -123,6 +139,11 @@ namespace Zombtoy.Gameplay
                 State.IsManic ? "MANIA / ruido y temblor aumentados" : message, text);
             GUI.Label(new Rect(22, Screen.height / scale - 70, 950, 60),
                 "WASD mover · Shift correr · raton apuntar · clic disparar · R recargar\nQ suero · E terminal/extraccion · Esc pausa | Prototipo: faltan sistemas del MVP", text);
+            if (portMission != null && Running)
+            {
+                GUI.Box(new Rect(18, 235, 450, 85), GUIContent.none);
+                GUI.Label(new Rect(32, 235, 440, 70), portMission.Objective + "\n" + portMission.Prompt, text);
+            }
         }
 
         private void OnDestroy() => Time.timeScale = 1f;

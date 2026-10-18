@@ -9,10 +9,10 @@ namespace Zombtoy.Tests
 {
     public sealed class FoundationAssetTests
     {
-        [Test]
-        public void SandboxHasNoMissingScriptsAndHasRequiredBindings()
+        [TestCase("Assets/_Project/Scenes/MVP_Sandbox.unity")]
+        [TestCase("Assets/_Project/Scenes/Level01_Port.unity")]
+        public void SceneHasNoMissingScriptsAndHasRequiredBindings(string path)
         {
-            const string path = "Assets/_Project/Scenes/MVP_Sandbox.unity";
             Assert.That(AssetDatabase.LoadAssetAtPath<SceneAsset>(path), Is.Not.Null);
             var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
             try
@@ -31,6 +31,15 @@ namespace Zombtoy.Tests
                 Assert.That(session.player.shotSound, Is.Not.Null);
                 Assert.That(session.terminal, Is.Not.Null);
                 Assert.That(session.extraction, Is.Not.Null);
+                if (path.Contains("Level01_Port"))
+                {
+                    Assert.That(session.portMission, Is.Not.Null);
+                    Assert.That(session.portMission.arrival, Is.Not.Null);
+                    Assert.That(session.portMission.fuse, Is.Not.Null);
+                    Assert.That(session.portMission.generator, Is.Not.Null);
+                    Assert.That(session.portMission.controlDoor, Is.Not.Null);
+                    Assert.That(session.portMission.boardingGate, Is.Not.Null);
+                }
             }
             finally { EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single); }
         }

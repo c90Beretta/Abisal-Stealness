@@ -28,6 +28,11 @@ no se instancian como personaje. Rig/clips medidos se reportan en la evidencia d
 
 ## Antes de sustituir un placeholder
 
+**OWN-02 — Puerto inicial:** geometría procedural propia (muelle, contenedores,
+almacén/control, grúa, pasarela, submarino), materiales URP, NavMesh y prefab
+Port_Environment. Usa las tres skins Kenney ya incluidas en MVP-CHR; no añade
+descargas ni licencias de terceros. Véase `LEVEL01_PORT.md`.
+
 Asignar ID, registrar autor/URL/licencia exacta y hash, validar permisos para este
 repositorio público, rig/clips/escala y URP; crear wrapper nuevo en `_Project`,
 probar escena y build; actualizar manifest/ledger/créditos en el mismo PR.

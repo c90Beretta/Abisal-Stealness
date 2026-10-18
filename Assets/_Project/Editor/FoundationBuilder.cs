@@ -166,7 +166,8 @@ namespace Zombtoy.Editor
             if (!File.Exists(ScenePath)) throw new InvalidOperationException("Generate sandbox first.");
             Directory.CreateDirectory("Builds/Windows");
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
-                scenes = new[] { ScenePath }, locationPathName = "Builds/Windows/AbisalStealness.exe",
+                scenes = EditorBuildSettings.scenes.Where(item => item.enabled).Select(item => item.path).ToArray(),
+                locationPathName = "Builds/Windows/AbisalStealness.exe",
                 target = BuildTarget.StandaloneWindows64, options = BuildOptions.None });
             Directory.CreateDirectory("TestResults");
             File.WriteAllText("TestResults/build-summary.txt", $"Result: {report.summary.result}\nErrors: {report.summary.totalErrors}\nWarnings: {report.summary.totalWarnings}\nBytes: {report.summary.totalSize}\n");
