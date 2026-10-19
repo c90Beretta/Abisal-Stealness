@@ -55,3 +55,6 @@
   compuestas desde canvases reales; no se completó partida humana de validación.
 - Continúan pendientes inventario por cuadrícula, arsenal, efectos PSX completos,
   fases mentales audiovisuales y aceptación de KPI de duración/rendimiento/balance.
+- Distribución publicada: [v0.2.0-port-playtest](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.2.0-port-playtest),
+  paquete Windows de198 archivos con créditos/licencias. Código de juego en8feb561;
+  PR1 conserva la revisión del equipo antes de integrar en main.

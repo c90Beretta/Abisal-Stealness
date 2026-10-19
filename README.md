@@ -18,6 +18,8 @@ Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado
 
 1. Instala Git, Git LFS y **Unity 6000.5.9f1**, Windows Build Support (Mono).
 2. `git clone https://github.com/c90Beretta/Abisal-Stealness.git`; `git lfs install`; `git lfs pull`.
+   Mientras se revisa el PR1, usa `git switch codex/first-port-map` y `git lfs pull`
+   para trabajar sobre esta entrega; la rama main conserva la versión integrada anterior.
 3. Abre esta carpeta (la que contiene `Assets`, `Packages`, `ProjectSettings`) en Unity Hub.
 4. Espera la resolución de paquetes. Usa **Abisal > Abrir puerto y jugar**.
    Play también inicia el puerto aunque estés editando SampleScene.
