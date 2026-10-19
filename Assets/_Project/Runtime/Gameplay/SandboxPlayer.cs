@@ -95,7 +95,7 @@ namespace Zombtoy.Gameplay
             session.EmitNoise(transform.position, axe ? 8 : 5);
             if (meleeSound != null) audioSource.PlayOneShot(meleeSound, .35f);
             CombatEffects.Swing(transform, session.tracerMaterial);
-            (GetComponent<MeleeSwing>() ?? gameObject.AddComponent<MeleeSwing>()).Play(axe, session.tracerMaterial);
+            (GetComponent<MeleeSwing>() ?? gameObject.AddComponent<MeleeSwing>()).Play(axe, session.tracerMaterial, session.combatArt != null ? axe ? session.combatArt.axe : session.combatArt.knife : null);
             int hits = 0;
             foreach (var enemy in session.Enemies)
             {
@@ -127,26 +127,26 @@ namespace Zombtoy.Gameplay
             CombatEffects.Shot(origin, transform, session.tracerMaterial);
             for (int pellet = 0; pellet < (weapon != null ? weapon.pellets : 1); pellet++)
             {
-            Vector3 aim = preciseAim ? (aimPoint - origin).normalized : transform.forward;
-            if (weapon != null && weapon.spread > 0) aim = Quaternion.AngleAxis(Random.Range(-weapon.spread, weapon.spread), Vector3.up) * aim;
-            if (session.State.elapsed < session.State.tremorUntil || session.State.IsManic)
-                aim = Quaternion.AngleAxis(Random.Range(-7f, 7f), Vector3.up) * aim;
-            Vector3 end = origin + aim * 25f;
-            if (Physics.Raycast(origin, aim, out RaycastHit hit, 25f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-            {
-                end = hit.point;
-                var enemy = hit.collider.GetComponentInParent<SandboxEnemy>();
-                if (enemy != null && !enemy.IsDead) { enemy.Hit(weapon != null ? weapon.damage : 35, hit.point, false); session.RegisterHit(); }
-                else CombatEffects.Impact(hit.point, hit.normal, session.tracerMaterial);
-            }
-            var tracer = new GameObject("Shot trace").AddComponent<LineRenderer>();
-            tracer.sharedMaterial = session.tracerMaterial;
-            tracer.startWidth = 0.04f;
-            tracer.endWidth = 0.01f;
-            tracer.positionCount = 2;
-            tracer.SetPosition(0, origin);
-            tracer.SetPosition(1, end);
-            Destroy(tracer.gameObject, 0.06f);
+                Vector3 aim = preciseAim ? (aimPoint - origin).normalized : transform.forward;
+                if (weapon != null && weapon.spread > 0) aim = Quaternion.AngleAxis(Random.Range(-weapon.spread, weapon.spread), Vector3.up) * aim;
+                if (session.State.elapsed < session.State.tremorUntil || session.State.IsManic)
+                    aim = Quaternion.AngleAxis(Random.Range(-7f, 7f), Vector3.up) * aim;
+                Vector3 end = origin + aim * 25f;
+                if (Physics.Raycast(origin, aim, out RaycastHit hit, 25f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                {
+                    end = hit.point;
+                    var enemy = hit.collider.GetComponentInParent<SandboxEnemy>();
+                    if (enemy != null && !enemy.IsDead) { enemy.Hit(weapon != null ? weapon.damage : 35, hit.point, false); session.RegisterHit(); }
+                    else CombatEffects.Impact(hit.point, hit.normal, session.tracerMaterial);
+                }
+                var tracer = new GameObject("Shot trace").AddComponent<LineRenderer>();
+                tracer.sharedMaterial = session.tracerMaterial;
+                tracer.startWidth = 0.04f;
+                tracer.endWidth = 0.01f;
+                tracer.positionCount = 2;
+                tracer.SetPosition(0, origin);
+                tracer.SetPosition(1, end);
+                Destroy(tracer.gameObject, 0.06f);
             }
         }
     }

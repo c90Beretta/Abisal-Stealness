@@ -20,7 +20,7 @@ namespace Zombtoy.Gameplay
 
         public void Restore(bool fuseTaken, bool power, bool boarding, bool suppliesTaken)
         {
-            HasFuse = fuseTaken; PowerOn = power; BoardingAuthorized = boarding; SuppliesTaken = suppliesTaken;
+            session.ClearMessage();HasFuse = fuseTaken; PowerOn = power; BoardingAuthorized = boarding; SuppliesTaken = suppliesTaken;
             fuse.gameObject.SetActive(!HasFuse); supplies.gameObject.SetActive(!SuppliesTaken);
             controlDoor.SetActive(!PowerOn); boardingGate.SetActive(!BoardingAuthorized);
         }
@@ -62,6 +62,7 @@ namespace Zombtoy.Gameplay
                 if (session.Night != null && (session.Night.Inventory.Weight(session) + .416f > FieldInventory.Capacity || session.reserve + 12 > 240 || session.State.doses >= 8))
                 { session.SetMessage("Mochila llena. Usa suministros para recoger esta caja."); return; }
                 SuppliesTaken = true;
+                session.Telemetry?.Loot(12, 1);
                 session.reserve += 12;
                 session.State.doses++;
                 supplies.gameObject.SetActive(false);

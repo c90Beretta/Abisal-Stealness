@@ -20,6 +20,7 @@ namespace Zombtoy.Gameplay
             if (session.Night != null && (session.Night.Inventory.Weight(session) + ammo * .018f + doses * .2f + medkits * .8f + bandages * .15f > FieldInventory.Capacity ||
                 session.reserve + ammo > 240 || session.State.medkits + medkits > 8 || session.State.bandages + bandages > 12 || session.State.doses + doses > 8))
             { session.SetMessage("Mochila llena. Usa suministros antes de recogerlos."); return; }
+            session.Telemetry?.Loot(ammo, doses);
             session.reserve += ammo; session.State.doses += doses;
             session.State.medkits += medkits; session.State.bandages += bandages;
             session.SetMessage(label + " recogido."); Restore(true);

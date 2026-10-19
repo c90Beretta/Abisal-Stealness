@@ -141,3 +141,4 @@ InitTestScene*.unity*
 
 # Transient visual review copies; canonical release evidence lives in docs/Validation.
 /.impeccable/review/
+/Assets/_Project/Resources/AbisalBuildIdentity.json*

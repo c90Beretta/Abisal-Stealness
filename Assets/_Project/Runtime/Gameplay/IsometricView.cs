@@ -14,7 +14,7 @@ namespace Zombtoy.Gameplay
         private void Awake()
         {
             view = GetComponent<Camera>();
-            // Render meshes straight to the native window, with no pixel-grid upscaling.
+            // World presentation is handled by the renderer feature; HUD stays native.
             view.targetTexture = null;
             view.orthographic = true;
             view.allowMSAA = true;

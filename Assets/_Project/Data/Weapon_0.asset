@@ -18,5 +18,5 @@ MonoBehaviour:
   spread: 0
   noiseRadius: 18
   pellets: 1
-  visualPrefab: {fileID: 7973724074498552000, guid: e35f52fa018d81d429e8f277738b82f7, type: 3}
+  visualPrefab: {fileID: 8386541888835939520, guid: 94b68824add55da4796b7e8058690b0f, type: 3}
   shotClip: {fileID: 8300000, guid: fdd145a9d155d2547be7df57c7c8d4f1, type: 3}

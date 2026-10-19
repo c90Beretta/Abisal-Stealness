@@ -15,6 +15,9 @@ namespace Zombtoy.Gameplay
         public Transform terminal;
         public Transform extraction;
         public Material tracerMaterial;
+        public Font hudFont, displayFont;
+        public CombatArt combatArt;
+        public Material damageVignetteMaterial;
         public PortMission portMission;
         public string missionTitle = "ABISAL / PUERTO CARGUERO";
         public SurvivalState State = new SurvivalState();
@@ -35,6 +38,7 @@ namespace Zombtoy.Gameplay
         public float HitFlash { get; private set; }
         public GameHud Hud { get; private set; }
         public NightSurvival Night { get; private set; }
+        public RunTelemetry Telemetry { get; private set; }
         public SandboxEnemy[] Enemies { get; private set; }
         public WorldPickup[] Pickups { get; private set; }
         public string CheckpointPathOverride { get; set; }
@@ -47,6 +51,8 @@ namespace Zombtoy.Gameplay
         private void Start()
         {
             Night = GetComponent<NightSurvival>();
+            CombatEffects.Configure(combatArt);
+            Telemetry = gameObject.AddComponent<RunTelemetry>(); Telemetry.Initialize(this);
             Enemies = FindObjectsByType<SandboxEnemy>(FindObjectsInactive.Include);
             Pickups = FindObjectsByType<WorldPickup>(FindObjectsInactive.Include);
             Application.targetFrameRate = 60;
@@ -86,7 +92,9 @@ namespace Zombtoy.Gameplay
                 actionLeft -= Time.deltaTime;
                 if (actionLeft <= 0)
                 {
+                    float serumBefore = State.serum;
                     bool applied = action == "suero" ? State.Inject(config) : action == "botiquin" ? State.Heal() : State.Bandage();
+                    if (applied && action == "suero") Telemetry.Injection(serumBefore);
                     if (applied) SetMessage(action == "suero" ? "Suero administrado." : action == "botiquin" ? "Vida recuperada: +40." : "Hemorragia detenida.");
                 }
             }
@@ -119,7 +127,7 @@ namespace Zombtoy.Gameplay
             if (Mode != SessionMode.Paused) return;
             Mode = SessionMode.Playing; Hud.ClosePanels(); ApplyTime();
         }
-        public void Restart() { Time.timeScale = 1; SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
+        public void Restart() { Telemetry?.Export("Restart"); Time.timeScale = 1; SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
         public void ReturnToTitle() => Restart();
         public void Quit()
         {
@@ -195,6 +203,7 @@ namespace Zombtoy.Gameplay
                 else SetMessage("Activa primero la terminal.");
             }
         }
+        public void ClearMessage() {Message="";MessageUntil=0;}
         public void SetMessage(string value) { Message = value; MessageUntil = Time.unscaledTime + 5; }
         public void CompleteRoute(string value) { Mode = SessionMode.Complete; SetMessage(value); ApplyTime(); }
         public void EmitNoise(Vector3 position, float radius)

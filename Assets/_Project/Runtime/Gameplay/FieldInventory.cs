@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace Zombtoy.Gameplay
 {
-    [Serializable] public sealed class LootStock
+    [Serializable]
+    public sealed class LootStock
     {
         public int ammo, medkits, bandages, doses, cells, oxygen, plates;
         public bool Empty => ammo + medkits + bandages + doses + cells + oxygen + plates == 0;
@@ -13,7 +14,8 @@ namespace Zombtoy.Gameplay
         public string Description => $"Cartuchos {ammo}   Botiquines {medkits}   Vendas {bandages}\nSuero {doses}   Pilas {cells}   O2 {oxygen}   Placas {plates}";
     }
 
-    [Serializable] public sealed class FieldInventory
+    [Serializable]
+    public sealed class FieldInventory
     {
         public int cells = 2, oxygen = 1, plates = 1, melee;
         public float battery = 100, air = 100, armor = 100, stamina = 100;
@@ -27,7 +29,7 @@ namespace Zombtoy.Gameplay
         public int Transfer(SandboxSession s, LootStock stock)
         {
             if (!stock.Valid) return 0;
-            int count = 0;
+            int count = 0; int ammoBefore = s.reserve, dosesBefore = s.State.doses;
             count += Move(s, ref stock.ammo, ref s.reserve, .018f, 240);
             count += Move(s, ref stock.medkits, ref s.State.medkits, .8f, 8);
             count += Move(s, ref stock.bandages, ref s.State.bandages, .15f, 12);
@@ -35,6 +37,7 @@ namespace Zombtoy.Gameplay
             count += Move(s, ref stock.cells, ref cells, .25f, 8);
             count += Move(s, ref stock.oxygen, ref oxygen, 1.2f, 4);
             count += Move(s, ref stock.plates, ref plates, 1.5f, 4);
+            s.Telemetry?.Loot(s.reserve - ammoBefore, s.State.doses - dosesBefore);
             return count;
         }
         private int Move(SandboxSession s, ref int source, ref int target, float weight, int limit)

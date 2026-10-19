@@ -6,12 +6,13 @@ using Zombtoy.Core;
 
 namespace Zombtoy.Gameplay
 {
-    [Serializable] public sealed class EnemySave { public string id; public float health; public Vector3 position; public bool active = true; public Severed severed; }
+    [Serializable] public sealed class EnemySave { public string id; public float health; public Vector3 position; public bool active = true; public Severed severed; public RagdollPose ragdoll; public Quaternion rotation = Quaternion.identity; }
     [Serializable] public sealed class PickupSave { public string id; public bool collected; }
     [Serializable] public sealed class LootSave { public string id; public LootStock stock; }
-    [Serializable] public sealed class PortSave
+    [Serializable]
+    public sealed class PortSave
     {
-        public int version = 2;
+        public int version = 3;
         public string level = "Level01_Port";
         public SurvivalState state;
         public Vector3 position;
@@ -24,6 +25,7 @@ namespace Zombtoy.Gameplay
         public bool[] released;
         public float pressure;
         public int waves;
+        public RunMetrics metrics;
     }
     public static class CheckpointStore
     {
@@ -33,12 +35,24 @@ namespace Zombtoy.Gameplay
             try
             {
                 var m = session.portMission;
-                var save = new PortSave { state = session.State, position = session.player.transform.position,
-                    rounds = session.rounds, reserve = session.reserve, kills = session.Kills, shots = session.Shots, hits = session.Hits,
+                var save = new PortSave
+                {
+                    state = session.State,
+                    position = session.player.transform.position,
+                    rounds = session.rounds,
+                    reserve = session.reserve,
+                    kills = session.Kills,
+                    shots = session.Shots,
+                    hits = session.Hits,
+                    metrics = session.Telemetry?.Data,
                     weapon = session.player.GetComponent<WeaponLoadout>()?.Index ?? 0,
-                    fuse = m.HasFuse, power = m.PowerOn, boarding = m.BoardingAuthorized, supplies = m.SuppliesTaken,
-                    enemies = session.Enemies.Select(e => new EnemySave { id = e.name, health = e.health, position = e.transform.position, active = e.gameObject.activeSelf, severed = e.GetComponent<Dismemberment>()?.Lost ?? Severed.None }).ToArray(),
-                    pickups = session.Pickups.Select(p => new PickupSave { id = p.id, collected = p.Collected }).ToArray() };
+                    fuse = m.HasFuse,
+                    power = m.PowerOn,
+                    boarding = m.BoardingAuthorized,
+                    supplies = m.SuppliesTaken,
+                    enemies = session.Enemies.Select(e => new EnemySave { id = e.name, health = e.health, position = e.transform.position, rotation = e.transform.rotation, active = e.gameObject.activeSelf, severed = e.GetComponent<Dismemberment>()?.Lost ?? Severed.None, ragdoll = e.GetComponent<RagdollController>()?.Capture() }).ToArray(),
+                    pickups = session.Pickups.Select(p => new PickupSave { id = p.id, collected = p.Collected }).ToArray()
+                };
                 if (session.Night != null)
                 {
                     var n = session.Night; save.inventory = n.Inventory;
@@ -60,7 +74,7 @@ namespace Zombtoy.Gameplay
             {
                 if (!File.Exists(path) || new FileInfo(path).Length > 1024 * 1024) return false;
                 var s = JsonUtility.FromJson<PortSave>(File.ReadAllText(path));
-                if (s == null || (s.version != 1 && s.version != 2) || s.level != "Level01_Port" || s.state == null || s.enemies == null || s.pickups == null ||
+                if (s == null || (s.version != 1 && s.version != 2 && s.version != 3) || s.level != "Level01_Port" || s.state == null || s.enemies == null || s.pickups == null ||
                     !float.IsFinite(s.state.health) || s.state.health <= 0 || s.state.health > 100 || !Finite(s.position) ||
                     !Bounded(s.state.serum, 0, 100) || !Bounded(s.state.infection, 0, 100) || !Bounded(s.state.bleeding, 0, 1) ||
                     !Bounded(s.state.elapsed, 0, 10000000) || !float.IsFinite(s.state.lastInjection) || !float.IsFinite(s.state.maniaUntil) ||
@@ -69,9 +83,10 @@ namespace Zombtoy.Gameplay
                     s.rounds < 0 || s.rounds > 12 || s.reserve < 0 || s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
                     s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 2 ||
                     s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 1000))) return false;
-                if (s.version == 2 && (s.inventory == null || !s.inventory.Valid || s.loot == null || s.released == null || s.released.Length > 64 || s.waves < 0 || !Bounded(s.pressure, 0, 100) ||
+                if (s.version >= 2 && (s.inventory == null || !s.inventory.Valid || s.loot == null || s.released == null || s.released.Length > 64 || s.waves < 0 || !Bounded(s.pressure, 0, 100) ||
                     s.loot.Any(l => l == null || string.IsNullOrEmpty(l.id) || l.stock == null || !l.stock.Valid) || s.loot.Select(l => l.id).Distinct().Count() != s.loot.Length ||
-                    s.enemies.Any(e => ((int)e.severed & ~31) != 0))) return false;
+                    s.enemies.Any(e => (s.version >= 3 && (!float.IsFinite(e.rotation.x) || !float.IsFinite(e.rotation.y) || !float.IsFinite(e.rotation.z) || !float.IsFinite(e.rotation.w) || Mathf.Abs(Quaternion.Dot(e.rotation, e.rotation) - 1) > .05f)) || ((int)e.severed & ~31) != 0 || (e.ragdoll != null && e.ragdoll.present && !e.ragdoll.Valid)))) return false;
+                if (s.metrics != null && !s.metrics.Valid) return false;
                 save = s; return true;
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException || e is ArgumentException) { return false; }
@@ -101,8 +116,14 @@ namespace Zombtoy.Gameplay
                 if (data != null)
                 {
                     if (save.version >= 2) enemy.gameObject.SetActive(data.active);
+                    if (save.version >= 3) enemy.transform.rotation = data.rotation;
                     enemy.Restore(data.health, data.position);
                     enemy.GetComponent<Dismemberment>()?.Restore(data.severed);
+                    var ragdoll = enemy.GetComponent<RagdollController>();
+                    if (enemy.IsDead && ragdoll != null)
+                    {
+                        if (!ragdoll.RestorePose(data.ragdoll)) ragdoll.Activate(Vector3.zero, enemy.transform.position + Vector3.up, data.severed);
+                    }
                 }
             }
             foreach (var pickup in session.Pickups)
@@ -110,6 +131,7 @@ namespace Zombtoy.Gameplay
                 var data = Array.Find(save.pickups, p => p.id == pickup.id);
                 pickup.Restore(data != null && data.collected);
             }
+            session.Telemetry?.Restore(save.metrics);
             Physics.SyncTransforms();
         }
     }

@@ -175,3 +175,4 @@ Assets/ThirdParty/**/License.txt -text
 
 # Unity serializes baked navigation as binary even with Force Text enabled.
 Assets/_Project/Navigation/*.asset lfs
+Assets/ThirdParty/Fonts/**/OFL.txt -text

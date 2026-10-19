@@ -7,11 +7,12 @@ namespace Zombtoy.Gameplay
         public string id, label = "Contenedor";
         public LootStock stock = new LootStock();
         public SandboxEnemy corpse;
+        public Vector3 Point => corpse != null && corpse.IsDead ? corpse.CorpseAnchor : transform.position;
         public bool Available => gameObject.activeInHierarchy && (corpse == null || corpse.IsDead);
         public bool Reachable(SandboxSession s)
         {
-            if (!Available || Vector3.Distance(transform.position, s.player.transform.position) > 2.5f) return false;
-            Vector3 end = transform.position + Vector3.up * (corpse != null ? .25f : .5f);
+            if (!Available || Vector3.Distance(Point, s.player.transform.position) > 2.5f) return false;
+            Vector3 end = Point + Vector3.up * (corpse != null ? .25f : .5f);
             return !Physics.Linecast(s.player.transform.position + Vector3.up, end, out var hit, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) || hit.transform == transform || hit.transform.IsChildOf(transform);
         }
         public bool Take(SandboxSession s)

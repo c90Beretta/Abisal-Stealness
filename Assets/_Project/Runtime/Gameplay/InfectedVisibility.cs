@@ -12,7 +12,7 @@ namespace Zombtoy.Gameplay
         private void LateUpdate()
         {
             var night = enemy.session.Night;
-            Visible = night == null || night.Perceives(transform.position + Vector3.up * .9f);
+            Visible = night == null || night.Perceives((enemy.IsDead ? enemy.CorpseAnchor : transform.position + Vector3.up * .9f));
             foreach (var part in parts) if (part != null) part.enabled = Visible;
         }
     }

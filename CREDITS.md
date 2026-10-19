@@ -19,3 +19,18 @@ audio de Pixabay ni modelos de Sketchfab en esta fundación.
 
 - Audio nocturno original: síntesis determinista del proyecto con `tools/generate_night_audio.py` (disparos, gemidos, grito y respiración); sin grabaciones externas.
 - Variantes de infectados: cuatro mallas derivadas de Kenney Survivors CC0, equipo táctico y shader de señal propios; tanque Oxy_ballon de KMProd, fuentes locales.
+
+En el puerto0.5, los cuerpos de escala adulta, sus animaciones, las cinco armas,
+el montaje de cuarentena y los efectos geométricos son originales del proyecto.
+Sustituyen los personajes y armas Kenney en esa escena; los recursos anteriores
+se conservan para compatibilidad y el sandbox. Tanque: Oxy_ballon, KMProd.
+
+- Barlow Condensed: The Barlow Project Authors, SIL Open Font License1.1.
+- Crimson Text: The Crimson Text Project Authors, SIL Open Font License1.1.
+  Fuentes obtenidas de Google Fonts; licencias completas en `Licenses/Fonts` de
+  la distribución Windows, manifiesto de origen/hash en `docs/font-install-manifest.json`.
+- Albedos originales de esmalte gastado, rostro ficticio y tejido usado: generados con la
+  herramienta integrada OpenAI `image_gen`, sin extraer imágenes de otros juegos.
+  Prompts exactos y procedencia conservados junto a los PNG del proyecto.
+- Referencia de dirección visual0.5: Mouthwashing, Wrong Organ. No se incorporan
+  sus personajes, logotipos, modelos, texturas ni audio.

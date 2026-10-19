@@ -8,12 +8,13 @@ namespace Zombtoy.Gameplay
         private Transform firearm;
         private float until;
         public bool Active => model != null && Time.time < until;
-        public void Play(bool axe, Material material)
+        public void Play(bool axe, Material material, GameObject prefab = null)
         {
             if (model != null) Destroy(model);
             firearm = GetComponent<WeaponLoadout>()?.socket;
             if (firearm != null) firearm.gameObject.SetActive(false);
-            model = new GameObject(axe ? "Boarding axe" : "Combat knife"); model.transform.SetParent(transform, false);
+            model = prefab != null ? Instantiate(prefab, transform, false) : new GameObject(axe ? "Boarding axe" : "Combat knife"); model.transform.SetParent(transform, false);
+            until = Time.time + .24f; if (prefab != null) return;
             Part("Grip", new Vector3(0, -.12f, 0), new Vector3(.045f, axe ? .55f : .18f, .045f), new Color(.035f, .04f, .04f), material);
             Part("Steel blade", new Vector3(axe ? .08f : 0, axe ? .2f : .14f, 0), new Vector3(axe ? .3f : .045f, axe ? .16f : .28f, .025f), new Color(.55f, .65f, .65f), material);
             until = Time.time + .24f;

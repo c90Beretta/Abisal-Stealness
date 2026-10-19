@@ -14,6 +14,7 @@ namespace Zombtoy.Gameplay
         public float speed = 1.2f, health = 70f, sightRange = 7f;
         public bool useNavigation;
         public EnemyMode Mode { get; private set; }
+        public float LastDamagedAt { get; private set; } = -100;
         public bool IsDead => health <= 0;
         public float MaxHealth => definition != null ? definition.health : maxHealth;
         private float maxHealth = 70;
@@ -31,6 +32,9 @@ namespace Zombtoy.Gameplay
         private Transform visual;
         private InfectedVariant variant;
         private Dismemberment gore;
+        private RagdollController ragdoll;
+        private Vector3 lastImpact, lastImpulse;
+        public Vector3 CorpseAnchor => ragdoll != null && ragdoll.Active ? ragdoll.Anchor : transform.position;
         private bool initialized;
 
         private void Awake() => Initialize();
@@ -38,14 +42,14 @@ namespace Zombtoy.Gameplay
         {
             if (initialized) return; initialized = true;
             controller = GetComponent<CharacterController>();
-            variant = GetComponent<InfectedVariant>(); gore = GetComponent<Dismemberment>();
+            variant = GetComponent<InfectedVariant>(); gore = GetComponent<Dismemberment>(); ragdoll = GetComponent<RagdollController>();
             path = new NavMeshPath();
             home = destination = transform.position;
             initialRotation = transform.rotation;
             renderers = GetComponentsInChildren<Renderer>();
             block = new MaterialPropertyBlock();
             motion = GetComponent<CharacterMotion>();
-            visual = transform.Find("CC0 visual");
+            visual = transform.Find("Character visual") ?? transform.Find("CC0 visual");
             if (definition != null) { health = definition.health; speed = definition.speed; sightRange = definition.sightRange; }
             maxHealth = health;
             patrolUntil = Time.time + 2;
@@ -79,7 +83,7 @@ namespace Zombtoy.Gameplay
             if (session == null || !session.Running) return;
             if (IsDead)
             {
-                if (visual != null) visual.localRotation = Quaternion.Slerp(visual.localRotation, Quaternion.Euler(-88, 0, 0), Time.deltaTime * 7);
+                if (ragdoll == null && visual != null) visual.localRotation = Quaternion.Slerp(visual.localRotation, Quaternion.Euler(-88, 0, 0), Time.deltaTime * 7);
                 return;
             }
             foreach (var r in renderers)
@@ -139,11 +143,11 @@ namespace Zombtoy.Gameplay
             float moveSpeed = speed * (Mode == EnemyMode.Patrol ? 0.45f : 1) * (variant != null ? variant.MoveMultiplier : 1);
             Vector3 separation = Vector3.zero;
             if (session.Enemies != null) foreach (var other in session.Enemies)
-            {
-                if (other == null || other == this || other.IsDead || !other.gameObject.activeInHierarchy) continue;
-                Vector3 away = transform.position - other.transform.position; away.y = 0;
-                if (away.sqrMagnitude > .001f && away.sqrMagnitude < .8f) separation += away.normalized * (1 - away.magnitude);
-            }
+                {
+                    if (other == null || other == this || other.IsDead || !other.gameObject.activeInHierarchy) continue;
+                    Vector3 away = transform.position - other.transform.position; away.y = 0;
+                    if (away.sqrMagnitude > .001f && away.sqrMagnitude < .8f) separation += away.normalized * (1 - away.magnitude);
+                }
             controller.Move(((delta.normalized + separation * .8f).normalized * moveSpeed + Vector3.down * 8) * Time.deltaTime);
             if (motion != null) motion.SetMoving(true, moveSpeed);
         }
@@ -157,6 +161,7 @@ namespace Zombtoy.Gameplay
         public void Hit(float amount, Vector3 point, bool cutting)
         {
             if (IsDead || amount <= 0) return;
+            lastImpact = point; lastImpulse = (transform.position - session.player.transform.position).normalized * Mathf.Clamp(amount * .045f, .5f, 5) + Vector3.up * .35f;
             CombatEffects.Blood(point, session.tracerMaterial);
             if (gore != null) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
             if (variant != null && variant.kind == InfectedKind.Brute && !cutting && point.y - transform.position.y < 1.45f) amount *= .6f;
@@ -167,6 +172,7 @@ namespace Zombtoy.Gameplay
         {
             Initialize();
             if (IsDead || amount <= 0) return;
+            LastDamagedAt = Time.time;
             health = Mathf.Max(0, health - amount);
             Hear(session.player.transform.position, 100);
             flashUntil = Time.time + 0.15f;
@@ -174,17 +180,19 @@ namespace Zombtoy.Gameplay
             Mode = EnemyMode.Dead; controller.enabled = false;
             if (motion != null) motion.Stop();
             session.Kills++;
+            if (ragdoll != null) ragdoll.Activate(lastImpulse.sqrMagnitude > 0 ? lastImpulse : transform.forward * -2, lastImpact.sqrMagnitude > 0 ? lastImpact : transform.position + Vector3.up, gore != null ? gore.Lost : Severed.None);
         }
 
         public void Restore(float value, Vector3 position)
         {
             Initialize();
+            if (ragdoll != null) ragdoll.ResetPose();
             controller.enabled = false;
             transform.position = position; health = Mathf.Clamp(value, 0, MaxHealth);
             controller.enabled = !IsDead;
             Mode = IsDead ? EnemyMode.Dead : EnemyMode.Patrol;
             destination = position; alertedUntil = stateUntil = nextPath = 0;
-            if (visual != null) visual.localRotation = IsDead ? Quaternion.Euler(-88, 0, 0) : Quaternion.identity;
+            if (visual != null) visual.localRotation = IsDead && ragdoll == null ? Quaternion.Euler(-88, 0, 0) : Quaternion.identity;
             if (motion != null) { if (IsDead) motion.Stop(); else motion.SetMoving(false, 0); }
         }
     }

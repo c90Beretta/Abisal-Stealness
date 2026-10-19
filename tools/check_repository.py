@@ -23,6 +23,12 @@ def main():
                 path = folder / name
                 if path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() != expected:
                     errors.append(f"Changed third party file: {path}")
+    font_manifest = ROOT / "docs/font-install-manifest.json"
+    if font_manifest.exists():
+        for item in json.loads(font_manifest.read_text(encoding="utf-8")):
+            path = ROOT / item["file"]
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]:
+                errors.append(f"Missing or changed font/license: {item['file']}")
     guids = {}
     assets = ROOT / "Assets"
     for path in assets.rglob("*"):

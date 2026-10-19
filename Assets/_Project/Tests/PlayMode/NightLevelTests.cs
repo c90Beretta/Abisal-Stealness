@@ -37,7 +37,8 @@ namespace Zombtoy.Tests
             yield return Load(); var n = session.Night; Assert.That(n, Is.Not.Null);
             Assert.That(RenderSettings.ambientSkyColor.maxColorComponent, Is.LessThan(.1f));
             Assert.That(n.flashlight.shadows, Is.EqualTo(LightShadows.Soft));
-            Move(session.player.transform, new Vector3(-18, .1f, -14));
+            // Open quay lane: the new quarantine outer bulkhead occupies x=-18.
+            Move(session.player.transform, new Vector3(-10, .1f, -17));
             session.player.transform.forward = Vector3.forward;
             Vector3 ahead = session.player.transform.position + Vector3.forward * 5 + Vector3.up * .9f;
             Assert.That(n.Perceives(ahead), Is.True); n.ToggleLamp(); Assert.That(n.Perceives(ahead), Is.False);
@@ -147,13 +148,13 @@ namespace Zombtoy.Tests
             session.Hud.OpenLoot(box); yield return null; yield return FirstLevelTests.Capture(session, "night-inventory-1080.png", 1920, 1080); session.Hud.ClosePanels();
             Screen.SetResolution(1280, 720, FullScreenMode.Windowed); yield return new WaitForSecondsRealtime(.2f);
             session.player.view.orthographicSize = 2.4f; session.player.transform.rotation = Quaternion.Euler(0, 150, 0);
-            yield return null; yield return FirstLevelTests.Capture(session, "night-soldier.png"); session.player.view.orthographicSize = 7.5f;
-            Move(session.player.transform, new Vector3(-18, .1f, -14)); session.player.transform.forward = Vector3.forward;
+            yield return null; yield return FirstLevelTests.Capture(session, "night-soldier.png"); session.player.view.orthographicSize = 3.5f;
+            Move(session.player.transform, new Vector3(-10, .1f, -17)); session.player.transform.forward = Vector3.forward;session.ClearMessage();
             int i = 0;
             foreach (var kind in new[] { InfectedKind.Walker, InfectedKind.Runner, InfectedKind.Brute, InfectedKind.Screamer })
             {
                 var enemy = session.Enemies.First(e => e.GetComponent<InfectedVariant>().kind == kind); enemy.gameObject.SetActive(true); enemy.enabled = false;
-                Move(enemy.transform, session.player.transform.position + new Vector3(-1.65f + i * 1.1f, 0, 2.1f)); enemy.transform.rotation = Quaternion.Euler(0, 180, 0); i++;
+                Move(enemy.transform, session.player.transform.position + new Vector3(-1.65f + i * 1.1f, 0, 1.7f)); enemy.transform.rotation = Quaternion.Euler(0, 180, 0); i++;
             }
             yield return null; yield return FirstLevelTests.Capture(session, "night-infected.png");
         }

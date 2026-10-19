@@ -27,7 +27,8 @@ namespace Zombtoy.Tests
             foreach (var enemy in session.Enemies) enemy.gameObject.SetActive(false);
             if (begin) session.BeginMission();
         }
-        [TearDown] public void Cleanup()
+        [TearDown]
+        public void Cleanup()
         {
             Time.timeScale = 1;
             if (path == null) return;
@@ -37,7 +38,8 @@ namespace Zombtoy.Tests
         {
             var cc = actor.GetComponent<CharacterController>(); cc.enabled = false; actor.position = position; cc.enabled = true; Physics.SyncTransforms();
         }
-        [UnityTest] public IEnumerator MenuButtonsStartAndPauseSimulation()
+        [UnityTest]
+        public IEnumerator MenuButtonsStartAndPauseSimulation()
         {
             yield return Load(false);
             Assert.That(session.Mode, Is.EqualTo(SessionMode.Title)); Assert.That(Time.timeScale, Is.Zero);
@@ -54,9 +56,10 @@ namespace Zombtoy.Tests
             Assert.That(session.State.serum, Is.EqualTo(serum));
             Assert.That(session.UseRound(), Is.False);
             session.Resume(); Assert.That(Time.timeScale, Is.EqualTo(1));
-            Assert.That(session.player.GetComponent<CharacterMotion>().rig["idle"].clip.legacy, Is.True);
+            var motion=session.player.GetComponent<CharacterMotion>();Assert.That(motion.rig[motion.idleState].clip.legacy, Is.True);
         }
-        [UnityTest] public IEnumerator TreatmentTakesTimeCanBeInterruptedAndDeathFreezesPlay()
+        [UnityTest]
+        public IEnumerator TreatmentTakesTimeCanBeInterruptedAndDeathFreezesPlay()
         {
             yield return Load(); session.State.health = 40;
             session.BeginHeal(); Assert.That(session.Busy, Is.True); Assert.That(session.UseRound(), Is.False);
@@ -70,7 +73,8 @@ namespace Zombtoy.Tests
             session.TakeDamage(200); yield return null; yield return null;
             Assert.That(session.Mode, Is.EqualTo(SessionMode.Dead)); Assert.That(Time.timeScale, Is.Zero);
         }
-        [UnityTest] public IEnumerator CheckpointRestoresMissionHealthEnemiesAndCollectedSupplies()
+        [UnityTest]
+        public IEnumerator CheckpointRestoresMissionHealthEnemiesAndCollectedSupplies()
         {
             yield return Load();
             var mission = session.portMission; mission.Restore(true, true, false, false);
@@ -90,7 +94,8 @@ namespace Zombtoy.Tests
             Assert.That(session.player.GetComponent<WeaponLoadout>().Index, Is.EqualTo(2));
             File.WriteAllText(path, "{malformed"); Assert.That(session.LoadCheckpoint(), Is.False);
         }
-        [UnityTest] public IEnumerator InfectedAttackHasWindupCanMissAndWallsBlockSight()
+        [UnityTest]
+        public IEnumerator InfectedAttackHasWindupCanMissAndWallsBlockSight()
         {
             yield return Load();
             var enemy = session.Enemies[0]; enemy.gameObject.SetActive(true); enemy.useNavigation = false;
@@ -108,7 +113,8 @@ namespace Zombtoy.Tests
             yield return new WaitForSeconds(2.3f); Assert.That(session.State.health, Is.EqualTo(100), "Walls must stop attacks");
             Object.Destroy(wall);
         }
-        [UnityTest] public IEnumerator CaptureCompositedMenuHudAndHelp()
+        [UnityTest]
+        public IEnumerator CaptureCompositedMenuHudAndHelp()
         {
             yield return Load(false); Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(0.4f); yield return Capture(session, "first-level-menu.png");
@@ -125,7 +131,8 @@ namespace Zombtoy.Tests
             }
             hudCanvas.gameObject.SetActive(true); session.player.view.orthographicSize = size;
         }
-        [UnityTest] public IEnumerator Native3DWeaponsSwitchWithoutCreatingAmmoAndBlockDuringActions()
+        [UnityTest]
+        public IEnumerator Native3DWeaponsSwitchWithoutCreatingAmmoAndBlockDuringActions()
         {
             yield return Load();
             Assert.That(session.player.view.targetTexture, Is.Null);
@@ -144,7 +151,8 @@ namespace Zombtoy.Tests
             Assert.That(loadout.Equip(0), Is.False, "Switching must not bypass treatment");
             session.TogglePause(); Assert.That(loadout.Equip(0), Is.False);
         }
-        [UnityTest] public IEnumerator AllWeaponModelsShootFromTheirMuzzlesAndCannotBypassWalls()
+        [UnityTest]
+        public IEnumerator AllWeaponModelsShootFromTheirMuzzlesAndCannotBypassWalls()
         {
             yield return Load();
             var loadout = session.player.GetComponent<WeaponLoadout>();
@@ -194,11 +202,13 @@ namespace Zombtoy.Tests
             var texture = new RenderTexture(width, height, 24); camera.targetTexture = texture;
             var canvases = Object.FindObjectsByType<Canvas>();
             var layers = new System.Collections.Generic.Dictionary<GameObject, int>();
+            var scalers = new System.Collections.Generic.Dictionary<CanvasScaler, bool>();
             foreach (var canvas in canvases)
             {
                 foreach (var node in canvas.GetComponentsInChildren<Transform>(true))
                     if (!layers.ContainsKey(node.gameObject)) { layers[node.gameObject] = node.gameObject.layer; node.gameObject.layer = 5; }
-                canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera; canvas.planeDistance = 2;
+                var scaler = canvas.GetComponent<CanvasScaler>(); if (scaler != null) { scalers[scaler] = scaler.enabled; scaler.enabled = false; }
+                canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera; canvas.planeDistance = 2; canvas.scaleFactor = width / 1280f;
             }
             yield return null;
             Canvas.ForceUpdateCanvases(); camera.Render(); camera.Render();
@@ -214,6 +224,7 @@ namespace Zombtoy.Tests
                 RenderTexture.active = previous;
                 foreach (var canvas in canvases) { canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.worldCamera = null; }
                 foreach (var node in layers) node.Key.layer = node.Value;
+                foreach (var item in scalers) item.Key.enabled = item.Value;
                 camera.targetTexture = null; Object.Destroy(camera.gameObject); Object.Destroy(image); texture.Release(); Object.Destroy(texture);
                 Object.Destroy(backdrop); worldTexture.Release(); Object.Destroy(worldTexture);
             }

@@ -27,8 +27,8 @@ namespace Zombtoy.Gameplay
             foreach (var r in session.player.GetComponentsInChildren<Renderer>()) { if (r.name == "Armoured vest") vest = r; if (r.name == "Respirator mask") mask = r; }
             var foundLenses = new System.Collections.Generic.List<Renderer>(); foreach (var r in session.player.GetComponentsInChildren<Renderer>()) if (r.name == "Mask lens") foundLenses.Add(r); lenses = foundLenses.ToArray();
             Containers = FindObjectsByType<LootContainer>(FindObjectsInactive.Include);
-            ring = Ring("Circulo de percepcion", new Color(.25f, .7f, .65f, .28f), .018f);
-            pulse = Ring("Pulso de sonido", new Color(.9f, .56f, .28f, .55f), .025f);
+            ring = Ring("Circulo de percepcion", new Color(.65f, .61f, .43f, .2f), .018f);
+            pulse = Ring("Pulso de sonido", new Color(.95f, .65f, .35f, .27f), .045f);
         }
         private LineRenderer Ring(string label, Color color, float width)
         {
@@ -61,9 +61,9 @@ namespace Zombtoy.Gameplay
         }
         private void LateUpdate()
         {
-            ring.enabled = pulse.enabled = session.Mode == SessionMode.Playing;
-            Draw(ring, 2.7f); Draw(pulse, Mathf.Max(2.7f, Mathf.Min(NoiseRadius, 7)));
-            pulse.enabled &= NoiseRadius > 3;
+            ring.enabled=false;
+            pulse.enabled=session.Mode==SessionMode.Playing&&NoiseRadius>=2;
+            if(pulse.enabled)Draw(pulse,Mathf.Clamp(NoiseRadius,1,7));
         }
         private void Draw(LineRenderer line, float radius)
         {
@@ -96,7 +96,7 @@ namespace Zombtoy.Gameplay
             LootContainer best = null; float distance = 2.5f;
             foreach (var box in Containers)
                 if (box != null && box.Reachable(session) && !box.stock.Empty)
-                { float d = Vector3.Distance(box.transform.position, session.player.transform.position); if (d < distance) { best = box; distance = d; } }
+                { float d = Vector3.Distance(box.Point, session.player.transform.position); if (d < distance) { best = box; distance = d; } }
             return best;
         }
         public bool UseSupply(int kind)
@@ -105,7 +105,7 @@ namespace Zombtoy.Gameplay
             if (kind == 0 && Inventory.cells > 0 && Inventory.battery <= 70) { Inventory.cells--; Inventory.battery = 100; }
             else if (kind == 1 && Inventory.oxygen > 0 && Inventory.air <= 70) { Inventory.oxygen--; Inventory.air = 100; }
             else if (kind == 2 && Inventory.plates > 0 && Inventory.armor <= 70) { Inventory.plates--; Inventory.armor = 100; }
-            else { session.SetMessage("Requiere un repuesto y una carga inferior al 70%."); return false; }
+            else { session.SetMessage("Requiere un repuesto y una carga de 70% o menos."); return false; }
             session.EmitNoise(session.player.transform.position, 3);
             session.SetMessage(kind == 0 ? "Pila cambiada: linterna al 100%." : kind == 1 ? "Oxigeno recargado al 100%." : "Placa cambiada: proteccion al 100%."); return true;
         }

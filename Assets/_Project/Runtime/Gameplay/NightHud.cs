@@ -12,10 +12,10 @@ namespace Zombtoy.Gameplay
         private Font font;
         public void Setup(SandboxSession s, Transform parent)
         {
-            session = s; font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            TextAt(parent, "MOCHILA", 22, 26, -72, 440, 30, new Color(.55f, .94f, .72f));
+            session = s; font = s.hudFont != null ? s.hudFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            TextAt(parent, "MOCHILA", 22, 26, -72, 440, 30, new Color(.88f, .82f, .64f));
             carried = TextAt(parent, "", 18, 26, -112, 450, 100, Color.white);
-            gear = TextAt(parent, "", 17, 26, -220, 450, 65, new Color(.67f, .77f, .74f));
+            gear = TextAt(parent, "", 17, 26, -220, 450, 65, new Color(.76f, .74f, .66f));
             batteryButton = Action(parent, "Cambiar pila", 26, -294, () => session.Night.UseSupply(0));
             oxygenButton = Action(parent, "Recargar oxigeno", 26, -340, () => session.Night.UseSupply(1));
             plateButton = Action(parent, "Cambiar placa", 26, -386, () => session.Night.UseSupply(2));
@@ -29,12 +29,12 @@ namespace Zombtoy.Gameplay
                 var button = Action(parent, (i + 1) + "  " + new[] { "Pistola", "Carabina", "Dispersor" }[i], 26 + i * 151, -480, () => session.player.GetComponent<WeaponLoadout>().Equip(index));
                 ((RectTransform)button.transform).sizeDelta = new Vector2(143, 38);
             }
-            lootTitle = TextAt(parent, "BOTIN CERCANO", 22, 536, -72, 410, 32, new Color(.55f, .94f, .72f));
+            lootTitle = TextAt(parent, "BOTIN CERCANO", 22, 536, -72, 410, 32, new Color(.88f, .82f, .64f));
             contents = TextAt(parent, "", 19, 536, -126, 410, 160, Color.white);
             take = Action(parent, "Recoger lo que quepa", 536, -306, () => { if (selected != null) selected.Take(session); });
             ((RectTransform)take.transform).sizeDelta = new Vector2(410, 42);
             feedback = TextAt(parent, "", 17, 536, -354, 410, 44, new Color(1, .72f, .55f));
-            TextAt(parent, "E abre cuerpos y cajas a menos de 2.5 m.\nLas sobras permanecen en el contenedor.\nRepuestos: carga <=70% y uno disponible.\nTAB cierra / El mundo sigue avanzando.", 17, 536, -410, 410, 110, new Color(.67f, .77f, .74f));
+            TextAt(parent, "E abre cuerpos y cajas a menos de 2.5 m.\nLas sobras permanecen en el contenedor.\nRepuestos: carga <=70% y uno disponible.\nTAB cierra / El mundo sigue avanzando.", 17, 536, -410, 410, 110, new Color(.76f, .74f, .66f));
         }
         public void Select(LootContainer box) { selected = box; }
         private void ChangeGear(int index)
@@ -72,7 +72,7 @@ namespace Zombtoy.Gameplay
         {
             var node = new GameObject(text, typeof(RectTransform)).GetComponent<RectTransform>(); node.SetParent(parent, false);
             node.anchorMin = node.anchorMax = new Vector2(0, 1); node.pivot = new Vector2(0, 1); node.anchoredPosition = new Vector2(x, y); node.sizeDelta = new Vector2(224, 38);
-            var image = node.gameObject.AddComponent<Image>(); image.color = new Color(.14f, .28f, .23f);
+            var image = node.gameObject.AddComponent<Image>(); image.color = new Color(.18f, .17f, .14f);
             var button = node.gameObject.AddComponent<Button>(); button.targetGraphic = image; button.onClick.AddListener(callback);
             TextAt(node.transform, text, 17, 10, -8, 210, 28, Color.white);
             return button;
