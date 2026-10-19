@@ -36,7 +36,7 @@ descargas ni licencias de terceros. Véase `LEVEL01_PORT.md`.
 Asignar ID, registrar autor/URL/licencia exacta y hash, validar permisos para este
 repositorio público, rig/clips/escala y URP; crear wrapper nuevo en `_Project`,
 probar escena y build; actualizar manifest/ledger/créditos en el mismo PR.
-Los modelos de Sketchfab, paquetes Asset Store, Zara, Perfect Pixel, Pixabay,
+Los modelos de Sketchfab, Zara, Perfect Pixel, Pixabay,
 Mixamo y Zombtoy externo permanecen **NO INSTALADOS**.
 
 **DER-01 — Clips del puerto:** `_Project/Art/Animations/Idle.anim` y `Run.anim`
@@ -44,3 +44,11 @@ son copias derivadas de `Root|Idle` y `Root|Run` de los FBX Kenney Survivors ya
 auditados (CC0). Se convierten a Legacy/Loop y se enlazan al nodo Root del esqueleto;
 se excluyen los clips Targeting Pose. No se modifican archivos del proveedor ni
 sus hashes. Protagonista y seis infectados comparten las dos animaciones.
+
+**LOCAL-03 — Entornos 3D del usuario:** Sci-Fi Construction Kit (Sickhead Games),
+Modular Sci-Fi Corridor (MagixBox) y Sci-Fi Old Rusty Props PBR (KMProd), locales
+bajo Asset Store EULA. Datos y referencias en `LOCAL_ASSETS.md`; inventario SHA256
+de las69 entradas Rusty importadas en `local-rusty-manifest.json`. No se publican
+sus fuentes. Materiales URP propios conservan las referencias originales. El puerto
+incluye120 instancias estáticas de estos modelos, además de los3 prefabs de armas
+Kenney b/a/c ya incluidos en el subconjunto CC0. No hay nuevas descargas de armas.

@@ -45,7 +45,7 @@ components:
 Registro descriptivo del HUD de Unity uGUI implementado en `Assets/_Project/Runtime/Gameplay/GameHud.cs`, con presentación del mundo en `IsometricView.cs`. Conserva el lenguaje clínico oscuro, verde y rojo de la interfaz existente. No constituye una dirección creativa nueva ni aprobada por entrevista; no existe un PRODUCT.md de referencia.
 
 **Key Characteristics:**
-- Mundo de baja resolución y HUD independiente para lectura.
+- Mundo3D a resolución nativa y HUD independiente para lectura.
 - Paneles oscuros rectangulares, texto blanco/gris y foco visual verde menta.
 - Avisos de hemorragia y salud enemiga en rojo, acompañados de texto o barras.
 
@@ -71,9 +71,9 @@ Jerarquía observada: ABISAL (display), encabezado del menú (title), ayuda y bo
 
 ## Layout
 
-Canvas HUD superpuesto, orden 100, referencia 1280 × 720, `ScaleWithScreenSize` y coincidencia ancho/alto 0.5. El mundo usa RenderTexture 480 × 270 con filtro Point y Canvas de orden −100. Mantener ambas capas independientes.
+Canvas HUD superpuesto, orden100, referencia1280×720, `ScaleWithScreenSize` y coincidencia ancho/alto0.5. Desde v0.3 el mundo3D renderiza directamente a la ventana con cámara ortográfica35.264°/45°, MSAA4 y zoom. Se retiraron el RenderTexture480×270 y el Canvas del mundo, por petición del usuario. El HUD permanece separado.
 
-Objetivo en franja superior de 86 unidades; signos vitales abajo a la izquierda (310 × 126); munición y recursos abajo a la derecha (322 × 126). Interacciones, tratamiento y mensajes ocupan el centro inferior. Menú central de 900 × 542; ayuda de 860 × 580; equipo de 650 × 250. No hay breakpoints específicos: la única evidencia visual de esta revisión es 1280 × 720.
+Objetivo en franja superior de86 unidades; signos vitales abajo a la izquierda (310×126); arma, munición y recursos abajo a la derecha (322×154). Interacciones, tratamiento y mensajes ocupan el centro inferior. Menú central de900×542; ayuda de860×580; equipo de650×250. No hay breakpoints específicos; evidencia visual a1280×720 en `docs/Validation/Port3D`.
 
 El marcador de objetivo sigue la proyección de cámara con anclajes limitados a x 0.13–0.87 e y 0.27–0.83. Su respaldo oscuro mantiene la etiqueta legible sobre el puerto.
 
@@ -90,7 +90,7 @@ Paneles, botones y barras rectangulares, sin esquinas redondeadas ni contornos o
 - **Menú:** comenzar por botón o Enter; continuar durante pausa; reintentar al morir o terminar. El checkpoint queda deshabilitado cuando no existe guardado. Incluye ayuda y salida.
 - **Botón:** fondo verde oscuro y etiqueta blanca. El ColorBlock de Unity multiplica RGB por 1.4 al resaltar/seleccionar y aplica (0.45, 0.5, 0.48) al deshabilitar; el motor conserva su transición nativa.
 - **Signos vitales:** valor y barra de vida; suero e infección. La hemorragia cambia el texto a advertencia e indica B.
-- **Munición y recursos:** cargador, reserva, recarga R y cantidades de botiquines, vendas y dosis.
+- **Munición y recursos:** arma equipada con teclas1/2/3, cargador, reserva, recarga R y cantidades de botiquines, vendas y dosis. El título del arma y las cifras ocupan textos separados para evitar recortes de línea.
 - **Objetivo:** instrucción superior y distancia flotante sobre respaldo oscuro. El glifo actual es deuda del prototipo, no un sistema de iconos.
 - **Ayuda F1:** controles y ruta ALMACÉN 03 → GENERADOR → CONTROL → SUBMARINO. Ayuda y equipo bloquean controles de combate mediante `BlocksCombat`; no equivalen a pausar la simulación.
 - **Equipo TAB:** resumen textual de cantidades, munición y repuesto; no es un inventario de cuadrícula y avisa que no pausa.
@@ -99,7 +99,7 @@ Paneles, botones y barras rectangulares, sin esquinas redondeadas ni contornos o
 ## Do's and Don'ts
 
 ### Do:
-- **Do** mantener el HUD separado del render de baja resolución.
+- **Do** mantener el HUD separado del render3D nativo.
 - **Do** conservar el respaldo oscuro del marcador y verificar su contraste sobre el mundo.
 - **Do** mostrar etiquetas y teclas junto a estados y cantidades.
 

@@ -1,5 +1,8 @@
 # Revisión visual del primer puerto
 
+Registro histórico de v0.2. La presentación vigente3D nativa y las capturas de
+armas/mundo se describen en `PORT_3D.md`; no se extrapola este veredicto a v0.3.
+
 Alcance: HUD nativo de Unity para Windows, extensión del lenguaje clínico verde/rojo existente. Fuentes: `Assets/_Project/Runtime/Gameplay/GameHud.cs`, `IsometricView.cs` y controles de `SandboxSession.cs`. El código prevalece sobre este registro.
 
 Evidencia visual inspeccionada a 1280 × 720, publicada bajo `docs/Validation/FirstLevel02/`:

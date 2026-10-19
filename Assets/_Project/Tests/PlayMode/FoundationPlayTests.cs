@@ -18,9 +18,8 @@ namespace Zombtoy.Tests
             Assert.That(session, Is.Not.Null);
             Assert.That(session.Running, Is.True);
             Assert.That(session.player.view.orthographic, Is.True);
-            Assert.That(session.player.view.targetTexture.width, Is.EqualTo(480));
-            Assert.That(session.player.view.targetTexture.height, Is.EqualTo(270));
-            Assert.That(session.player.view.targetTexture.filterMode, Is.EqualTo(FilterMode.Point));
+            Assert.That(session.player.view.targetTexture, Is.Null, "World must render directly at native resolution");
+            Assert.That(session.player.view.GetComponent<IsometricView>().pitch, Is.EqualTo(35.264f));
             Assert.That(Object.FindObjectsByType<SandboxEnemy>().Length, Is.EqualTo(4));
             var character = session.player.GetComponent<CharacterController>();
             character.enabled = false;

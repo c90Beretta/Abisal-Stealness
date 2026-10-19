@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using Zombtoy.Gameplay;
 
 namespace Zombtoy.Tests
@@ -75,6 +77,7 @@ namespace Zombtoy.Tests
             Assert.That(session.Kills, Is.EqualTo(1));
             var pickup = session.Pickups[0]; pickup.Collect(session);
             session.State.health = 64; session.reserve = 19;
+            session.player.GetComponent<WeaponLoadout>().Equip(2);
             Assert.That(session.SaveCheckpoint(), Is.True);
             Vector3 position = session.player.transform.position;
             session.State.health = 10; session.reserve = 0; mission.Restore(false, false, false, false); pickup.Restore(false); enemy.Restore(70, enemy.transform.position);
@@ -83,6 +86,7 @@ namespace Zombtoy.Tests
             Assert.That(mission.PowerOn, Is.True); Assert.That(mission.controlDoor.activeSelf, Is.False);
             Assert.That(pickup.Collected, Is.True); Assert.That(enemy.IsDead, Is.True);
             Assert.That(session.Kills, Is.EqualTo(1)); Assert.That(session.player.transform.position, Is.EqualTo(position));
+            Assert.That(session.player.GetComponent<WeaponLoadout>().Index, Is.EqualTo(2));
             File.WriteAllText(path, "{malformed"); Assert.That(session.LoadCheckpoint(), Is.False);
         }
         [UnityTest] public IEnumerator InfectedAttackHasWindupCanMissAndWallsBlockSight()
@@ -110,12 +114,76 @@ namespace Zombtoy.Tests
             session.BeginMission(); session.State.health = 72; session.State.bleeding = 0.2f;
             yield return new WaitForSecondsRealtime(0.3f); yield return Capture("first-level-hud.png");
             session.Hud.ToggleHelp(); yield return null; yield return Capture("first-level-help.png");
+            session.Hud.ClosePanels();
+            var hudCanvas = session.Hud.GetComponentInChildren<Canvas>(); hudCanvas.gameObject.SetActive(false);
+            float size = session.player.view.orthographicSize; session.player.view.orthographicSize = 2.4f;
+            for (int i = 0; i < 3; i++)
+            {
+                session.player.GetComponent<WeaponLoadout>().Equip(i); yield return null;
+                yield return Capture("weapon-" + i + ".png");
+            }
+            hudCanvas.gameObject.SetActive(true); session.player.view.orthographicSize = size;
+        }
+        [UnityTest] public IEnumerator Native3DWeaponsSwitchWithoutCreatingAmmoAndBlockDuringActions()
+        {
+            yield return Load();
+            Assert.That(session.player.view.targetTexture, Is.Null);
+            Assert.That(Object.FindObjectsByType<RawImage>().Length, Is.Zero, "No low-res world presentation layer");
+            var loadout = session.player.GetComponent<WeaponLoadout>();
+            Assert.That(loadout.weapons.Length, Is.EqualTo(3));
+            int total = session.rounds + session.reserve;
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.That(loadout.Equip(i), Is.True); yield return null;
+                Assert.That(loadout.Current.visualPrefab, Is.Not.Null); Assert.That(loadout.Muzzle, Is.Not.Null);
+                Assert.That(loadout.socket.GetComponentsInChildren<MeshRenderer>().Length, Is.GreaterThan(0));
+                Assert.That(session.rounds + session.reserve, Is.EqualTo(total));
+            }
+            session.State.health = 50; session.BeginHeal();
+            Assert.That(loadout.Equip(0), Is.False, "Switching must not bypass treatment");
+            session.TogglePause(); Assert.That(loadout.Equip(0), Is.False);
+        }
+        [UnityTest] public IEnumerator AllWeaponModelsShootFromTheirMuzzlesAndCannotBypassWalls()
+        {
+            yield return Load();
+            var loadout = session.player.GetComponent<WeaponLoadout>();
+            var enemy = session.Enemies[0]; enemy.gameObject.SetActive(true); enemy.useNavigation = false;
+            Vector3 position = session.portMission.arrival.position;
+            Move(session.player.transform, position);
+            for (int i = 0; i < 3; i++)
+            {
+                loadout.Equip(i); session.player.transform.forward = Vector3.forward;
+                enemy.Restore(enemy.MaxHealth, position + Vector3.forward * 1.6f); Physics.SyncTransforms();
+                int rounds = session.rounds;
+                session.player.SendMessage("Shoot");
+                Assert.That(enemy.health, Is.LessThan(enemy.MaxHealth), loadout.Current.displayName + " must hit from its actual muzzle");
+                Assert.That(session.rounds, Is.EqualTo(rounds - 1), "Pellets cost one round per shot");
+            }
+            enemy.Restore(enemy.MaxHealth, position + Vector3.forward * 1.6f);
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = position + Vector3.forward * 0.55f + Vector3.up;
+            wall.transform.localScale = new Vector3(3, 3, 0.12f); Physics.SyncTransforms();
+            loadout.Equip(0); session.player.SendMessage("Shoot");
+            Assert.That(enemy.health, Is.EqualTo(enemy.MaxHealth), "A barrel crossing a wall must not allow firing through it");
+            Object.Destroy(wall); yield return null;
         }
         private IEnumerator Capture(string file)
         {
             Directory.CreateDirectory("TestResults"); string full = Path.GetFullPath("TestResults/" + file);
-            // Batch Editor has no presented backbuffer. Render the same live canvases
-            // through a temporary UI camera, including the world RenderTexture image.
+            // Native world capture at 1280x720, then the same live HUD canvases.
+            var main = session.player.view;
+            var worldTexture = new RenderTexture(1280, 720, 24);
+            main.targetTexture = worldTexture;
+            var request = new UniversalRenderPipeline.SingleCameraRequest { destination = worldTexture };
+            RenderPipeline.SubmitRenderRequest(main, request); RenderPipeline.SubmitRenderRequest(main, request);
+            main.targetTexture = null;
+            var backdrop = new GameObject("Native screenshot backdrop", typeof(Canvas));
+            backdrop.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            backdrop.GetComponent<Canvas>().sortingOrder = -100;
+            var worldImage = new GameObject("Native frame", typeof(RectTransform), typeof(RawImage));
+            worldImage.transform.SetParent(backdrop.transform, false);
+            var worldRect = worldImage.GetComponent<RectTransform>(); worldRect.anchorMin = Vector2.zero; worldRect.anchorMax = Vector2.one; worldRect.offsetMin = worldRect.offsetMax = Vector2.zero;
+            worldImage.GetComponent<RawImage>().texture = worldTexture;
             var camera = new GameObject("UI capture camera").AddComponent<Camera>();
             camera.orthographic = true; camera.orthographicSize = 5; camera.transform.position = new Vector3(0, 0, -10);
             camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = Color.black; camera.cullingMask = 1 << 5;
@@ -143,6 +211,7 @@ namespace Zombtoy.Tests
                 foreach (var canvas in canvases) { canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.worldCamera = null; }
                 foreach (var node in layers) node.Key.layer = node.Value;
                 camera.targetTexture = null; Object.Destroy(camera.gameObject); Object.Destroy(image); texture.Release(); Object.Destroy(texture);
+                Object.Destroy(backdrop); worldTexture.Release(); Object.Destroy(worldTexture);
             }
             Assert.That(new FileInfo(full).Length, Is.GreaterThan(1000));
             yield return null;

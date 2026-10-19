@@ -175,6 +175,11 @@ namespace Zombtoy.Editor
                 throw new InvalidOperationException("Windows build failed. See build-summary.txt and Unity log.");
             foreach (string file in new[] { "CREDITS.md", "LICENSES.md" })
                 if (File.Exists(file)) File.Copy(file, "Builds/Windows/" + file, true);
+            if (File.Exists("docs/LOCAL_ASSETS.md"))
+            {
+                Directory.CreateDirectory("Builds/Windows/Licenses/AssetStore");
+                File.Copy("docs/LOCAL_ASSETS.md", "Builds/Windows/Licenses/AssetStore/NOTICE.md", true);
+            }
             foreach (string file in Directory.GetFiles("Assets/ThirdParty/Kenney", "License.txt", SearchOption.AllDirectories))
             {
                 string pack = new DirectoryInfo(Path.GetDirectoryName(file)).Name;

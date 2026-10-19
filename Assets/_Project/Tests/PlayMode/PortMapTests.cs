@@ -105,7 +105,7 @@ namespace Zombtoy.Tests
             yield return new WaitForSeconds(0.3f);
             Assert.That(session.player.transform.position.y, Is.InRange(-0.1f, 0.3f));
             Assert.That(session.State.health, Is.EqualTo(100));
-            CaptureView(session.player.view.targetTexture);
+            Assert.That(session.player.view.targetTexture, Is.Null, "Native 3D rendering must not use the pixelated texture");
             var controller = session.player.GetComponent<CharacterController>();
             controller.enabled = false;
             session.player.transform.position = new Vector3(50, -4, 0);

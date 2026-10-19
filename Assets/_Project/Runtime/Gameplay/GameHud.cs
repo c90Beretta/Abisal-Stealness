@@ -12,7 +12,7 @@ namespace Zombtoy.Gameplay
         private SandboxSession session;
         private Font font;
         private RectTransform root, gameplay, menu, help, equipment;
-        private Text health, serum, ammo, inventory, objective, prompt, message, action, heading, subtitle, stats, objectiveMarker;
+        private Text health, serum, ammo, weaponTitle, inventory, objective, prompt, message, action, heading, subtitle, stats, objectiveMarker;
         private Image healthFill, serumFill, actionFill, damage;
         private Button primary, secondary, controls, exit;
         private Text primaryLabel, secondaryLabel;
@@ -57,9 +57,10 @@ namespace Zombtoy.Gameplay
             serum = Label(vital.transform, "SUERO", 16, Muted, 16, -66, 280, 24);
             serumFill = Bar(vital.transform, 16, -99, 278, 7, Green);
             var weapon = Panel("Weapon and equipment", gameplay, Ink, new Vector2(1, 0), new Vector2(1, 0));
-            Place(weapon.rectTransform, -346, 150, 322, 126, false);
-            ammo = Label(weapon.transform, "", 32, Color.white, 18, -10, 290, 42);
-            inventory = Label(weapon.transform, "", 15, Muted, 18, -60, 290, 54);
+            Place(weapon.rectTransform, -346, 178, 322, 154, false);
+            weaponTitle = Label(weapon.transform, "", 15, Green, 18, -10, 290, 22);
+            ammo = Label(weapon.transform, "", 32, Color.white, 18, -36, 290, 42);
+            inventory = Label(weapon.transform, "", 15, Muted, 18, -86, 290, 54);
             prompt = Label(gameplay, "", 22, Green, 0, 118, 670, 34, false, true);
             message = Label(gameplay, "", 17, Color.white, 0, 76, 660, 50, false, true);
             action = Label(gameplay, "", 18, Green, 0, 189, 430, 30, false, true);
@@ -87,7 +88,7 @@ namespace Zombtoy.Gameplay
             var helpCard = Panel("Controls card", help, Ink, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
             helpCard.rectTransform.sizeDelta = new Vector2(860, 580); helpCard.rectTransform.pivot = Vector2.one * 0.5f;
             Label(helpCard.transform, "CONTROLES / SUPERVIVENCIA", 26, Green, 30, -24, 800, 45);
-            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr (produce mas ruido)\nRATON  Apuntar     CLIC IZQUIERDO  Disparar\nESPACIO  Golpe cercano     R  Recargar\nE  Interactuar / recoger suministros\nH  Botiquin (+40 vida)     B  Venda (detiene hemorragia)\nQ  Suero (controla infeccion)     F  Linterna\nTAB  Equipo     ESC  Pausa     F1  Esta ayuda\nF5  Guardar lejos de enemigos     F9  Recuperar checkpoint\n\nLos infectados oyen disparos y pasos. Su ataque tiene una\npreparacion: alejate antes del golpe. Curarte lleva tiempo\ny recibir un golpe interrumpe el tratamiento.\n\nRuta: ALMACEN 03 > GENERADOR > CONTROL > SUBMARINO.\nEl generador guarda automaticamente tu progreso.", 20, Color.white, 30, -88, 800, 414);
+            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr (produce mas ruido)\nRATON  Apuntar     CLIC IZQUIERDO  Disparar\n1 / 2 / 3  Cambiar arma     RUEDA  Zoom\nESPACIO  Golpe cercano     R  Recargar\nE  Interactuar / recoger suministros\nH  Botiquin (+40 vida)     B  Venda (detiene hemorragia)\nQ  Suero (controla infeccion)     F  Linterna\nTAB  Equipo     ESC  Pausa     F1  Esta ayuda\nF5  Guardar lejos de enemigos     F9  Recuperar checkpoint\n\nLos infectados oyen disparos y pasos. Su ataque tiene una\npreparacion: alejate antes del golpe. Curarte lleva tiempo\ny recibir un golpe interrumpe el tratamiento.\n\nRuta: ALMACEN 03 > GENERADOR > CONTROL > SUBMARINO.\nEl generador guarda automaticamente tu progreso.", 20, Color.white, 30, -88, 800, 414);
             Button(helpCard.transform, "Cerrar ayuda / F1", 30, -510, ToggleHelp, out _);
             help.gameObject.SetActive(false);
             equipment = Node("Equipment", root); Stretch(equipment);
@@ -126,6 +127,9 @@ namespace Zombtoy.Gameplay
             healthFill.fillAmount = state.health / 100;
             serum.text = $"SUERO  {Mathf.CeilToInt(state.serum)}%    INFECCION {Mathf.CeilToInt(state.infection)}%";
             serumFill.fillAmount = state.serum / 100;
+            var loadout = session.player.GetComponent<WeaponLoadout>();
+            string weaponName = loadout != null && loadout.Current != null ? loadout.Current.displayName : "Pistola";
+            weaponTitle.text = "[1 / 2 / 3] " + weaponName;
             ammo.text = $"{session.rounds:00} <size=19>/ {session.reserve:000}   [R]</size>";
             inventory.text = $"[H] Botiquin {state.medkits}    [B] Venda {state.bandages}\n[Q] Suero {state.doses}    [F] Linterna";
             equipmentText.text = $"Botiquines: {state.medkits}    Vendas: {state.bandages}    Suero: {state.doses}\nMunicion: {session.rounds} en arma / {session.reserve} en reserva\nRepuesto: {(session.portMission != null && session.portMission.HasFuse ? "recogido" : "pendiente")}\nEste panel no pausa la partida.";

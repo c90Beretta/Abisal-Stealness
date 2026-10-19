@@ -58,3 +58,18 @@
 - Distribución publicada: [v0.2.0-port-playtest](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.2.0-port-playtest),
   paquete Windows de198 archivos con créditos/licencias. Código de juego en8feb561;
   PR1 conserva la revisión del equipo antes de integrar en main.
+
+## 18 octubre 2026 — puerto3D nativo y armas visibles
+
+- Petición del usuario sustituye la presentación pixelada por3D isométrico nativo;
+  cámara35.264°/45°, zoom por rueda, MSAA4, materiales PBR y sombras suaves.
+- Integrados los tres paquetes locales del usuario:120 instancias de entorno,
+  materiales URP propios, mobiliario y NavMesh rehecho. Fuentes Asset Store locales
+  y referencias/guía de importación para colaboradores, sin subirlas al repo público.
+- Tres armas Kenney equipables por1/2/3 con modelo en manos, punto de salida,
+  retroceso, daño/cadencia/dispersión y selección persistida por checkpoint.
+- 18 EditMode +12 PlayMode pasan, incluidas armas reales/munición, disparos
+  bloqueados por paredes, compatibilidad de checkpoint y ruta completa del puerto.
+- Build Windows0errores/1advertenciaCS0618 de una demo del proveedor no habilitada
+  como escena. Evidencia en `Validation/Port3D`; el look anterior se conserva como
+  evidencia histórica. Pendientes playtests humanos, balance y perfilado.

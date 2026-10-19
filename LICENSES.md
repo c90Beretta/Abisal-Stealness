@@ -25,6 +25,11 @@ CC0 y `.gitattributes` inicial declara MIT, con sus fuentes conservadas.
 
 ## Referencias y candidatos
 
+Los tres paquetes de entorno usados desde v0.3.0 se documentan en
+`docs/LOCAL_ASSETS.md`. Sus modelos, texturas, prefabs y archivos originales se
+mantienen localmente y no forman parte de las fuentes públicas. El juego compilado
+los integra como parte del nivel y conserva sus créditos; no cambia su licencia a CC0.
+
 Los HTML son inventarios de enlaces, no permisos de descarga ni redistribución.
 Las imágenes y el brief en `docs/Refs` son referencias internas aportadas por el
 usuario, con derechos no verificados. No incorporarlas a builds ni a publicación

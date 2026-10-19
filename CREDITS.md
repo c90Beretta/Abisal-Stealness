@@ -6,6 +6,11 @@
 - Motor y paquetes: Unity Technologies y autores indicados en cada paquete.
 - Animaciones del puerto: clips Idle/Run derivados de Kenney Survivors (CC0),
   preparados en el proyecto para reproducción Legacy/Loop.
+- Entorno 3D: **Sci-Fi Construction Kit (Modular)**, Sickhead Games;
+  **Modular Sci-Fi Corridor**, MagixBox; **Sci-Fi Old Rusty Props PBR**, KMProd.
+  Unity Asset Store EULA; fuentes locales y referencias en `docs/LOCAL_ASSETS.md`.
+  En el paquete Windows: `Licenses/AssetStore/NOTICE.md`.
+- Armas 3D: tres modelos de Kenney Blaster Kit (CC0), con prefabs y materiales propios.
 - Referencias adjuntas: aportadas por el usuario para orientación interna;
   autoría/licencia de las imágenes no suministrada. No son assets distribuibles del juego.
 

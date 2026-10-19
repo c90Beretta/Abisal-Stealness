@@ -1,7 +1,8 @@
 # Zombtoy — survival horror isométrico
 
-Proyecto Unity 6 / URP. Meta de producción: 4 niveles, economía de suero y munición,
-IA por percepción y estética PSX. Incluye una **primera versión jugable del puerto**
+Proyecto Unity 6 / URP con **mundo 3D y cámara isométrica a resolución nativa**.
+Meta de producción: 4 niveles, economía de suero y munición e IA por percepción.
+Incluye una **primera versión jugable del puerto**
 y el sandbox técnico. El juego completo y sus KPI de producción siguen en desarrollo.
 
 ## Jugar sin abrir Unity
@@ -11,7 +12,7 @@ En esta copia de trabajo, haz doble clic en **JUGAR ABISAL.cmd** y pulsa
 El paquete Windows debe conservarse completo, incluida su carpeta Data.
 Consulta `LEEME PARA JUGAR.txt` para controles y recorrido.
 
-Para el equipo: [descargar la versión de prueba para Windows](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.2.0-port-playtest).
+Para el equipo: [descargar el puerto 3D para Windows](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.3.0-3d-playtest).
 Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado.
 
 ## Desarrollar en Unity
@@ -21,10 +22,13 @@ Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado
    Mientras se revisa el PR1, usa `git switch codex/first-port-map` y `git lfs pull`
    para trabajar sobre esta entrega; la rama main conserva la versión integrada anterior.
 3. Abre esta carpeta (la que contiene `Assets`, `Packages`, `ProjectSettings`) en Unity Hub.
+   Importa tus copias autorizadas de los [tres paquetes de entorno](docs/LOCAL_ASSETS.md).
+   Sus fuentes de Asset Store permanecen locales; el ejecutable sí contiene el nivel completo.
 4. Espera la resolución de paquetes. Usa **Abisal > Abrir puerto y jugar**.
    Play también inicia el puerto aunque estés editando SampleScene.
 5. Pulsa **Comenzar nivel**. WASD mover, ratón apuntar, clic disparar, R recargar,
    espacio golpe, Q suero, H botiquín, B venda, F linterna, E interactuar y Esc pausa.
+   **1/2/3** cambian pistola, carabina y dispersor; **rueda del ratón** ajusta el zoom.
    Recoge el repuesto del almacén, repara el generador, activa control y embarca.
 6. Consulta el [mapa y recorrido](docs/LEVEL01_PORT.md), la [validación del puerto](docs/PORT_VALIDATION.md)
    y la [validación inicial de la fundación](docs/VALIDATION.md).
@@ -34,6 +38,11 @@ ataque con preparación y muerte; animaciones de espera/carrera; vida, sangrado,
 tratamientos con tiempo de uso, botiquines y munición recogibles; HUD, ayuda,
 pausa, muerte/victoria y checkpoint del generador. F5 guarda cuando estás a salvo;
 F9 recupera. TAB muestra las existencias de equipo, sin inventario por cuadrícula.
+
+El mapa integra muros, suelos, contenedores, estanterías, barriles, maquinaria,
+ordenador y puertas de los assets descargados. Cámara ortográfica35.264°/45°,
+sombras suaves y MSAA4. Se retiró la ampliación480×270: el mundo se renderiza
+directamente al tamaño de la ventana. [Detalle y evidencia de esta entrega](docs/PORT_3D.md).
 
 Remoto del equipo: https://github.com/c90Beretta/Abisal-Stealness.
 Revisa `docs/VALIDATION.md` para el estado verificado de la publicación.

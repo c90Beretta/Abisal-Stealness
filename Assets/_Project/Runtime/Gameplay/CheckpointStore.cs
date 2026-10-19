@@ -14,7 +14,7 @@ namespace Zombtoy.Gameplay
         public string level = "Level01_Port";
         public SurvivalState state;
         public Vector3 position;
-        public int rounds, reserve, kills, shots, hits;
+        public int rounds, reserve, kills, shots, hits, weapon;
         public bool fuse, power, boarding, supplies;
         public EnemySave[] enemies;
         public PickupSave[] pickups;
@@ -29,6 +29,7 @@ namespace Zombtoy.Gameplay
                 var m = session.portMission;
                 var save = new PortSave { state = session.State, position = session.player.transform.position,
                     rounds = session.rounds, reserve = session.reserve, kills = session.Kills, shots = session.Shots, hits = session.Hits,
+                    weapon = session.player.GetComponent<WeaponLoadout>()?.Index ?? 0,
                     fuse = m.HasFuse, power = m.PowerOn, boarding = m.BoardingAuthorized, supplies = m.SuppliesTaken,
                     enemies = session.Enemies.Select(e => new EnemySave { id = e.name, health = e.health, position = e.transform.position }).ToArray(),
                     pickups = session.Pickups.Select(p => new PickupSave { id = p.id, collected = p.Collected }).ToArray() };
@@ -54,7 +55,7 @@ namespace Zombtoy.Gameplay
                     !float.IsFinite(s.state.inventoryLockedUntil) || !float.IsFinite(s.state.tremorUntil) ||
                     (s.power && !s.fuse) || (s.boarding && !s.power) || s.pickups.Any(p => p == null || string.IsNullOrEmpty(p.id)) ||
                     s.rounds < 0 || s.rounds > 12 || s.reserve < 0 || s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
-                    s.kills < 0 || s.shots < 0 || s.hits < 0 ||
+                    s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 2 ||
                     s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 1000))) return false;
                 save = s; return true;
             }
@@ -67,6 +68,8 @@ namespace Zombtoy.Gameplay
             session.State = JsonUtility.FromJson<SurvivalState>(JsonUtility.ToJson(save.state));
             session.rounds = save.rounds; session.reserve = save.reserve;
             session.RestoreCounters(save.kills, save.shots, save.hits);
+            var loadout = session.player.GetComponent<WeaponLoadout>();
+            if (loadout != null) loadout.Equip(save.weapon, true);
             var cc = session.player.GetComponent<CharacterController>();
             cc.enabled = false; session.player.transform.position = save.position; cc.enabled = true;
             session.portMission.Restore(save.fuse, save.power, save.boarding, save.supplies);

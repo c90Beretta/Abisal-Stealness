@@ -77,3 +77,18 @@ Los números del brief están invertidos respecto a los adjuntos: imagen1 es
 legibilidad doméstica, imagen2 es sala verde del submarino. Se preservan con nombres
 descriptivos. No se adjuntaron capturas de Endoparasitic: guía UI provisional,
 sin afirmar análisis de capturas inexistentes. El sandbox no certifica look PSX final.
+
+## ADR-008 — Mundo 3D isométrico nativo y assets del usuario
+
+Petición posterior del usuario, 18octubre2026: implementar el mapa con sus assets
+descargados y modelos de armas; descartar el aspecto pixelado2D y mantener vista
+isométrica3D. Esta petición sustituye la presentación480×270/point del brief inicial.
+El mundo renderiza directamente a la ventana con cámara ortográfica35.264°/45°,
+zoom por rueda, texturas PBR, sombras suaves y MSAA4; el HUD sigue independiente.
+
+Se integran los paquetes locales Warehouse/Modular Corridor/Old Rusty Props y tres
+modelos Kenney de armas. Se conservan colisiones, misión y encuentros del puerto,
+con NavMesh rehecho para el mobiliario añadido. Asset Store queda local, con guías
+de importación para colaboradores; fuentes propias y CC0 siguen en Git público.
+`LOCAL_ASSETS.md` recoge rutas, autores y términos. El binario integra el nivel.
+El nuevo look no certifica todavía rendimiento, dificultad ni duración.

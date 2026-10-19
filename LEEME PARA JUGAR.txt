@@ -1,4 +1,4 @@
-ABISAL — PRIMER NIVEL / PUERTO CARGUERO
+ABISAL 0.3 — PUERTO CARGUERO 3D ISOMETRICO
 
 1. Haz doble clic en JUGAR ABISAL.cmd, en esta misma carpeta.
 2. En el menu del juego, pulsa Comenzar nivel o ENTER.
@@ -12,6 +12,8 @@ El boton Play inicia el puerto aunque estes editando SampleScene.
 WASD mover, SHIFT correr, raton apuntar, clic disparar, ESPACIO golpe,
 E recoger/interactuar, R recargar, H botiquin, B venda, Q suero,
 F linterna, TAB equipo, ESC pausa, F1 controles.
+1 / 2 / 3 cambian pistola, carabina y dispersor; rueda del raton ajusta el zoom.
+Las armas comparten la reserva de municion de esta version de prueba.
 
 OBJETIVO: recoge el repuesto en ALMACEN 03, repara el GENERADOR,
 autoriza el embarque en CONTROL y llega al SUBMARINO al este.

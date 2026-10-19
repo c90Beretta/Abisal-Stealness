@@ -1,0 +1,168 @@
+{
+  "editmode": {
+    "result": "Passed",
+    "total": 18,
+    "passed": 18,
+    "started_utc": "2026-10-19 02:10:37Z",
+    "cases": [
+      {
+        "name": "AddressableAssets.DocExampleCode.TestStub.RequiredTest",
+        "result": "Passed",
+        "seconds": 0.006579
+      },
+      {
+        "name": "Zombtoy.Tests.FoundationAssetTests.SceneHasNoMissingScriptsAndHasRequiredBindings(\"Assets/_Project/Scenes/MVP_Sandbox.unity\")",
+        "result": "Passed",
+        "seconds": 0.365498
+      },
+      {
+        "name": "Zombtoy.Tests.FoundationAssetTests.SceneHasNoMissingScriptsAndHasRequiredBindings(\"Assets/_Project/Scenes/Level01_Port.unity\")",
+        "result": "Passed",
+        "seconds": 0.333466
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.DeadAndPausedSimulationDoNotConsumeResources",
+        "result": "Passed",
+        "seconds": 0.005483
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.InjectionClampsAndConsumesOneDose",
+        "result": "Passed",
+        "seconds": 0.000926
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.InjectionsOutsideWindowDoNotTriggerMania",
+        "result": "Passed",
+        "seconds": 0.000359
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.MaximumInfectionTriggersOnceAndCanExpire",
+        "result": "Passed",
+        "seconds": 0.000331
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.MedicalItemsClampHealthAndDoNotConsumeWithoutNeed",
+        "result": "Passed",
+        "seconds": 0.001215
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.OnlyLowSerumIncreasesInfection",
+        "result": "Passed",
+        "seconds": 0.000446
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(0,0)",
+        "result": "Passed",
+        "seconds": 0.000506
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(29,0)",
+        "result": "Passed",
+        "seconds": 0.00015
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(30,1)",
+        "result": "Passed",
+        "seconds": 0.000151
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(64,1)",
+        "result": "Passed",
+        "seconds": 0.000127
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(65,2)",
+        "result": "Passed",
+        "seconds": 0.000148
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(99,2)",
+        "result": "Passed",
+        "seconds": 0.000209
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.PhaseBoundaries(100,3)",
+        "result": "Passed",
+        "seconds": 0.000221
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.SixSecondsConsumeOneSerumPoint",
+        "result": "Passed",
+        "seconds": 0.000766
+      },
+      {
+        "name": "Zombtoy.Tests.SurvivalStateTests.TwoInjectionsAtWindowBoundaryTriggerManiaAndLock",
+        "result": "Passed",
+        "seconds": 0.000491
+      }
+    ]
+  },
+  "playmode": {
+    "result": "Passed",
+    "total": 12,
+    "passed": 12,
+    "started_utc": "2026-10-19 02:13:29Z",
+    "cases": [
+      {
+        "name": "Zombtoy.Tests.FirstLevelTests.AllWeaponModelsShootFromTheirMuzzlesAndCannotBypassWalls",
+        "result": "Passed",
+        "seconds": 2.093372
+      },
+      {
+        "name": "Zombtoy.Tests.FirstLevelTests.CaptureCompositedMenuHudAndHelp",
+        "result": "Passed",
+        "seconds": 2.707405
+      },
+      {
+        "name": "Zombtoy.Tests.FirstLevelTests.CheckpointRestoresMissionHealthEnemiesAndCollectedSupplies",
+        "result": "Passed",
+        "seconds": 0.539068
+      },
+      {
+        "name": "Zombtoy.Tests.FirstLevelTests.InfectedAttackHasWindupCanMissAndWallsBlockSight",
+        "result": "Passed",
+        "seconds": 6.123715
+      },
+      {
+        "name": "Zombtoy.Tests.FirstLevelTests.MenuButtonsStartAndPauseSimulation",
+        "result": "Passed",
+        "seconds": 0.728541
+      },
+      {
+        "name": "Zombtoy.Tests.FirstLevelTests.Native3DWeaponsSwitchWithoutCreatingAmmoAndBlockDuringActions",
+        "result": "Passed",
+        "seconds": 0.483266
+      },
+      {
+        "name": "Zombtoy.Tests.FirstLevelTests.TreatmentTakesTimeCanBeInterruptedAndDeathFreezesPlay",
+        "result": "Passed",
+        "seconds": 4.250232
+      },
+      {
+        "name": "Zombtoy.Tests.FoundationPlayTests.InjectionsWaitForAnimationAndDoNotCreateAmmo",
+        "result": "Passed",
+        "seconds": 4.432775
+      },
+      {
+        "name": "Zombtoy.Tests.FoundationPlayTests.SandboxLoadsAndObjectiveCanBeCompleted",
+        "result": "Passed",
+        "seconds": 0.53899
+      },
+      {
+        "name": "Zombtoy.Tests.PortMapTests.ArrivalHasFloorAndWaterFallReturnsPlayerSafely",
+        "result": "Passed",
+        "seconds": 1.762574
+      },
+      {
+        "name": "Zombtoy.Tests.PortMapTests.ObjectivesRequireFuseAndPowerBeforeBoarding",
+        "result": "Passed",
+        "seconds": 1.552617
+      },
+      {
+        "name": "Zombtoy.Tests.PortMapTests.SuppliesCannotBeDuplicatedAndWallsBlockInteractions",
+        "result": "Passed",
+        "seconds": 0.53346
+      }
+    ]
+  }
+}

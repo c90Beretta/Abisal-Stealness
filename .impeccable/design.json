@@ -48,13 +48,13 @@
   "narrative": {
     "overview": "Registro descriptivo del HUD de Unity uGUI implementado en Assets/_Project/Runtime/Gameplay/GameHud.cs, con presentación del mundo en IsometricView.cs. Conserva el lenguaje clínico oscuro, verde y rojo de la interfaz existente. No constituye una dirección creativa nueva ni aprobada por entrevista; no existe un PRODUCT.md de referencia.",
     "keyCharacteristics": [
-      "Mundo de baja resolución y HUD independiente para lectura.",
+      "Mundo 3D a resolución nativa y HUD independiente para lectura.",
       "Paneles oscuros rectangulares, texto blanco/gris y foco visual verde menta.",
       "Avisos de hemorragia y salud enemiga en rojo, acompañados de texto o barras."
     ],
     "rules": [],
     "dos": [
-      "Do mantener el HUD separado del render de baja resolución.",
+      "Do mantener el HUD separado del render 3D nativo.",
       "Do conservar el respaldo oscuro del marcador y verificar su contraste sobre el mundo.",
       "Do mostrar etiquetas y teclas junto a estados y cantidades."
     ],

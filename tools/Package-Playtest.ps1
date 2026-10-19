@@ -1,4 +1,4 @@
-param([ValidatePattern('^[a-zA-Z0-9.-]+$')][string]$Version = '0.2.0-port-playtest')
+param([ValidatePattern('^[a-zA-Z0-9.-]+$')][string]$Version = '0.3.0-3d-playtest')
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
 $buildRoot = Join-Path $projectRoot 'Builds\Windows'

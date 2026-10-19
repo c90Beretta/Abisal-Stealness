@@ -2,6 +2,8 @@
 
 Primera versión jugable de trazado y misión. Escena:
 `Assets/_Project/Scenes/Level01_Port.unity`. Unity6000.5.9f1 / URP.
+La entrega vigente es el [puerto3D nativo v0.3](PORT_3D.md), con assets del usuario
+y tres modelos de armas; las evidencias0.1/0.2 son históricas.
 
 ## Recorrido
 
@@ -38,7 +40,7 @@ autorización se rechazan aunque el jugador llegue allí fuera de orden.
 ## Composición y límites
 
 - Muelle principal: **56×44 m**, con agua, bordes, bolardos, grúa, almacén, torre de control y submarino.
-- Cámara ortográfica30°/45°, RT480×270 point. Paredes y contenedores que tapan al jugador se ocultan temporalmente; sus colliders permanecen.
+- Cámara ortográfica35.264°/45° a resolución nativa, zoom por rueda y MSAA4. Paredes y contenedores que tapan al jugador se ocultan temporalmente; sus colliders permanecen.
 - Cuatro Shambler y dos Runner, definidos por ScriptableObjects. Patrullan, investigan ruido, persiguen con NavMesh, buscan y preparan el golpe antes de atacar. Los golpes pueden esquivarse y las paredes bloquean la vista y el daño.
 - Animaciones Kenney de espera/carrera, reacción al impacto, caída al morir y barras de vida de infectados alertados/heridos.
 - Inicio: salud100, suero65, 1 dosis, 2 botiquines, 3 vendas, 12 cartuchos cargados +24 de reserva. Tres cajas adicionales de medicina/munición; recursos opcionales de un solo uso.
@@ -50,8 +52,8 @@ autorización se rechazan aunque el jugador llegue allí fuera de orden.
 
 ## Editar en equipo
 
-Geometría y decoración: `Assets/_Project/Prefabs/Levels/Port_Environment.prefab`.
-Navegación: `Assets/_Project/Navigation/Port01_NavMesh.asset`.
+Geometría y decoración: `Assets/_Project/Prefabs/Levels/Port_Environment_3D.prefab`.
+Navegación: `Assets/_Project/Navigation/Port03_NavMesh.asset`.
 El NavMesh es un binario horneado y se versiona en Git LFS.
 La escena contiene jugador/cámara, encuentros e interactuables de misión. Los
 controles móviles quedan fuera del prefab estático; usan obstáculos con carving
@@ -73,8 +75,9 @@ generados; el comando rechaza sobrescribir una escena existente.
 
 La configuración de build coloca el puerto primero y conserva el sandbox como
 segunda escena de pruebas. El build de Windows incluye ambas y comienza en el puerto.
-Sin nuevos assets externos: primitivas propias y skins del pack Kenney ya auditado.
-Modelos/animaciones, agua, sonido, UI y efectos PSX siguen siendo provisionales.
+El puerto actual utiliza los tres paquetes de entorno del usuario y armas Kenney;
+ver `LOCAL_ASSETS.md`. El agua, grúa y submarino conservan geometría propia de
+prototipo. La presentación pixelada del plan inicial se sustituyó por3D nativo.
 
 `GameplayUpgrade.Upgrade` es una migración explícita de sistemas del puerto;
 reutiliza clips y definiciones propios, sin regenerar la geometría. Solo ejecutarla

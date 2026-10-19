@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Compile', 'Generate', 'GeneratePort', 'UpgradePort', 'EditMode', 'PlayMode', 'Build', 'Capture', 'CapturePort')]
+    [ValidateSet('Compile', 'Generate', 'GeneratePort', 'UpgradePort', 'Port3D', 'EditMode', 'PlayMode', 'Build', 'Capture', 'CapturePort')]
     [string]$Task = 'EditMode',
     [string]$ProjectPath = (Split-Path $PSScriptRoot -Parent),
     [string]$UnityPath = 'C:\Program Files\Unity\Hub\Editor\6000.5.9f1\Editor\Unity.exe'
@@ -26,6 +26,7 @@ switch ($Task) {
     'Generate' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.FoundationBuilder.Generate') }
     'GeneratePort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.PortMapBuilder.Generate') }
     'UpgradePort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.GameplayUpgrade.Upgrade') }
+    'Port3D' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.Port3DBuilder.Build') }
     'EditMode' { $unityArgs += @('-nographics', '-runTests', '-testPlatform', 'EditMode', '-testResults', ('"' + (Join-Path $resultRoot 'editmode.xml') + '"')) }
     'PlayMode' { $unityArgs += @('-runTests', '-testPlatform', 'PlayMode', '-testResults', ('"' + (Join-Path $resultRoot 'playmode.xml') + '"')) }
     'Build' { $unityArgs += @('-quit', '-executeMethod', 'Zombtoy.Editor.FoundationBuilder.BuildWindows') }

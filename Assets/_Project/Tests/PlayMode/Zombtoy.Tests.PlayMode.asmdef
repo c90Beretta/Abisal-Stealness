@@ -1,6 +1,6 @@
 {
   "name": "Zombtoy.Tests.PlayMode",
   "rootNamespace": "Zombtoy.Tests",
-  "references": ["Zombtoy.Core", "Zombtoy.Gameplay", "UnityEngine.UI"],
+  "references": ["Zombtoy.Core", "Zombtoy.Gameplay", "UnityEngine.UI", "Unity.RenderPipelines.Universal.Runtime"],
   "optionalUnityReferences": ["TestAssemblies"]
 }
