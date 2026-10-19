@@ -16,3 +16,6 @@
 
 No se ha reutilizado código de ieatyoursushi/Zombtoy, modelos de Warhammer,
 audio de Pixabay ni modelos de Sketchfab en esta fundación.
+
+- Audio nocturno original: síntesis determinista del proyecto con `tools/generate_night_audio.py` (disparos, gemidos, grito y respiración); sin grabaciones externas.
+- Variantes de infectados: cuatro mallas derivadas de Kenney Survivors CC0, equipo táctico y shader de señal propios; tanque Oxy_ballon de KMProd, fuentes locales.

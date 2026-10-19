@@ -12,7 +12,7 @@ En esta copia de trabajo, haz doble clic en **JUGAR ABISAL.cmd** y pulsa
 El paquete Windows debe conservarse completo, incluida su carpeta Data.
 Consulta `LEEME PARA JUGAR.txt` para controles y recorrido.
 
-Para el equipo: [descargar el puerto 3D para Windows](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.3.0-3d-playtest).
+Para el equipo: [descargar el puerto nocturno 3D para Windows](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.4.0-night-playtest).
 Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado.
 
 ## Desarrollar en Unity
@@ -33,11 +33,13 @@ Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado
 6. Consulta el [mapa y recorrido](docs/LEVEL01_PORT.md), la [validación del puerto](docs/PORT_VALIDATION.md)
    y la [validación inicial de la fundación](docs/VALIDATION.md).
 
-El nivel incluye dos tipos de infectados con patrulla, vista, oído, búsqueda,
-ataque con preparación y muerte; animaciones de espera/carrera; vida, sangrado,
-tratamientos con tiempo de uso, botiquines y munición recogibles; HUD, ayuda,
-pausa, muerte/victoria y checkpoint del generador. F5 guarda cuando estás a salvo;
-F9 recupera. TAB muestra las existencias de equipo, sin inventario por cuadrícula.
+El nivel incluye cuatro variantes de infectados, hordas finitas atraídas por ruido,
+linterna y círculo de percepción, gore y desmembramiento, cuerpo a cuerpo con
+resistencia, chaleco y máscara con oxígeno. TAB abre mochila y equipamiento;
+E registra cuerpos y contenedores. Las sobras permanecen en el mundo.
+F5 guarda cuando estás a salvo; F9 restaura inventario, botín y progreso de hordas.
+El soldado lleva ropa negra y tanque de oxígeno.
+[Controles, mecánicas y límites de esta entrega](docs/NIGHT_PORT.md).
 
 El mapa integra muros, suelos, contenedores, estanterías, barriles, maquinaria,
 ordenador y puertas de los assets descargados. Cámara ortográfica35.264°/45°,

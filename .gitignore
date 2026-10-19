@@ -138,3 +138,6 @@ InitTestScene*.unity*
 /Assets/Data/Sci-fi_assets.meta
 /Assets/Data.meta
 
+
+# Transient visual review copies; canonical release evidence lives in docs/Validation.
+/.impeccable/review/

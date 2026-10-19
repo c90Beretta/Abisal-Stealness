@@ -15,7 +15,8 @@ namespace Zombtoy.Gameplay
         public bool useNavigation;
         public EnemyMode Mode { get; private set; }
         public bool IsDead => health <= 0;
-        public float MaxHealth { get; private set; } = 70;
+        public float MaxHealth => definition != null ? definition.health : maxHealth;
+        private float maxHealth = 70;
         public float HealthFraction => Mathf.Clamp01(health / MaxHealth);
         public bool Alerted => Mode != EnemyMode.Patrol && Mode != EnemyMode.Dead;
         private CharacterController controller;
@@ -28,10 +29,16 @@ namespace Zombtoy.Gameplay
         private Renderer[] renderers;
         private MaterialPropertyBlock block;
         private Transform visual;
+        private InfectedVariant variant;
+        private Dismemberment gore;
+        private bool initialized;
 
-        private void Awake()
+        private void Awake() => Initialize();
+        private void Initialize()
         {
+            if (initialized) return; initialized = true;
             controller = GetComponent<CharacterController>();
+            variant = GetComponent<InfectedVariant>(); gore = GetComponent<Dismemberment>();
             path = new NavMeshPath();
             home = destination = transform.position;
             initialRotation = transform.rotation;
@@ -40,13 +47,16 @@ namespace Zombtoy.Gameplay
             motion = GetComponent<CharacterMotion>();
             visual = transform.Find("CC0 visual");
             if (definition != null) { health = definition.health; speed = definition.speed; sightRange = definition.sightRange; }
-            MaxHealth = health;
+            maxHealth = health;
             patrolUntil = Time.time + 2;
         }
 
         public void Hear(Vector3 position, float radius)
         {
-            if (IsDead || Vector3.Distance(transform.position, position) > radius * (definition == null ? 1 : definition.hearingMultiplier)) return;
+            if (IsDead) return;
+            Vector3 ear = transform.position + Vector3.up * .9f;
+            if (Physics.Linecast(ear, position + Vector3.up * .9f, out var obstacle, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && obstacle.collider.GetComponentInParent<SandboxPlayer>() == null && obstacle.collider.GetComponentInParent<SandboxEnemy>() == null) radius *= .55f;
+            if (Vector3.Distance(transform.position, position) > radius * (definition == null ? 1 : definition.hearingMultiplier)) return;
             destination = position; alertedUntil = Time.time + 8;
             if (Mode == EnemyMode.Patrol || Mode == EnemyMode.Search) Mode = EnemyMode.Investigate;
         }
@@ -57,10 +67,11 @@ namespace Zombtoy.Gameplay
             delta.y = 0;
             if (delta.magnitude > sightRange) return false;
             float fov = definition == null ? 140 : definition.fieldOfView;
+            if (session.Night != null && !session.Night.LampLit && delta.magnitude > sightRange * .55f) return false;
             if (fieldOfView && delta.magnitude > 2 && Vector3.Angle(transform.forward, delta) > fov * 0.5f) return false;
             Vector3 eye = transform.position + Vector3.up * 0.9f;
             Vector3 end = session.player.transform.position + Vector3.up * 0.9f;
-            return Physics.Linecast(eye, end, out var hit, ~0, QueryTriggerInteraction.Ignore) && hit.collider.GetComponentInParent<SandboxPlayer>() == session.player;
+            return Physics.Linecast(eye, end, out var hit, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && hit.collider.GetComponentInParent<SandboxPlayer>() == session.player;
         }
 
         private void Update()
@@ -86,12 +97,12 @@ namespace Zombtoy.Gameplay
                 Face(session.player.transform.position - transform.position);
                 if (Time.time >= stateUntil)
                 {
-                    if (distance < 1.8f && SeesPlayer(false)) session.TakeDamage(definition == null ? 12 : definition.damage);
+                    if (distance < 1.8f && SeesPlayer(false)) session.TakeDamage((definition == null ? 12 : definition.damage) * (variant != null ? variant.DamageMultiplier : 1));
                     Mode = EnemyMode.Recover; stateUntil = Time.time + (definition == null ? 1.2f : definition.attackRecovery);
                 }
                 return;
             }
-            if (visual != null) visual.localRotation = Quaternion.Slerp(visual.localRotation, Quaternion.identity, Time.deltaTime * 8);
+            if (visual != null) visual.localRotation = Quaternion.Slerp(visual.localRotation, variant != null && variant.LegsLost > 0 ? Quaternion.Euler(65, 0, 0) : Quaternion.identity, Time.deltaTime * 8);
             if (Mode == EnemyMode.Recover || Mode == EnemyMode.Stagger)
             {
                 if (Time.time < stateUntil) return;
@@ -125,8 +136,15 @@ namespace Zombtoy.Gameplay
             }
             if (delta.sqrMagnitude < 0.01f) return;
             Face(delta);
-            float moveSpeed = speed * (Mode == EnemyMode.Patrol ? 0.45f : 1);
-            controller.Move((delta.normalized * moveSpeed + Vector3.down * 8) * Time.deltaTime);
+            float moveSpeed = speed * (Mode == EnemyMode.Patrol ? 0.45f : 1) * (variant != null ? variant.MoveMultiplier : 1);
+            Vector3 separation = Vector3.zero;
+            if (session.Enemies != null) foreach (var other in session.Enemies)
+            {
+                if (other == null || other == this || other.IsDead || !other.gameObject.activeInHierarchy) continue;
+                Vector3 away = transform.position - other.transform.position; away.y = 0;
+                if (away.sqrMagnitude > .001f && away.sqrMagnitude < .8f) separation += away.normalized * (1 - away.magnitude);
+            }
+            controller.Move(((delta.normalized + separation * .8f).normalized * moveSpeed + Vector3.down * 8) * Time.deltaTime);
             if (motion != null) motion.SetMoving(true, moveSpeed);
         }
 
@@ -136,8 +154,18 @@ namespace Zombtoy.Gameplay
             if (delta.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(delta), Time.deltaTime * 9);
         }
 
+        public void Hit(float amount, Vector3 point, bool cutting)
+        {
+            if (IsDead || amount <= 0) return;
+            CombatEffects.Blood(point, session.tracerMaterial);
+            if (gore != null) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
+            if (variant != null && variant.kind == InfectedKind.Brute && !cutting && point.y - transform.position.y < 1.45f) amount *= .6f;
+            Damage(amount);
+        }
+
         public void Damage(float amount)
         {
+            Initialize();
             if (IsDead || amount <= 0) return;
             health = Mathf.Max(0, health - amount);
             Hear(session.player.transform.position, 100);
@@ -150,13 +178,14 @@ namespace Zombtoy.Gameplay
 
         public void Restore(float value, Vector3 position)
         {
+            Initialize();
             controller.enabled = false;
             transform.position = position; health = Mathf.Clamp(value, 0, MaxHealth);
             controller.enabled = !IsDead;
             Mode = IsDead ? EnemyMode.Dead : EnemyMode.Patrol;
             destination = position; alertedUntil = stateUntil = nextPath = 0;
             if (visual != null) visual.localRotation = IsDead ? Quaternion.Euler(-88, 0, 0) : Quaternion.identity;
-            if (motion != null) motion.SetMoving(false, 0);
+            if (motion != null) { if (IsDead) motion.Stop(); else motion.SetMoving(false, 0); }
         }
     }
 }

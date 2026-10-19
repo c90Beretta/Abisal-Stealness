@@ -1,5 +1,8 @@
 # Validación — puerto 3D isométrico v0.3
 
+La ampliación nocturna v0.4 tiene evidencia separada en `Validation/NightPort` y mecánicas en [NIGHT_PORT.md](NIGHT_PORT.md). Los resultados siguientes conservan la validación histórica v0.3.
+
+
 18octubre2026 local, Unity6000.5.9f1 / URP17.5.0 / Windows x64 Mono.
 Rama `codex/first-port-map`. La evidencia previa en `Port01` y `FirstLevel02`
 describe versiones anteriores; esta revisión usa `Validation/Port3D`.

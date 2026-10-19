@@ -23,6 +23,7 @@ namespace Zombtoy.Tests
             session = Object.FindAnyObjectByType<SandboxSession>();
             path = Path.GetFullPath("TestResults/checkpoint-" + System.Guid.NewGuid() + ".json");
             session.CheckpointPathOverride = path;
+            if (session.Night != null) { session.Night.hordes.enabled = false; session.Night.Inventory.armorOn = false; }
             foreach (var enemy in session.Enemies) enemy.gameObject.SetActive(false);
             if (begin) session.BeginMission();
         }
@@ -110,17 +111,17 @@ namespace Zombtoy.Tests
         [UnityTest] public IEnumerator CaptureCompositedMenuHudAndHelp()
         {
             yield return Load(false); Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
-            yield return new WaitForSecondsRealtime(0.4f); yield return Capture("first-level-menu.png");
+            yield return new WaitForSecondsRealtime(0.4f); yield return Capture(session, "first-level-menu.png");
             session.BeginMission(); session.State.health = 72; session.State.bleeding = 0.2f;
-            yield return new WaitForSecondsRealtime(0.3f); yield return Capture("first-level-hud.png");
-            session.Hud.ToggleHelp(); yield return null; yield return Capture("first-level-help.png");
+            yield return new WaitForSecondsRealtime(0.3f); yield return Capture(session, "first-level-hud.png");
+            session.Hud.ToggleHelp(); yield return null; yield return Capture(session, "first-level-help.png");
             session.Hud.ClosePanels();
             var hudCanvas = session.Hud.GetComponentInChildren<Canvas>(); hudCanvas.gameObject.SetActive(false);
             float size = session.player.view.orthographicSize; session.player.view.orthographicSize = 2.4f;
             for (int i = 0; i < 3; i++)
             {
                 session.player.GetComponent<WeaponLoadout>().Equip(i); yield return null;
-                yield return Capture("weapon-" + i + ".png");
+                yield return Capture(session, "weapon-" + i + ".png");
             }
             hudCanvas.gameObject.SetActive(true); session.player.view.orthographicSize = size;
         }
@@ -150,6 +151,8 @@ namespace Zombtoy.Tests
             var enemy = session.Enemies[0]; enemy.gameObject.SetActive(true); enemy.useNavigation = false;
             Vector3 position = session.portMission.arrival.position;
             Move(session.player.transform, position);
+            var debris = GameObject.CreatePrimitive(PrimitiveType.Sphere); debris.name = "Cosmetic fragment"; debris.layer = 2;
+            debris.transform.position = position + Vector3.up * 1.1f + Vector3.forward; debris.transform.localScale = Vector3.one * .5f; Physics.SyncTransforms();
             for (int i = 0; i < 3; i++)
             {
                 loadout.Equip(i); session.player.transform.forward = Vector3.forward;
@@ -159,6 +162,7 @@ namespace Zombtoy.Tests
                 Assert.That(enemy.health, Is.LessThan(enemy.MaxHealth), loadout.Current.displayName + " must hit from its actual muzzle");
                 Assert.That(session.rounds, Is.EqualTo(rounds - 1), "Pellets cost one round per shot");
             }
+            Object.Destroy(debris);
             enemy.Restore(enemy.MaxHealth, position + Vector3.forward * 1.6f);
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
             wall.transform.position = position + Vector3.forward * 0.55f + Vector3.up;
@@ -167,12 +171,12 @@ namespace Zombtoy.Tests
             Assert.That(enemy.health, Is.EqualTo(enemy.MaxHealth), "A barrel crossing a wall must not allow firing through it");
             Object.Destroy(wall); yield return null;
         }
-        private IEnumerator Capture(string file)
+        internal static IEnumerator Capture(SandboxSession session, string file, int width = 1280, int height = 720)
         {
             Directory.CreateDirectory("TestResults"); string full = Path.GetFullPath("TestResults/" + file);
             // Native world capture at 1280x720, then the same live HUD canvases.
             var main = session.player.view;
-            var worldTexture = new RenderTexture(1280, 720, 24);
+            var worldTexture = new RenderTexture(width, height, 24);
             main.targetTexture = worldTexture;
             var request = new UniversalRenderPipeline.SingleCameraRequest { destination = worldTexture };
             RenderPipeline.SubmitRenderRequest(main, request); RenderPipeline.SubmitRenderRequest(main, request);
@@ -187,7 +191,7 @@ namespace Zombtoy.Tests
             var camera = new GameObject("UI capture camera").AddComponent<Camera>();
             camera.orthographic = true; camera.orthographicSize = 5; camera.transform.position = new Vector3(0, 0, -10);
             camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = Color.black; camera.cullingMask = 1 << 5;
-            var texture = new RenderTexture(1280, 720, 24); camera.targetTexture = texture;
+            var texture = new RenderTexture(width, height, 24); camera.targetTexture = texture;
             var canvases = Object.FindObjectsByType<Canvas>();
             var layers = new System.Collections.Generic.Dictionary<GameObject, int>();
             foreach (var canvas in canvases)
@@ -199,10 +203,10 @@ namespace Zombtoy.Tests
             yield return null;
             Canvas.ForceUpdateCanvases(); camera.Render(); camera.Render();
             var previous = RenderTexture.active;
-            var image = new Texture2D(1280, 720, TextureFormat.RGB24, false);
+            var image = new Texture2D(width, height, TextureFormat.RGB24, false);
             try
             {
-                RenderTexture.active = texture; image.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0); image.Apply();
+                RenderTexture.active = texture; image.ReadPixels(new Rect(0, 0, width, height), 0, 0); image.Apply();
                 File.WriteAllBytes(full, image.EncodeToPNG());
             }
             finally

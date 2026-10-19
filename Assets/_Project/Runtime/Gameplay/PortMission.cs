@@ -59,6 +59,8 @@ namespace Zombtoy.Gameplay
             }
             else if (target == supplies)
             {
+                if (session.Night != null && (session.Night.Inventory.Weight(session) + .416f > FieldInventory.Capacity || session.reserve + 12 > 240 || session.State.doses >= 8))
+                { session.SetMessage("Mochila llena. Usa suministros para recoger esta caja."); return; }
                 SuppliesTaken = true;
                 session.reserve += 12;
                 session.State.doses++;
@@ -108,7 +110,7 @@ namespace Zombtoy.Gameplay
                 if (distance >= best) continue;
                 Vector3 origin = session.player.transform.position + Vector3.up * 0.9f;
                 Vector3 end = point.position + Vector3.up * 0.25f;
-                if (Physics.Linecast(origin, end, out RaycastHit hit, ~0, QueryTriggerInteraction.Ignore) &&
+                if (Physics.Linecast(origin, end, out RaycastHit hit, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) &&
                     !hit.transform.IsChildOf(point) && hit.transform != point) continue;
                 best = distance;
                 result = point;

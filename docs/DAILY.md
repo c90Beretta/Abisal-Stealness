@@ -73,3 +73,9 @@
 - Build Windows0errores/1advertenciaCS0618 de una demo del proveedor no habilitada
   como escena. Evidencia en `Validation/Port3D`; el look anterior se conserva como
   evidencia histórica. Pendientes playtests humanos, balance y perfilado.
+
+## 2026-10-18 / Puerto nocturno v0.4
+
+Integración de oscuridad/linterna con carga, percepción próxima y ruido, seis patrullas y dieciséis reservas finitas, cuatro variantes de malla de infectados, soldado táctico negro con tanque local de oxígeno, VFX de disparos, sangre/desmembramiento, cuchillo/hacha y resistencia. Mochila de 24 kg, cuerpos/cajas saqueables, chaleco y máscara funcionales; fuga tóxica del generador. Checkpoint v2 conserva equipo, botín restante, miembros y reservas; lee v1. Ver `NIGHT_PORT.md`.
+
+Revisión visual fresca: único hallazgo R1 corregido (estados y mensajes de mochila); ver `UI_REVIEW_NIGHT.md`. Pruebas y compilación registradas en `Validation/NightPort`. No hay certificación de balance/FPS ni cambio de los KPI globales. Las fuentes Asset Store siguen locales y el prefab ModularAsset_Sandbox modificado por el usuario se preserva fuera de esta entrega.

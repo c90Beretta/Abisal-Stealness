@@ -1,4 +1,4 @@
-ABISAL 0.3 — PUERTO CARGUERO 3D ISOMETRICO
+ABISAL 0.4 — PUERTO NOCTURNO 3D ISOMETRICO
 
 1. Haz doble clic en JUGAR ABISAL.cmd, en esta misma carpeta.
 2. En el menu del juego, pulsa Comenzar nivel o ENTER.
@@ -10,8 +10,8 @@ EN UNITY: usa Abisal > Abrir puerto y jugar en la barra superior.
 El boton Play inicia el puerto aunque estes editando SampleScene.
 
 WASD mover, SHIFT correr, raton apuntar, clic disparar, ESPACIO golpe,
-E recoger/interactuar, R recargar, H botiquin, B venda, Q suero,
-F linterna, TAB equipo, ESC pausa, F1 controles.
+E abrir botin/interactuar, R recargar, H botiquin, B venda, Q suero,
+F linterna, TAB mochila y equipo, ESC pausa, F1 controles.
 1 / 2 / 3 cambian pistola, carabina y dispersor; rueda del raton ajusta el zoom.
 Las armas comparten la reserva de municion de esta version de prueba.
 
@@ -20,5 +20,12 @@ autoriza el embarque en CONTROL y llega al SUBMARINO al este.
 El generador guarda un checkpoint. F5 guarda lejos de infectados;
 F9 lo recupera. El menu tambien permite continuar un checkpoint.
 
-Es un primer nivel para pruebas. Inventario por cuadricula, mas armas,
-los otros niveles y el balance final siguen pendientes.
+La linterna usa pilas. El circulo cercano indica percepcion y el pulso indica ruido.
+Correr y disparar atraen infectados y hordas finitas. Puedes oirlos antes de verlos.
+TAB permite saquear, cambiar pila, oxigeno o placa, y elegir cuchillo o hacha.
+La mochila tiene capacidad: las sobras permanecen en las cajas y cuerpos.
+Equipar mascara y mantener O2 te protege de la fuga toxica del generador.
+ESPACIO consume resistencia. La cabeza y extremidades pueden desprenderse.
+El inventario NO pausa: usa ESC si necesitas detener la partida.
+
+Primera integracion para pruebas; los otros niveles y el balance final siguen pendientes.

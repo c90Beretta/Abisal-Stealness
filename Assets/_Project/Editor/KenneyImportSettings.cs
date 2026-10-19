@@ -13,6 +13,7 @@ namespace Zombtoy.Editor
             model.importCameras = false;
             model.importLights = false;
             model.addCollider = false;
+            if (assetPath.EndsWith("/Model/characterMedium.fbx")) model.isReadable = true;
             model.materialImportMode = ModelImporterMaterialImportMode.None;
             if (assetPath.Contains("/Survivors/"))
                 model.animationType = ModelImporterAnimationType.Generic;

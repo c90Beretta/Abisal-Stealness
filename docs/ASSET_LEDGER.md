@@ -52,3 +52,7 @@ de las69 entradas Rusty importadas en `local-rusty-manifest.json`. No se publica
 sus fuentes. Materiales URP propios conservan las referencias originales. El puerto
 incluye120 instancias estáticas de estos modelos, además de los3 prefabs de armas
 Kenney b/a/c ya incluidos en el subconjunto CC0. No hay nuevas descargas de armas.
+
+## Puerto nocturno v0.4
+
+Cuatro mallas ponderadas propias derivadas de Kenney Survivors CC0, materiales tácticos, shader NightSignal, geometría de casco/máscara/arnés y siete WAV sintetizados por el proyecto. Generador: `tools/generate_night_audio.py`. El tanque utiliza Oxy_ballon del paquete local KMProd; no se redistribuyen sus fuentes en Git público. Los sonidos y mallas derivados están versionados con sus metas.

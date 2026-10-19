@@ -34,6 +34,7 @@ namespace Zombtoy.Gameplay
         public float DamageFlash { get; private set; }
         public float HitFlash { get; private set; }
         public GameHud Hud { get; private set; }
+        public NightSurvival Night { get; private set; }
         public SandboxEnemy[] Enemies { get; private set; }
         public WorldPickup[] Pickups { get; private set; }
         public string CheckpointPathOverride { get; set; }
@@ -45,7 +46,8 @@ namespace Zombtoy.Gameplay
 
         private void Start()
         {
-            Enemies = FindObjectsByType<SandboxEnemy>();
+            Night = GetComponent<NightSurvival>();
+            Enemies = FindObjectsByType<SandboxEnemy>(FindObjectsInactive.Include);
             Pickups = FindObjectsByType<WorldPickup>(FindObjectsInactive.Include);
             Application.targetFrameRate = 60;
             Cursor.visible = true;
@@ -128,7 +130,7 @@ namespace Zombtoy.Gameplay
             Application.Quit();
 #endif
         }
-        private void ApplyTime() => Time.timeScale = Running ? 1 : 0;
+        private void ApplyTime() { Time.timeScale = Running ? 1 : 0; AudioListener.pause = !Running; }
         public bool UseRound()
         {
             if (!Running || rounds <= 0 || Busy) return false;
@@ -156,6 +158,7 @@ namespace Zombtoy.Gameplay
         {
             if (!Running || amount <= 0 || Time.time < immuneUntil) return;
             immuneUntil = Time.time + 0.6f;
+            if (wound && Night != null) amount = Night.Absorb(amount);
             State.health = Mathf.Max(0, State.health - amount);
             if (wound) State.bleeding = Mathf.Min(1, State.bleeding + 0.2f);
             actionLeft = 0; DamageFlash = 1;
@@ -176,6 +179,8 @@ namespace Zombtoy.Gameplay
         public void Interact()
         {
             if (!Running || Busy) return;
+            var loot = Night != null ? Night.NearestLoot() : null;
+            if (loot != null) { Hud.OpenLoot(loot); return; }
             var pickup = NearestPickup();
             if (pickup != null) { pickup.Collect(this); return; }
             if (portMission != null) { portMission.Interact(); return; }
@@ -194,6 +199,7 @@ namespace Zombtoy.Gameplay
         public void CompleteRoute(string value) { Mode = SessionMode.Complete; SetMessage(value); ApplyTime(); }
         public void EmitNoise(Vector3 position, float radius)
         {
+            if (Night != null) Night.Noise(position, radius);
             if (Enemies == null) return;
             foreach (var enemy in Enemies)
                 if (enemy != null && !enemy.IsDead && enemy.gameObject.activeSelf) enemy.Hear(position, radius);
@@ -216,6 +222,6 @@ namespace Zombtoy.Gameplay
             Mode = SessionMode.Playing; Hud.ClosePanels(); ApplyTime(); SetMessage("Checkpoint recuperado."); return true;
         }
         public void RestoreCounters(int kills, int shots, int hits) { Kills = kills; Shots = shots; Hits = hits; }
-        private void OnDestroy() => Time.timeScale = 1;
+        private void OnDestroy() { Time.timeScale = 1; AudioListener.pause = false; }
     }
 }

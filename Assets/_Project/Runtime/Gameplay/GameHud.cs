@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Zombtoy.Gameplay
 {
-    // Screen-space UI stays sharp above the deliberately low-resolution world.
+    // Native screen-space UI above the isometric 3D world.
     public sealed class GameHud : MonoBehaviour
     {
         private SandboxSession session;
@@ -51,11 +51,12 @@ namespace Zombtoy.Gameplay
             objective = Label(top.transform, "", 21, Color.white, 28, -44, 1050, 30);
             Label(top.transform, "ESC  PAUSA     F1  AYUDA", 14, Muted, -250, -16, 225, 24, true);
             var vital = Panel("Vital signs", gameplay, Ink, new Vector2(0, 0), new Vector2(0, 0));
-            Place(vital.rectTransform, 24, 150, 310, 126, false);
+            Place(vital.rectTransform, 24, 214, 310, 190, false);
             health = Label(vital.transform, "VIDA", 18, Color.white, 16, -12, 280, 25);
             healthFill = Bar(vital.transform, 16, -45, 278, 9, Green);
             serum = Label(vital.transform, "SUERO", 16, Muted, 16, -66, 280, 24);
             serumFill = Bar(vital.transform, 16, -99, 278, 7, Green);
+            nightStatus = Label(vital.transform, "", 15, Muted, 16, -119, 282, 65);
             var weapon = Panel("Weapon and equipment", gameplay, Ink, new Vector2(1, 0), new Vector2(1, 0));
             Place(weapon.rectTransform, -346, 178, 322, 154, false);
             weaponTitle = Label(weapon.transform, "", 15, Green, 18, -10, 290, 22);
@@ -65,7 +66,7 @@ namespace Zombtoy.Gameplay
             message = Label(gameplay, "", 17, Color.white, 0, 76, 660, 50, false, true);
             action = Label(gameplay, "", 18, Green, 0, 189, 430, 30, false, true);
             actionFill = Bar(gameplay, 0, 153, 330, 7, Green, true);
-            Label(gameplay, "WASD mover  ·  RATON apuntar/disparar  ·  E interactuar  ·  R recargar  ·  TAB equipo", 14, Muted, 0, 18, 900, 24, false, true);
+            Label(gameplay, "WASD mover   /   RATON apuntar/disparar   /   E interactuar   /   R recargar   /   TAB equipo", 14, Muted, 0, 18, 900, 24, false, true);
             var markerBack = Panel("Objective marker", gameplay, Ink, Vector2.one * 0.5f, Vector2.one * 0.5f);
             markerBack.rectTransform.sizeDelta = new Vector2(200, 30);
             objectiveMarker = Label(markerBack.transform, "", 16, Green, 8, -5, 184, 23);
@@ -88,21 +89,25 @@ namespace Zombtoy.Gameplay
             var helpCard = Panel("Controls card", help, Ink, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
             helpCard.rectTransform.sizeDelta = new Vector2(860, 580); helpCard.rectTransform.pivot = Vector2.one * 0.5f;
             Label(helpCard.transform, "CONTROLES / SUPERVIVENCIA", 26, Green, 30, -24, 800, 45);
-            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr (produce mas ruido)\nRATON  Apuntar     CLIC IZQUIERDO  Disparar\n1 / 2 / 3  Cambiar arma     RUEDA  Zoom\nESPACIO  Golpe cercano     R  Recargar\nE  Interactuar / recoger suministros\nH  Botiquin (+40 vida)     B  Venda (detiene hemorragia)\nQ  Suero (controla infeccion)     F  Linterna\nTAB  Equipo     ESC  Pausa     F1  Esta ayuda\nF5  Guardar lejos de enemigos     F9  Recuperar checkpoint\n\nLos infectados oyen disparos y pasos. Su ataque tiene una\npreparacion: alejate antes del golpe. Curarte lleva tiempo\ny recibir un golpe interrumpe el tratamiento.\n\nRuta: ALMACEN 03 > GENERADOR > CONTROL > SUBMARINO.\nEl generador guarda automaticamente tu progreso.", 20, Color.white, 30, -88, 800, 414);
+            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr (produce mas ruido)\nRATON  Apuntar     CLIC IZQUIERDO  Disparar\n1 / 2 / 3  Cambiar arma     RUEDA  Zoom\nESPACIO  Cuchillo / hacha (consume resistencia)     R  Recargar\nE  Interactuar / abrir botin     TAB  Mochila y equipo\nH  Botiquin (+40 vida)     B  Venda (detiene hemorragia)\nQ  Suero     F  Linterna (pilas y oxigeno en TAB)\nESC  Pausa     F1  Esta ayuda\nF5  Guardar lejos de enemigos     F9  Recuperar checkpoint\n\nLos infectados oyen disparos y pasos. Su ataque tiene una\npreparacion: alejate antes del golpe. Curarte lleva tiempo\ny recibir un golpe interrumpe el tratamiento.\nMascara + O2 protegen de la fuga toxica del generador.\n\nRuta: ALMACEN 03 > GENERADOR > CONTROL > SUBMARINO.\nEl generador guarda automaticamente tu progreso.", 20, Color.white, 30, -88, 800, 414);
             Button(helpCard.transform, "Cerrar ayuda / F1", 30, -510, ToggleHelp, out _);
             help.gameObject.SetActive(false);
             equipment = Node("Equipment", root); Stretch(equipment);
             var gear = Panel("Equipment card", equipment, Ink, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
-            gear.rectTransform.sizeDelta = new Vector2(650, 250); gear.rectTransform.pivot = Vector2.one * 0.5f;
+            gear.rectTransform.sizeDelta = new Vector2(1000, 550); gear.rectTransform.pivot = Vector2.one * 0.5f;
             gear.raycastTarget = true;
             Label(gear.transform, "EQUIPO / TAB PARA CERRAR", 24, Green, 24, -18, 600, 40);
             equipmentText = Label(gear.transform, "", 21, Color.white, 24, -76, 600, 150);
+            equipmentText.gameObject.SetActive(session.GetComponent<NightSurvival>() == null);
+            if (session.GetComponent<NightSurvival>() != null) { fieldHud = gameObject.AddComponent<NightHud>(); fieldHud.Setup(session, gear.transform); }
             equipment.gameObject.SetActive(false);
         }
-        private Text equipmentText;
+        private Text equipmentText, nightStatus;
+        private NightHud fieldHud;
+        public void OpenLoot(LootContainer box) { showingEquipment = true; equipment.gameObject.SetActive(true); fieldHud?.Select(box); }
 
-        public void ToggleHelp() { showingHelp = !showingHelp; help.gameObject.SetActive(showingHelp); }
-        public void ToggleEquipment() { showingEquipment = !showingEquipment; equipment.gameObject.SetActive(showingEquipment); }
+        public void ToggleHelp() { showingHelp = !showingHelp; if (showingHelp) { showingEquipment = false; equipment.gameObject.SetActive(false); } help.gameObject.SetActive(showingHelp); }
+        public void ToggleEquipment() { showingEquipment = !showingEquipment; if (showingEquipment) { showingHelp = false; help.gameObject.SetActive(false); } equipment.gameObject.SetActive(showingEquipment); }
         public void ClosePanels() { showingHelp = showingEquipment = false; help.gameObject.SetActive(false); equipment.gameObject.SetActive(false); }
 
         private void LateUpdate()
@@ -120,7 +125,7 @@ namespace Zombtoy.Gameplay
                 primaryLabel.text = title ? "Comenzar nivel / Enter" : paused ? "Continuar / Esc" : "Reintentar / Enter";
                 secondary.interactable = checkpointAvailable;
                 secondaryLabel.text = checkpointAvailable ? "Continuar checkpoint" : "Sin checkpoint guardado";
-                stats.text = title ? "Primera partida: pulsa COMENZAR o ENTER.\nWASD mover · raton apuntar · clic disparar · E interactuar · F1 ayuda" : $"Tiempo {Mathf.FloorToInt(state.elapsed / 60):00}:{Mathf.FloorToInt(state.elapsed % 60):00}    Infectados abatidos {session.Kills}    Impactos {session.Hits}\nMunicion {session.rounds + session.reserve}    Vida {Mathf.CeilToInt(state.health)}    Suero {Mathf.CeilToInt(state.serum)}%";
+                stats.text = title ? "Primera partida: pulsa COMENZAR o ENTER.\nWASD mover  /  raton apuntar  /  clic disparar  /  E interactuar  /  F1 ayuda" : $"Tiempo {Mathf.FloorToInt(state.elapsed / 60):00}:{Mathf.FloorToInt(state.elapsed % 60):00}    Infectados abatidos {session.Kills}    Impactos {session.Hits}\nMunicion {session.rounds + session.reserve}    Vida {Mathf.CeilToInt(state.health)}    Suero {Mathf.CeilToInt(state.serum)}%";
             }
             health.text = $"VIDA  {Mathf.CeilToInt(state.health):000}" + (state.bleeding > 0 ? "   / HEMORRAGIA [B]" : "");
             health.color = state.bleeding > 0 || state.health < 30 ? new Color(1, 0.55f, 0.46f) : Color.white;
@@ -133,9 +138,15 @@ namespace Zombtoy.Gameplay
             ammo.text = $"{session.rounds:00} <size=19>/ {session.reserve:000}   [R]</size>";
             inventory.text = $"[H] Botiquin {state.medkits}    [B] Venda {state.bandages}\n[Q] Suero {state.doses}    [F] Linterna";
             equipmentText.text = $"Botiquines: {state.medkits}    Vendas: {state.bandages}    Suero: {state.doses}\nMunicion: {session.rounds} en arma / {session.reserve} en reserva\nRepuesto: {(session.portMission != null && session.portMission.HasFuse ? "recogido" : "pendiente")}\nEste panel no pausa la partida.";
+            if (session.Night != null)
+            {
+                var n = session.Night; var b = n.Inventory;
+                nightStatus.text = $"RESISTENCIA {b.stamina:0}%   O2 {b.air:0}%\n[F] LUZ {(n.LampLit ? "ON" : "OFF")} {b.battery:0}%   RUIDO {n.NoiseRadius:0} m\n{(n.InGas ? "FUGA TOXICA / MASCARA" : "Hordas " + n.hordes.waves + " / Reserva " + n.hordes.Remaining)}";
+            }
             objective.text = session.portMission != null ? session.portMission.Objective : "Activa la terminal y alcanza la extraccion.";
             var pickup = session.NearestPickup();
-            prompt.text = pickup != null ? "[E] " + pickup.label : session.portMission != null ? session.portMission.Prompt : "";
+            var loot = session.Night != null ? session.Night.NearestLoot() : null;
+            prompt.text = loot != null ? "[E] Registrar " + loot.label : pickup != null ? "[E] " + pickup.label : session.portMission != null ? session.portMission.Prompt : "";
             message.text = Time.unscaledTime < session.MessageUntil ? session.Message : "";
             action.text = session.ActionLabel;
             actionFill.transform.parent.gameObject.SetActive(session.Busy);
@@ -155,7 +166,7 @@ namespace Zombtoy.Gameplay
                 Vector2 pos = new Vector2(Mathf.Clamp(viewport.x, 0.13f, 0.87f), Mathf.Clamp(viewport.y, 0.27f, 0.83f));
                 var rect = (RectTransform)objectiveMarker.transform.parent; rect.anchorMin = rect.anchorMax = pos; rect.anchoredPosition = Vector2.zero;
                 rect.pivot = Vector2.one * 0.5f;
-                objectiveMarker.text = $"◇  OBJETIVO  {Vector3.Distance(target, session.player.transform.position):0}m";
+                objectiveMarker.text = $"  OBJETIVO  {Vector3.Distance(target, session.player.transform.position):0}m";
             }
             else objectiveMarker.text = "";
             if (session.Enemies == null) return;
@@ -171,7 +182,8 @@ namespace Zombtoy.Gameplay
                     enemyBars.Add(enemy, rect); enemyFills.Add(enemy, fill);
                 }
                 Vector3 p = camera.WorldToViewportPoint(enemy.transform.position + Vector3.up * 2.1f);
-                bool visible = session.Running && enemy.gameObject.activeInHierarchy && !enemy.IsDead && (enemy.Alerted || enemy.HealthFraction < 1) && p.z > 0 && p.x > 0 && p.x < 1 && p.y > 0.2f && p.y < 0.85f;
+                bool perceived = enemy.GetComponent<InfectedVisibility>() == null || enemy.GetComponent<InfectedVisibility>().Visible;
+                bool visible = perceived && session.Running && enemy.gameObject.activeInHierarchy && !enemy.IsDead && (enemy.Alerted || enemy.HealthFraction < 1) && p.z > 0 && p.x > 0 && p.x < 1 && p.y > 0.2f && p.y < 0.85f;
                 rect.gameObject.SetActive(visible);
                 if (visible) { rect.anchorMin = rect.anchorMax = new Vector2(p.x, p.y); rect.anchoredPosition = Vector2.zero; enemyFills[enemy].fillAmount = enemy.HealthFraction; }
             }

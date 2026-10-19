@@ -9,5 +9,6 @@ namespace Zombtoy.Core
         public float damage = 35, fireInterval = 0.22f, spread, noiseRadius = 18;
         public int pellets = 1;
         public GameObject visualPrefab;
+        public AudioClip shotClip;
     }
 }

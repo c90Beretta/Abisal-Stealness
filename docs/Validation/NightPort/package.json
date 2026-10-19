@@ -1,0 +1,12 @@
+{
+  "version": "0.4.0-night-playtest",
+  "bytes": 148750839,
+  "sha256": "5ead5947bfa6b53f9f10bef6beb5f39d4efe2576e54825270cd44fbee7362a12",
+  "files": 200,
+  "editmode_passed": 18,
+  "playmode_passed": 20,
+  "build_errors": 0,
+  "build_warnings": 1,
+  "warning": "Unused vendor demo PushPhysics.cs: Rigidbody.velocity obsolete",
+  "standalone_startup": "12 seconds headless startup; no logged exceptions; helper process stopped after check; no manual visual playtest"
+}

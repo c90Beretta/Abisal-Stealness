@@ -19,3 +19,4 @@ MonoBehaviour:
   noiseRadius: 24
   pellets: 5
   visualPrefab: {fileID: 1091101456574378999, guid: c253de2ce25416140ab29442729edc40, type: 3}
+  shotClip: {fileID: 8300000, guid: 82f44056ae67e7b48b58544056f62da4, type: 3}

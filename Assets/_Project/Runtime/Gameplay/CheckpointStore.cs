@@ -6,11 +6,12 @@ using Zombtoy.Core;
 
 namespace Zombtoy.Gameplay
 {
-    [Serializable] public sealed class EnemySave { public string id; public float health; public Vector3 position; }
+    [Serializable] public sealed class EnemySave { public string id; public float health; public Vector3 position; public bool active = true; public Severed severed; }
     [Serializable] public sealed class PickupSave { public string id; public bool collected; }
+    [Serializable] public sealed class LootSave { public string id; public LootStock stock; }
     [Serializable] public sealed class PortSave
     {
-        public int version = 1;
+        public int version = 2;
         public string level = "Level01_Port";
         public SurvivalState state;
         public Vector3 position;
@@ -18,6 +19,11 @@ namespace Zombtoy.Gameplay
         public bool fuse, power, boarding, supplies;
         public EnemySave[] enemies;
         public PickupSave[] pickups;
+        public FieldInventory inventory;
+        public LootSave[] loot;
+        public bool[] released;
+        public float pressure;
+        public int waves;
     }
     public static class CheckpointStore
     {
@@ -31,8 +37,14 @@ namespace Zombtoy.Gameplay
                     rounds = session.rounds, reserve = session.reserve, kills = session.Kills, shots = session.Shots, hits = session.Hits,
                     weapon = session.player.GetComponent<WeaponLoadout>()?.Index ?? 0,
                     fuse = m.HasFuse, power = m.PowerOn, boarding = m.BoardingAuthorized, supplies = m.SuppliesTaken,
-                    enemies = session.Enemies.Select(e => new EnemySave { id = e.name, health = e.health, position = e.transform.position }).ToArray(),
+                    enemies = session.Enemies.Select(e => new EnemySave { id = e.name, health = e.health, position = e.transform.position, active = e.gameObject.activeSelf, severed = e.GetComponent<Dismemberment>()?.Lost ?? Severed.None }).ToArray(),
                     pickups = session.Pickups.Select(p => new PickupSave { id = p.id, collected = p.Collected }).ToArray() };
+                if (session.Night != null)
+                {
+                    var n = session.Night; save.inventory = n.Inventory;
+                    save.loot = n.Containers.Select(c => new LootSave { id = c.id, stock = c.stock }).ToArray();
+                    save.released = n.hordes.released; save.pressure = n.hordes.pressure; save.waves = n.hordes.waves;
+                }
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path + ".tmp", JsonUtility.ToJson(save, true));
                 if (File.Exists(path)) File.Replace(path + ".tmp", path, path + ".bak");
@@ -48,7 +60,7 @@ namespace Zombtoy.Gameplay
             {
                 if (!File.Exists(path) || new FileInfo(path).Length > 1024 * 1024) return false;
                 var s = JsonUtility.FromJson<PortSave>(File.ReadAllText(path));
-                if (s == null || s.version != 1 || s.level != "Level01_Port" || s.state == null || s.enemies == null || s.pickups == null ||
+                if (s == null || (s.version != 1 && s.version != 2) || s.level != "Level01_Port" || s.state == null || s.enemies == null || s.pickups == null ||
                     !float.IsFinite(s.state.health) || s.state.health <= 0 || s.state.health > 100 || !Finite(s.position) ||
                     !Bounded(s.state.serum, 0, 100) || !Bounded(s.state.infection, 0, 100) || !Bounded(s.state.bleeding, 0, 1) ||
                     !Bounded(s.state.elapsed, 0, 10000000) || !float.IsFinite(s.state.lastInjection) || !float.IsFinite(s.state.maniaUntil) ||
@@ -57,6 +69,9 @@ namespace Zombtoy.Gameplay
                     s.rounds < 0 || s.rounds > 12 || s.reserve < 0 || s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
                     s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 2 ||
                     s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 1000))) return false;
+                if (s.version == 2 && (s.inventory == null || !s.inventory.Valid || s.loot == null || s.released == null || s.released.Length > 64 || s.waves < 0 || !Bounded(s.pressure, 0, 100) ||
+                    s.loot.Any(l => l == null || string.IsNullOrEmpty(l.id) || l.stock == null || !l.stock.Valid) || s.loot.Select(l => l.id).Distinct().Count() != s.loot.Length ||
+                    s.enemies.Any(e => ((int)e.severed & ~31) != 0))) return false;
                 save = s; return true;
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException || e is ArgumentException) { return false; }
@@ -73,10 +88,22 @@ namespace Zombtoy.Gameplay
             var cc = session.player.GetComponent<CharacterController>();
             cc.enabled = false; session.player.transform.position = save.position; cc.enabled = true;
             session.portMission.Restore(save.fuse, save.power, save.boarding, save.supplies);
+            if (session.Night != null && save.inventory != null)
+            {
+                var n = session.Night;
+                n.Inventory = JsonUtility.FromJson<FieldInventory>(JsonUtility.ToJson(save.inventory));
+                if (save.released.Length == n.hordes.reserves.Length) n.hordes.Restore(save.released, save.pressure, save.waves);
+                foreach (var c in n.Containers) { var entry = Array.Find(save.loot, l => l.id == c.id); if (entry != null) c.stock = entry.stock.Copy(); }
+            }
             foreach (var enemy in session.Enemies)
             {
                 var data = Array.Find(save.enemies, e => e.id == enemy.name);
-                if (data != null) enemy.Restore(data.health, data.position);
+                if (data != null)
+                {
+                    if (save.version >= 2) enemy.gameObject.SetActive(data.active);
+                    enemy.Restore(data.health, data.position);
+                    enemy.GetComponent<Dismemberment>()?.Restore(data.severed);
+                }
             }
             foreach (var pickup in session.Pickups)
             {

@@ -10,6 +10,7 @@ namespace Zombtoy.Gameplay
         public SandboxSession session;
         public AudioClip shotSound;
         public AudioClip stepSound;
+        public AudioClip meleeSound;
         private CharacterController controller;
         private float nextShot;
         private float nextStep;
@@ -18,6 +19,8 @@ namespace Zombtoy.Gameplay
         private float nextMelee;
         private Light flashlight;
         private WeaponLoadout loadout;
+        private Vector3 aimPoint;
+        private bool preciseAim;
 
         private void Awake()
         {
@@ -38,12 +41,14 @@ namespace Zombtoy.Gameplay
             Vector3 forward = Vector3.ProjectOnPlane(view.transform.forward, Vector3.up).normalized;
             Vector3 right = Vector3.ProjectOnPlane(view.transform.right, Vector3.up).normalized;
             Vector3 direction = Vector3.ClampMagnitude(right * input.x + forward * input.y, 1f);
-            bool sprint = kb.leftShiftKey.isPressed;
+            bool sprint = kb.leftShiftKey.isPressed && direction.sqrMagnitude > .01f;
+            if (sprint && session.Night != null) sprint = session.Night.SpendStamina(Time.deltaTime * 30);
+            if (session.Hud.BlocksCombat) { direction = Vector3.zero; sprint = false; }
             float speed = (sprint ? 5f : 3f) * (session.State.IsManic ? 1.3f : 1f);
             if (session.Busy) speed *= 0.3f;
             controller.Move((direction * speed + Vector3.down * 8f) * Time.deltaTime);
             if (motion != null) motion.SetMoving(direction.sqrMagnitude > 0.01f, speed);
-            if (input.sqrMagnitude > 0 && Time.time >= nextStep)
+            if (direction.sqrMagnitude > .01f && Time.time >= nextStep)
             {
                 nextStep = Time.time + (sprint ? 0.28f : 0.48f);
                 session.EmitNoise(transform.position, sprint ? 10f : 3f);
@@ -55,9 +60,11 @@ namespace Zombtoy.Gameplay
                 Vector2 cursor = Mouse.current.position.ReadValue();
                 Ray ray = view.ViewportPointToRay(new Vector3(cursor.x / Screen.width, cursor.y / Screen.height, 0));
                 Plane plane = new Plane(Vector3.up, transform.position + Vector3.up * 0.8f);
+                preciseAim = Physics.Raycast(ray, out var cursorHit, 100, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && cursorHit.collider.GetComponentInParent<SandboxEnemy>() != null;
+                if (preciseAim) aimPoint = cursorHit.point;
                 if (plane.Raycast(ray, out float distance))
                 {
-                    Vector3 aim = ray.GetPoint(distance) - transform.position;
+                    Vector3 aim = (preciseAim ? aimPoint : ray.GetPoint(distance)) - transform.position;
                     aim.y = 0;
                     if (aim.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(aim);
                 }
@@ -75,43 +82,62 @@ namespace Zombtoy.Gameplay
             if (kb.eKey.wasPressedThisFrame) session.Interact();
             if (kb.hKey.wasPressedThisFrame) session.BeginHeal();
             if (kb.bKey.wasPressedThisFrame) session.BeginBandage();
-            if (kb.fKey.wasPressedThisFrame && flashlight != null) flashlight.enabled = !flashlight.enabled;
-            if (kb.spaceKey.wasPressedThisFrame && !session.Busy && !session.Hud.BlocksCombat && Time.time >= nextMelee)
+            if (kb.fKey.wasPressedThisFrame) { if (session.Night != null) session.Night.ToggleLamp(); else if (flashlight != null) flashlight.enabled = !flashlight.enabled; }
+            if (kb.spaceKey.wasPressedThisFrame) TryMelee();
+        }
+
+        public bool TryMelee()
+        {
+            if (!session.Running || session.Busy || session.Hud.BlocksCombat || Time.time < nextMelee) return false;
+            bool axe = session.Night != null && session.Night.Inventory.melee == 1;
+            if (session.Night != null && !session.Night.SpendStamina(axe ? 28 : 16)) { session.SetMessage("Sin resistencia para golpear."); return false; }
+            nextMelee = Time.time + (axe ? 1.1f : .65f);
+            session.EmitNoise(transform.position, axe ? 8 : 5);
+            if (meleeSound != null) audioSource.PlayOneShot(meleeSound, .35f);
+            CombatEffects.Swing(transform, session.tracerMaterial);
+            (GetComponent<MeleeSwing>() ?? gameObject.AddComponent<MeleeSwing>()).Play(axe, session.tracerMaterial);
+            int hits = 0;
+            foreach (var enemy in session.Enemies)
             {
-                nextMelee = Time.time + 0.85f;
-                session.EmitNoise(transform.position, 5);
-                if (Physics.SphereCast(transform.position + Vector3.up * 0.85f, 0.3f, transform.forward, out var meleeHit, 1.3f, ~0, QueryTriggerInteraction.Ignore))
-                {
-                    var enemy = meleeHit.collider.GetComponentInParent<SandboxEnemy>();
-                    if (enemy != null && !enemy.IsDead) { enemy.Damage(25); session.RegisterHit(); }
-                }
+                if (enemy == null || !enemy.gameObject.activeInHierarchy || enemy.IsDead) continue;
+                Vector3 delta = enemy.transform.position - transform.position; delta.y = 0;
+                if (delta.magnitude > (axe ? 1.8f : 1.55f) || Vector3.Angle(transform.forward, delta) > 55) continue;
+                Vector3 from = transform.position + Vector3.up * .95f, to = enemy.transform.position + Vector3.up * .95f;
+                if (Physics.Linecast(from, to, out var hit, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && hit.collider.GetComponentInParent<SandboxEnemy>() != enemy) continue;
+                enemy.Hit(axe ? 65 : 40, to + transform.right * .25f, true); session.RegisterHit();
+                if (++hits >= (axe ? 3 : 1)) break;
             }
+            return true;
         }
 
         private void Shoot()
         {
+            if (GetComponent<MeleeSwing>()?.Active == true) return;
             var weapon = loadout != null ? loadout.Current : null;
             nextShot = Time.time + (weapon != null ? weapon.fireInterval : 0.22f);
             if (!session.UseRound()) return;
             session.EmitNoise(transform.position, (weapon != null ? weapon.noiseRadius : 18) * (session.State.IsManic ? 1.35f : 1));
-            if (shotSound != null) audioSource.PlayOneShot(shotSound, 0.25f);
+            var clip = weapon != null && weapon.shotClip != null ? weapon.shotClip : shotSound;
+            if (clip != null) audioSource.PlayOneShot(clip, 0.35f);
             if (loadout != null) loadout.Recoil();
             Vector3 origin = loadout != null && loadout.Muzzle != null ? loadout.Muzzle.position : transform.position + Vector3.up * 0.85f + transform.forward * 0.5f;
             // A long visible barrel may touch a wall; it must not shoot through it.
             Vector3 chest = transform.position + Vector3.up * 1.1f;
-            if (Physics.Linecast(chest, origin, out var obstruction, ~0, QueryTriggerInteraction.Ignore)) origin = chest;
+            if (Physics.Linecast(chest, origin, out var obstruction, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) origin = chest;
+            CombatEffects.Shot(origin, transform, session.tracerMaterial);
             for (int pellet = 0; pellet < (weapon != null ? weapon.pellets : 1); pellet++)
             {
-            Vector3 aim = transform.forward;
+            Vector3 aim = preciseAim ? (aimPoint - origin).normalized : transform.forward;
             if (weapon != null && weapon.spread > 0) aim = Quaternion.AngleAxis(Random.Range(-weapon.spread, weapon.spread), Vector3.up) * aim;
             if (session.State.elapsed < session.State.tremorUntil || session.State.IsManic)
                 aim = Quaternion.AngleAxis(Random.Range(-7f, 7f), Vector3.up) * aim;
             Vector3 end = origin + aim * 25f;
-            if (Physics.Raycast(origin, aim, out RaycastHit hit, 25f, ~0, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(origin, aim, out RaycastHit hit, 25f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
                 end = hit.point;
                 var enemy = hit.collider.GetComponentInParent<SandboxEnemy>();
-                if (enemy != null && !enemy.IsDead) { enemy.Damage(weapon != null ? weapon.damage : 35); session.RegisterHit(); }
+                if (enemy != null && !enemy.IsDead) { enemy.Hit(weapon != null ? weapon.damage : 35, hit.point, false); session.RegisterHit(); }
+                else CombatEffects.Impact(hit.point, hit.normal, session.tracerMaterial);
             }
             var tracer = new GameObject("Shot trace").AddComponent<LineRenderer>();
             tracer.sharedMaterial = session.tracerMaterial;
