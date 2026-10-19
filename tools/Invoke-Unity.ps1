@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Compile', 'Generate', 'GeneratePort', 'EditMode', 'PlayMode', 'Build', 'Capture', 'CapturePort')]
+    [ValidateSet('Compile', 'Generate', 'GeneratePort', 'UpgradePort', 'EditMode', 'PlayMode', 'Build', 'Capture', 'CapturePort')]
     [string]$Task = 'EditMode',
     [string]$ProjectPath = (Split-Path $PSScriptRoot -Parent),
     [string]$UnityPath = 'C:\Program Files\Unity\Hub\Editor\6000.5.9f1\Editor\Unity.exe'
@@ -25,6 +25,7 @@ switch ($Task) {
     'Compile' { $unityArgs += @('-nographics', '-quit') }
     'Generate' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.FoundationBuilder.Generate') }
     'GeneratePort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.PortMapBuilder.Generate') }
+    'UpgradePort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.GameplayUpgrade.Upgrade') }
     'EditMode' { $unityArgs += @('-nographics', '-runTests', '-testPlatform', 'EditMode', '-testResults', ('"' + (Join-Path $resultRoot 'editmode.xml') + '"')) }
     'PlayMode' { $unityArgs += @('-runTests', '-testPlatform', 'PlayMode', '-testResults', ('"' + (Join-Path $resultRoot 'playmode.xml') + '"')) }
     'Build' { $unityArgs += @('-quit', '-executeMethod', 'Zombtoy.Editor.FoundationBuilder.BuildWindows') }
@@ -32,7 +33,9 @@ switch ($Task) {
     'CapturePort' { $unityArgs += @('-quit', '-executeMethod', 'Zombtoy.Editor.PortMapBuilder.Capture') }
 }
 $startedUtc = [DateTime]::UtcNow
-$process = Start-Process -FilePath $UnityPath -WindowStyle Hidden -ArgumentList $unityArgs -PassThru -Wait
+$process = Start-Process -FilePath $UnityPath -WindowStyle Hidden -ArgumentList $unityArgs -PassThru
+# Unity's compiler servers may outlive the editor. Wait for this editor process only.
+$process.WaitForExit()
 if ($process.ExitCode -ne 0) { throw "Unity $Task failed with exit code $($process.ExitCode). Log: $logPath" }
 if ($Task -in @('EditMode', 'PlayMode')) {
     $file = Join-Path $resultRoot ($Task.ToLower() + '.xml')

@@ -1,0 +1,22 @@
+ABISAL — PRIMER NIVEL / PUERTO CARGUERO
+
+1. Haz doble clic en JUGAR ABISAL.cmd, en esta misma carpeta.
+2. En el menu del juego, pulsa Comenzar nivel o ENTER.
+
+Tambien puedes abrir Builds\Windows\AbisalStealness.exe.
+Conserva toda la carpeta Windows: el EXE necesita sus archivos de datos.
+
+EN UNITY: usa Abisal > Abrir puerto y jugar en la barra superior.
+El boton Play inicia el puerto aunque estes editando SampleScene.
+
+WASD mover, SHIFT correr, raton apuntar, clic disparar, ESPACIO golpe,
+E recoger/interactuar, R recargar, H botiquin, B venda, Q suero,
+F linterna, TAB equipo, ESC pausa, F1 controles.
+
+OBJETIVO: recoge el repuesto en ALMACEN 03, repara el GENERADOR,
+autoriza el embarque en CONTROL y llega al SUBMARINO al este.
+El generador guarda un checkpoint. F5 guarda lejos de infectados;
+F9 lo recupera. El menu tambien permite continuar un checkpoint.
+
+Es un primer nivel para pruebas. Inventario por cuadricula, mas armas,
+los otros niveles y el balance final siguen pendientes.

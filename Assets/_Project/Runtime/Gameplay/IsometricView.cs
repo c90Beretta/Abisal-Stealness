@@ -22,6 +22,7 @@ namespace Zombtoy.Gameplay
             view.targetTexture = image;
             canvas = new GameObject("Low resolution presentation", typeof(Canvas), typeof(CanvasScaler));
             canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.GetComponent<Canvas>().sortingOrder = -100;
             var output = new GameObject("Point filtered image", typeof(RectTransform), typeof(RawImage));
             output.transform.SetParent(canvas.transform, false);
             var rect = output.GetComponent<RectTransform>();

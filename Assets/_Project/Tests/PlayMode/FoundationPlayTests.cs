@@ -14,14 +14,14 @@ namespace Zombtoy.Tests
         {
             yield return SceneManager.LoadSceneAsync("MVP_Sandbox");
             yield return null;
-            var session = Object.FindFirstObjectByType<SandboxSession>();
+            var session = Object.FindAnyObjectByType<SandboxSession>();
             Assert.That(session, Is.Not.Null);
             Assert.That(session.Running, Is.True);
             Assert.That(session.player.view.orthographic, Is.True);
             Assert.That(session.player.view.targetTexture.width, Is.EqualTo(480));
             Assert.That(session.player.view.targetTexture.height, Is.EqualTo(270));
             Assert.That(session.player.view.targetTexture.filterMode, Is.EqualTo(FilterMode.Point));
-            Assert.That(Object.FindObjectsByType<SandboxEnemy>(FindObjectsSortMode.None).Length, Is.EqualTo(4));
+            Assert.That(Object.FindObjectsByType<SandboxEnemy>().Length, Is.EqualTo(4));
             var character = session.player.GetComponent<CharacterController>();
             character.enabled = false;
             session.player.transform.position = session.extraction.position;
@@ -40,8 +40,8 @@ namespace Zombtoy.Tests
         {
             yield return SceneManager.LoadSceneAsync("MVP_Sandbox");
             yield return null;
-            var session = Object.FindFirstObjectByType<SandboxSession>();
-            foreach (var enemy in Object.FindObjectsByType<SandboxEnemy>(FindObjectsSortMode.None))
+            var session = Object.FindAnyObjectByType<SandboxSession>();
+            foreach (var enemy in Object.FindObjectsByType<SandboxEnemy>())
                 enemy.gameObject.SetActive(false);
             session.State.serum = 30;
             session.BeginInjection();

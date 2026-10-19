@@ -38,3 +38,20 @@
   recuperación de caída al agua y ocultación de muros/contenedores que tapan al jugador.
 - Se conserva el sandbox; el build arranca en el puerto. Sin nuevas dependencias
   ni assets externos. Pruebas, captura y build se registran en PORT_VALIDATION.
+
+## 18 octubre 2026 — primer nivel accesible y sistemas de supervivencia
+
+- Acceso `JUGAR ABISAL.cmd`, instrucciones de juego y menú Abisal en Unity;
+  Play inicia el puerto aun desde SampleScene. Build Windows en ventana1280×720.
+- Menú inicial, HUD de salud/sangrado/suero/munición, equipo, ayuda, pausa,
+  muerte y victoria. Marcador de objetivo con respaldo oscuro tras revisión visual.
+- Botiquines/vendas, tiempos de aplicación, interrupción por daño, melee y
+  linterna. Suministros recogibles de una sola vez y recarga con tiempo de uso.
+- IA con patrulla, investigación, persecución, búsqueda, preparación de ataque,
+  recuperación, impacto y muerte. Dos definiciones de infectados y clips Idle/Run.
+- Checkpoint del generador, F5/F9, validación de JSON y recuperación de objetivos,
+  puertas, recursos y enemigos abatidos.
+- 18 EditMode +10 PlayMode pasan; build con0 errores/0 advertencias. Capturas
+  compuestas desde canvases reales; no se completó partida humana de validación.
+- Continúan pendientes inventario por cuadrícula, arsenal, efectos PSX completos,
+  fases mentales audiovisuales y aceptación de KPI de duración/rendimiento/balance.

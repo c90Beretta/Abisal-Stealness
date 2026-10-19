@@ -8,7 +8,7 @@ Primera versión jugable de trazado y misión. Escena:
 1. **Desembarco:** esquina suroeste, sin enemigos al alcance inmediato. Leer HUD y probar movimiento/apuntado.
 2. **Patio de carga:** seis contenedores forman calles y rutas alternativas. Caja opcional al sur: +12 cartuchos y +1 dosis, una sola vez.
 3. **Almacén 03:** entrada sur abierta; recoger el repuesto con E.
-4. **Generador:** patio norte. E instala el repuesto, hace ruido y abre la puerta de control.
+4. **Generador:** patio norte. E instala el repuesto, hace ruido, abre la puerta de control y guarda un checkpoint.
 5. **Control:** edificio noreste sin techo; E en la terminal autoriza el embarque y abre el control del muelle.
 6. **Submarino B-07:** salida al este por pasarela protegida; E junto al marcador completa el nivel. Enter reinicia.
 
@@ -39,8 +39,12 @@ autorización se rechazan aunque el jugador llegue allí fuera de orden.
 
 - Muelle principal: **56×44 m**, con agua, bordes, bolardos, grúa, almacén, torre de control y submarino.
 - Cámara ortográfica30°/45°, RT480×270 point. Paredes y contenedores que tapan al jugador se ocultan temporalmente; sus colliders permanecen.
-- Cuatro Shambler y dos Runner. Persiguen con rutas de NavMesh y mantienen percepción de vista/oído del prototipo.
-- Inicio: salud100, suero65, 1 dosis, 12 cartuchos cargados +24 de reserva. Recursos opcionales limitados.
+- Cuatro Shambler y dos Runner, definidos por ScriptableObjects. Patrullan, investigan ruido, persiguen con NavMesh, buscan y preparan el golpe antes de atacar. Los golpes pueden esquivarse y las paredes bloquean la vista y el daño.
+- Animaciones Kenney de espera/carrera, reacción al impacto, caída al morir y barras de vida de infectados alertados/heridos.
+- Inicio: salud100, suero65, 1 dosis, 2 botiquines, 3 vendas, 12 cartuchos cargados +24 de reserva. Tres cajas adicionales de medicina/munición; recursos opcionales de un solo uso.
+- H aplica botiquín (+40 vida, 1.6s); B venda (detiene sangrado, 1.2s); Q suero (2s). Un golpe interrumpe el tratamiento. Recargar tarda1.5s; no se dispara durante tratamientos/recarga. Espacio da un golpe cercano; F alterna linterna.
+- Menú inicial, HUD nativo, F1 ayuda, Esc pausa, pantallas de muerte/victoria. TAB muestra existencias de equipo; todavía no es un inventario por cuadrícula.
+- Checkpoint JSON local al reparar generador o F5 lejos de enemigos; F9 o Continuar recuperan salud, posición, munición, suministros, infectados abatidos, objetivos y puertas.
 - Barandillas y controles físicos delimitan las rutas. Si se cae al agua se vuelve al desembarco y se pierden10 puntos de salud, para evitar un bloqueo por caída.
 - La duración se debe medir en playtests. Esta versión no acredita aún los10–15 minutos ni el balance de economía del MVP.
 
@@ -60,6 +64,7 @@ generados; el comando rechaza sobrescribir una escena existente.
 
 ```powershell
 ./tools/Invoke-Unity.ps1 -Task GeneratePort -ProjectPath <copia-de-validacion>
+./tools/Invoke-Unity.ps1 -Task UpgradePort -ProjectPath <copia-de-validacion>
 ./tools/Invoke-Unity.ps1 -Task EditMode -ProjectPath <copia-de-validacion>
 ./tools/Invoke-Unity.ps1 -Task PlayMode -ProjectPath <copia-de-validacion>
 ./tools/Invoke-Unity.ps1 -Task CapturePort -ProjectPath <copia-de-validacion>
@@ -70,3 +75,8 @@ La configuración de build coloca el puerto primero y conserva el sandbox como
 segunda escena de pruebas. El build de Windows incluye ambas y comienza en el puerto.
 Sin nuevos assets externos: primitivas propias y skins del pack Kenney ya auditado.
 Modelos/animaciones, agua, sonido, UI y efectos PSX siguen siendo provisionales.
+
+`GameplayUpgrade.Upgrade` es una migración explícita de sistemas del puerto;
+reutiliza clips y definiciones propios, sin regenerar la geometría. Solo ejecutarla
+en una copia limpia o con los cambios de escena guardados/versionados. Los clips
+derivados comparten referencias y no se duplican dentro de la escena.

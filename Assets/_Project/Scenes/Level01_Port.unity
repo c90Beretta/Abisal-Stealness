@@ -181,11 +181,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: c91a54b4d34c79848a9ae60997e3f1f5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 48b0924144283e64e8baedb4aae8844e, type: 2}
     - target: {fileID: -1900820803034442434, guid: c91a54b4d34c79848a9ae60997e3f1f5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 48b0924144283e64e8baedb4aae8844e, type: 2}
     - target: {fileID: 919132149155446097, guid: c91a54b4d34c79848a9ae60997e3f1f5, type: 3}
       propertyPath: m_Name
@@ -466,7 +466,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 83131d1e1fda38b46bd161caf5c61ce9, type: 2}
     - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -515,13 +515,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 400183674}
   m_SourcePrefab: {fileID: 100100000, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
 --- !u!4 &400183672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
   m_PrefabInstance: {fileID: 400183671}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &400183673 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 400183671}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &400183674
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400183673}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &445933060
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +648,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 83131d1e1fda38b46bd161caf5c61ce9, type: 2}
     - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -671,13 +697,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 461849134}
   m_SourcePrefab: {fileID: 100100000, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
 --- !u!4 &461849132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
   m_PrefabInstance: {fileID: 461849131}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &461849133 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 461849131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &461849134
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461849133}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &657788036
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,6 +820,110 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657788036}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &658260733
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 658260734}
+  - component: {fileID: 658260736}
+  - component: {fileID: 658260735}
+  m_Layer: 0
+  m_Name: Medical marker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &658260734
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658260733}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.23911761, y: 0.36964384, z: -0.09904577, w: 0.8923991}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1926813102}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!102 &658260735
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658260733}
+  m_Text: +
+  m_OffsetZ: 0
+  m_CharacterSize: 0.18
+  m_LineSpacing: 1
+  m_Anchor: 4
+  m_Alignment: 0
+  m_TabSize: 4
+  m_FontSize: 48
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 0}
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+--- !u!23 &658260736
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658260733}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &663713578
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +935,7 @@ GameObject:
   - component: {fileID: 663713579}
   - component: {fileID: 663713581}
   - component: {fileID: 663713580}
+  - component: {fileID: 663713582}
   m_Layer: 0
   m_Name: Runner_Port_5
   m_TagString: Untagged
@@ -812,12 +969,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe2b50a8bf119604391f8fdd735c98ce, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxEnemy
   session: {fileID: 1675964990}
-  speed: 2.35
-  health: 70
-  sightRange: 8
+  definition: {fileID: 11400000, guid: 73aaf6dd9f90a6a4ea77add98d304318, type: 2}
+  speed: 2.25
+  health: 55
+  sightRange: 9
   useNavigation: 1
 --- !u!143 &663713581
 CharacterController:
@@ -844,6 +1002,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &663713582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663713578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 770415623}
 --- !u!1 &697246072
 GameObject:
   m_ObjectHideFlags: 0
@@ -855,6 +1026,7 @@ GameObject:
   - component: {fileID: 697246073}
   - component: {fileID: 697246075}
   - component: {fileID: 697246074}
+  - component: {fileID: 697246076}
   m_Layer: 0
   m_Name: Shambler_Port_4
   m_TagString: Untagged
@@ -888,12 +1060,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe2b50a8bf119604391f8fdd735c98ce, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxEnemy
   session: {fileID: 1675964990}
+  definition: {fileID: 11400000, guid: 35a871df793ab254b9f8b7ba18ef87bc, type: 2}
   speed: 1.15
   health: 70
-  sightRange: 6
+  sightRange: 7
   useNavigation: 1
 --- !u!143 &697246075
 CharacterController:
@@ -920,6 +1093,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &697246076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697246072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 461849134}
 --- !u!1001 &770415620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -930,7 +1116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: fb1d73c7d81aa0f4cb8db5905dced98c, type: 2}
     - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -979,13 +1165,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 770415623}
   m_SourcePrefab: {fileID: 100100000, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
 --- !u!4 &770415621 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
   m_PrefabInstance: {fileID: 770415620}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &770415622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 770415620}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &770415623
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770415622}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1001 &777659551
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1048,7 +1260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2049929814205202405, guid: fdfea1a7a14e62d4d853a348f0081cd6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1072de643e9eb3c47b53a1b7d3a2f266, type: 2}
     - target: {fileID: 919132149155446097, guid: fdfea1a7a14e62d4d853a348f0081cd6, type: 3}
       propertyPath: m_Name
@@ -1057,13 +1269,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5332809968238436118, guid: fdfea1a7a14e62d4d853a348f0081cd6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 777659554}
   m_SourcePrefab: {fileID: 100100000, guid: fdfea1a7a14e62d4d853a348f0081cd6, type: 3}
 --- !u!4 &777659552 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fdfea1a7a14e62d4d853a348f0081cd6, type: 3}
   m_PrefabInstance: {fileID: 777659551}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &777659553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5332809968238436118, guid: fdfea1a7a14e62d4d853a348f0081cd6, type: 3}
+  m_PrefabInstance: {fileID: 777659551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &777659554
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777659553}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &788445321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,6 +1313,7 @@ GameObject:
   - component: {fileID: 788445323}
   - component: {fileID: 788445324}
   - component: {fileID: 788445322}
+  - component: {fileID: 788445325}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Untagged
@@ -1092,7 +1331,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5b6a04a84a093749a2fbe2deebd7d5e, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxPlayer
   view: {fileID: 1064920218}
   session: {fileID: 1675964990}
@@ -1114,6 +1353,7 @@ Transform:
   - {fileID: 962102484}
   - {fileID: 1127713163}
   - {fileID: 657788037}
+  - {fileID: 1693331927}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &788445324
@@ -1141,6 +1381,283 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &788445325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788445321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 777659554}
+--- !u!1 &817134907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 817134912}
+  - component: {fileID: 817134911}
+  - component: {fileID: 817134910}
+  - component: {fileID: 817134909}
+  - component: {fileID: 817134908}
+  m_Layer: 0
+  m_Name: Supply aid-control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &817134908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817134907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a353a5e2ac74640a64d793452b88e2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.WorldPickup
+  id: aid-control
+  label: Botiquin de control
+  ammo: 0
+  doses: 0
+  medkits: 1
+  bandages: 1
+--- !u!23 &817134909
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817134907}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: b53853f0dfe5b134d919d09876540929, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &817134910
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817134907}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &817134911
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817134907}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &817134912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817134907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15, y: 0.5, z: 17}
+  m_LocalScale: {x: 0.65, y: 0.7, z: 0.65}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1280777068}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &879931012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 879931017}
+  - component: {fileID: 879931016}
+  - component: {fileID: 879931015}
+  - component: {fileID: 879931014}
+  - component: {fileID: 879931013}
+  m_Layer: 0
+  m_Name: Supply aid-arrival
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &879931013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879931012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a353a5e2ac74640a64d793452b88e2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.WorldPickup
+  id: aid-arrival
+  label: Botiquin y vendas
+  ammo: 0
+  doses: 0
+  medkits: 1
+  bandages: 2
+--- !u!23 &879931014
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879931012}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: b53853f0dfe5b134d919d09876540929, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &879931015
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879931012}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &879931016
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879931012}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &879931017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879931012}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21, y: 0.5, z: -12}
+  m_LocalScale: {x: 0.65, y: 0.7, z: 0.65}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1082816291}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &909132475
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,6 +1868,7 @@ GameObject:
   - component: {fileID: 1043723302}
   - component: {fileID: 1043723304}
   - component: {fileID: 1043723303}
+  - component: {fileID: 1043723305}
   m_Layer: 0
   m_Name: Shambler_Port_0
   m_TagString: Untagged
@@ -1384,12 +1902,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe2b50a8bf119604391f8fdd735c98ce, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxEnemy
   session: {fileID: 1675964990}
+  definition: {fileID: 11400000, guid: 35a871df793ab254b9f8b7ba18ef87bc, type: 2}
   speed: 1.15
   health: 70
-  sightRange: 6
+  sightRange: 7
   useNavigation: 1
 --- !u!143 &1043723304
 CharacterController:
@@ -1416,6 +1935,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &1043723305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043723301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 1192719556}
 --- !u!1 &1064920217
 GameObject:
   m_ObjectHideFlags: 0
@@ -1498,7 +2030,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3f073e4fa2b18042a3c58b26f9e1afd, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.IsometricView
   target: {fileID: 788445323}
   width: 480
@@ -1513,7 +2045,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
@@ -1580,9 +2112,113 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 310aa54c637dad24a8ff9961117dee7f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.PortVisibility
   target: {fileID: 788445323}
+--- !u!1 &1082816290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1082816291}
+  - component: {fileID: 1082816293}
+  - component: {fileID: 1082816292}
+  m_Layer: 0
+  m_Name: Medical marker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1082816291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082816290}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.23911761, y: 0.36964384, z: -0.09904577, w: 0.8923991}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879931017}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!102 &1082816292
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082816290}
+  m_Text: +
+  m_OffsetZ: 0
+  m_CharacterSize: 0.18
+  m_LineSpacing: 1
+  m_Anchor: 4
+  m_Alignment: 0
+  m_TabSize: 4
+  m_FontSize: 48
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 0}
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+--- !u!23 &1082816293
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082816290}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1127713162
 GameObject:
   m_ObjectHideFlags: 0
@@ -1870,7 +2506,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 83131d1e1fda38b46bd161caf5c61ce9, type: 2}
     - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1919,13 +2555,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1192719556}
   m_SourcePrefab: {fileID: 100100000, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
 --- !u!4 &1192719554 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
   m_PrefabInstance: {fileID: 1192719553}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1192719555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 1192719553}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &1192719556
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192719555}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &1216658964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2016,6 +2678,110 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216658964}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1280777067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1280777068}
+  - component: {fileID: 1280777070}
+  - component: {fileID: 1280777069}
+  m_Layer: 0
+  m_Name: Medical marker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1280777068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280777067}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.23911761, y: 0.36964384, z: -0.09904577, w: 0.8923991}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 817134912}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!102 &1280777069
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280777067}
+  m_Text: +
+  m_OffsetZ: 0
+  m_CharacterSize: 0.18
+  m_LineSpacing: 1
+  m_Anchor: 4
+  m_Alignment: 0
+  m_TabSize: 4
+  m_FontSize: 48
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 0}
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+--- !u!23 &1280777070
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280777067}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1414584013
 GameObject:
   m_ObjectHideFlags: 0
@@ -2304,6 +3070,7 @@ GameObject:
   - component: {fileID: 1530822528}
   - component: {fileID: 1530822530}
   - component: {fileID: 1530822529}
+  - component: {fileID: 1530822531}
   m_Layer: 0
   m_Name: Shambler_Port_3
   m_TagString: Untagged
@@ -2337,12 +3104,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe2b50a8bf119604391f8fdd735c98ce, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxEnemy
   session: {fileID: 1675964990}
+  definition: {fileID: 11400000, guid: 35a871df793ab254b9f8b7ba18ef87bc, type: 2}
   speed: 1.15
-  health: 105
-  sightRange: 6
+  health: 70
+  sightRange: 7
   useNavigation: 1
 --- !u!143 &1530822530
 CharacterController:
@@ -2369,6 +3137,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &1530822531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530822527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 2031846981}
 --- !u!1 &1627547694
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,7 +3327,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7eb9ff44b8ed734fbce7fc359b0aa26, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxSession
   config: {fileID: 11400000, guid: d8b10954930b2ad45b3d925491f4e148, type: 2}
   player: {fileID: 788445322}
@@ -2565,6 +3346,9 @@ MonoBehaviour:
     inventoryLockedUntil: 0
     tremorUntil: 0
     doses: 1
+    medkits: 2
+    bandages: 3
+    bleeding: 0
   rounds: 12
   reserve: 24
 --- !u!4 &1675964991
@@ -2592,7 +3376,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7db615c360a97ed47ae2cd0cf7f605c3, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.PortMission
   session: {fileID: 1675964990}
   arrival: {fileID: 383299868}
@@ -2601,6 +3385,103 @@ MonoBehaviour:
   supplies: {fileID: 110791444}
   controlDoor: {fileID: 975365083}
   boardingGate: {fileID: 1181689515}
+--- !u!1 &1693331926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1693331927}
+  - component: {fileID: 1693331928}
+  m_Layer: 0
+  m_Name: Player flashlight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1693331927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693331926}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 788445323}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &1693331928
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693331926}
+  m_Enabled: 1
+  serializedVersion: 13
+  m_Type: 0
+  m_Color: {r: 0.85, g: 1, b: 0.87, a: 1}
+  m_Intensity: 6
+  m_Range: 13
+  m_SpotAngle: 65
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShapeRadius: 0.025
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &1695917398
 GameObject:
   m_ObjectHideFlags: 0
@@ -2701,7 +3582,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: fb1d73c7d81aa0f4cb8db5905dced98c, type: 2}
     - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2750,13 +3631,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1713431607}
   m_SourcePrefab: {fileID: 100100000, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
 --- !u!4 &1713431605 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
   m_PrefabInstance: {fileID: 1713431604}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1713431606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 1713431604}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &1713431607
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713431606}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &1860279392
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,6 +3675,7 @@ GameObject:
   - component: {fileID: 1860279393}
   - component: {fileID: 1860279395}
   - component: {fileID: 1860279394}
+  - component: {fileID: 1860279396}
   m_Layer: 0
   m_Name: Runner_Port_1
   m_TagString: Untagged
@@ -2801,12 +3709,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe2b50a8bf119604391f8fdd735c98ce, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxEnemy
   session: {fileID: 1675964990}
-  speed: 2.35
-  health: 70
-  sightRange: 8
+  definition: {fileID: 11400000, guid: 73aaf6dd9f90a6a4ea77add98d304318, type: 2}
+  speed: 2.25
+  health: 55
+  sightRange: 9
   useNavigation: 1
 --- !u!143 &1860279395
 CharacterController:
@@ -2833,6 +3742,151 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &1860279396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860279392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 1713431607}
+--- !u!1 &1926813097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1926813102}
+  - component: {fileID: 1926813101}
+  - component: {fileID: 1926813100}
+  - component: {fileID: 1926813099}
+  - component: {fileID: 1926813098}
+  m_Layer: 0
+  m_Name: Supply ammo-yard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1926813098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926813097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a353a5e2ac74640a64d793452b88e2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.WorldPickup
+  id: ammo-yard
+  label: Municion y botiquin
+  ammo: 18
+  doses: 0
+  medkits: 1
+  bandages: 0
+--- !u!23 &1926813099
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926813097}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: b53853f0dfe5b134d919d09876540929, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1926813100
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926813097}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1926813101
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926813097}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1926813102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926813097}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8, y: 0.5, z: -7}
+  m_LocalScale: {x: 0.65, y: 0.7, z: 0.65}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 658260734}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2031846978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2843,7 +3897,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: fb1d73c7d81aa0f4cb8db5905dced98c, type: 2}
     - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2892,13 +3946,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2031846981}
   m_SourcePrefab: {fileID: 100100000, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
 --- !u!4 &2031846979 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
   m_PrefabInstance: {fileID: 2031846978}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2031846980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 2031846978}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &2031846981
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031846980}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &2103280479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3023,6 +4103,7 @@ GameObject:
   - component: {fileID: 2134359971}
   - component: {fileID: 2134359973}
   - component: {fileID: 2134359972}
+  - component: {fileID: 2134359974}
   m_Layer: 0
   m_Name: Shambler_Port_2
   m_TagString: Untagged
@@ -3056,12 +4137,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe2b50a8bf119604391f8fdd735c98ce, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxEnemy
   session: {fileID: 1675964990}
+  definition: {fileID: 11400000, guid: 35a871df793ab254b9f8b7ba18ef87bc, type: 2}
   speed: 1.15
   health: 70
-  sightRange: 6
+  sightRange: 7
   useNavigation: 1
 --- !u!143 &2134359973
 CharacterController:
@@ -3088,6 +4170,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &2134359974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134359970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 400183674}
 --- !u!1001 &6091637890996968339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3157,3 +4252,6 @@ SceneRoots:
   - {fileID: 1414584015}
   - {fileID: 383299868}
   - {fileID: 1645986808}
+  - {fileID: 879931017}
+  - {fileID: 1926813102}
+  - {fileID: 817134912}

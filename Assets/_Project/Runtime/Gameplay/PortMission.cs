@@ -16,6 +16,14 @@ namespace Zombtoy.Gameplay
         public bool BoardingAuthorized { get; private set; }
         public bool SuppliesTaken { get; private set; }
         public string Prompt { get; private set; }
+        public Transform ActiveObjective => BoardingAuthorized ? session.extraction : PowerOn ? session.terminal : HasFuse ? generator : fuse;
+
+        public void Restore(bool fuseTaken, bool power, bool boarding, bool suppliesTaken)
+        {
+            HasFuse = fuseTaken; PowerOn = power; BoardingAuthorized = boarding; SuppliesTaken = suppliesTaken;
+            fuse.gameObject.SetActive(!HasFuse); supplies.gameObject.SetActive(!SuppliesTaken);
+            controlDoor.SetActive(!PowerOn); boardingGate.SetActive(!BoardingAuthorized);
+        }
         public string Objective => BoardingAuthorized ? "04 / Embarca en el submarino por el muelle este." :
             PowerOn ? "03 / Autoriza el embarque en CONTROL." :
             HasFuse ? "02 / Instala el repuesto en el GENERADOR." :
@@ -66,6 +74,7 @@ namespace Zombtoy.Gameplay
                     controlDoor.SetActive(false);
                     session.EmitNoise(generator.position, 20);
                     session.SetMessage("Energia restablecida. La sala de control esta abierta.");
+                    session.SaveCheckpoint(true);
                 }
             }
             else if (target == session.terminal)

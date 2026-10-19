@@ -1,33 +1,39 @@
-# Validación — primer mapa del puerto
+# Validación — primer nivel del puerto
 
-18 octubre 2026, Unity6000.5.9f1 / URP17.5.0, Windows x64 Mono.
-Rama: `codex/first-port-map`. El sandbox original se conserva.
+18 octubre 2026 local / Unity6000.5.9f1 / URP17.5.0 / Windows x64 Mono.
+Rama `codex/first-port-map`. La evidencia anterior de trazado permanece en
+`Validation/Port01`; el incremento de supervivencia está en `Validation/FirstLevel02`.
 
 | Comprobación | Resultado | Evidencia |
 |---|---|---|
-| Compilación y build | **0 errores / 0 advertencias** | [Resumen del build](Validation/Port01/build-summary.txt) |
-| EditMode | **17/17 PASS** | [Casos y resultados](Validation/Port01/tests.json); dos escenas sin scripts perdidos y referencias obligatorias presentes |
-| PlayMode | **5/5 PASS** | Misión ordenada, pasos conectados en NavMesh, suministros no duplicables, paredes bloquean interacción, suelo y recuperación de caída; regresión del sandbox |
-| Visual | Revisado | [Plano general](Validation/Port01/port-overview.png), [entrada](Validation/Port01/port-player.png), [render real480×270](Validation/Port01/port-runtime.png) |
-| Assets y metadatos | PASS local |133 GUID únicos, sin duplicados ni metas perdidos; licencias/hashes de terceros sin cambios |
-| Build distribuible | Generado localmente | `Builds/Windows/AbisalStealness.exe`; [SHA256 de archivos](Validation/Port01/build-files-sha256.json) |
+| Compilación Windows | 0 errores / 0 advertencias | [Resumen](Validation/FirstLevel02/build-summary.txt) |
+| EditMode | 18/18 PASS | [Casos](Validation/FirstLevel02/tests.json): suero, manía, límites, medicina/sangrado y escenas con bindings válidos |
+| PlayMode | 10/10 PASS | Menú inicia por botón; pausa congela; tratamiento tarda, se interrumpe y consume; muerte; guardado/carga; ataque preparable/esquivable, paredes; misión ordenada y rutas NavMesh; suministros no duplicables; caída; regresión sandbox |
+| Visual | 3 estados inspeccionados a1280×720 | [Menú](Validation/FirstLevel02/first-level-menu.png), [HUD](Validation/FirstLevel02/first-level-hud.png), [ayuda](Validation/FirstLevel02/first-level-help.png) |
+| Recursos | PASS |146 GUID únicos; hashes/licencias de terceros y lock de paquetes sin cambios |
+| Distribución | Build local completo + paquete Windows | `JUGAR ABISAL.cmd`, acceso del escritorio y release de prueba v0.2.0-port-playtest |
 
-Build arranca en Level01_Port y conserva MVP_Sandbox como segunda escena. El
-ejecutable debe acompañarse de su carpeta Data, UnityPlayer, Mono y demás archivos.
-Incluye créditos y las cuatro licencias Kenney. No se versiona la carpeta Builds.
+Las capturas muestran canvases uGUI reales y el RenderTexture del mundo, compuestos
+por una cámara temporal durante PlayMode. El Editor batch no presenta un backbuffer;
+por eso no se usa ScreenCapture del escritorio. No son una partida manual ni un
+registro de rendimiento. Se corrigió el contraste del marcador y se revisaron de
+nuevo los tres estados; ver [alcance de revisión UI](UI_REVIEW.md).
 
-Se revisó una captura tomada del RenderTexture durante PlayMode, además de las
-vistas de Editor. La captura de Editor usa una solicitud de render URP con
-inicialización de estado para conservar los colores desde la primera imagen.
+La prueba de misión desactiva enemigos para aislar objetivos y navegación. La
+prueba de combate activa un infectado para comprobar preparación, esquiva, daño y
+bloqueo por pared. El guardado usa rutas temporales de prueba y no escribe el save
+normal del jugador. Comprueba salud, recursos, objetivos, puertas, suministros y
+enemigos abatidos; rechaza JSON corrupto. No equivale aún a los10 ciclos de aceptación
+del KPI de checkpoint.
 
-## Alcance de las pruebas
+El juego arranca con menú en Level01_Port y conserva MVP_Sandbox como segunda
+escena. El paquete incluye UnityPlayer, Data, Mono, créditos y cuatro licencias
+Kenney; se excluyen símbolos y carpetas DoNotShip. El EXE requiere todo su directorio.
+Los hashes de archivos del build están en
+[build-files-sha256.json](Validation/FirstLevel02/build-files-sha256.json).
 
-La misión se prueba por interacción y rutas de NavMesh entre objetivos; no se ha
-cronometrado una partida humana. El test desactiva enemigos para aislar reglas de
-misión y no certifica la dificultad de combate ni el KPI de duración/rendimiento.
-No hay todavía checkpoints, inventario por cuadrícula, animaciones finales ni
-el tratamiento PSX completo. El corte visual de obstáculos es por ocultación,
-no un shader de dither. Es una primera versión para iterar el nivel.
-
-El helper de validación rechaza resultados XML anteriores al inicio de cada
-ejecución para impedir que un reporte viejo pase por una prueba nueva.
+Pendientes: partida humana completa, ajuste de duración/dificultad/economía,
+perfilado en el hardware objetivo, inventario por cuadrícula, más armas y variantes,
+fases mentales audiovisuales, shader PSX completo y niveles2–4. La ocultación de
+obstáculos conserva colliders; no es todavía corte por dither. Ningún KPI global
+queda certificado por esta entrega.

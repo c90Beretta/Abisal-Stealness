@@ -21,6 +21,8 @@ namespace Zombtoy.Tests
             mission = Object.FindAnyObjectByType<PortMission>();
             Assert.That(mission, Is.Not.Null);
             session = mission.session;
+            session.CheckpointPathOverride = Path.GetFullPath("TestResults/test-port-checkpoint.json");
+            session.BeginMission();
             foreach (var enemy in Object.FindObjectsByType<SandboxEnemy>()) enemy.gameObject.SetActive(false);
         }
 

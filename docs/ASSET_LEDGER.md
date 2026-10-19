@@ -38,3 +38,9 @@ repositorio público, rig/clips/escala y URP; crear wrapper nuevo en `_Project`,
 probar escena y build; actualizar manifest/ledger/créditos en el mismo PR.
 Los modelos de Sketchfab, paquetes Asset Store, Zara, Perfect Pixel, Pixabay,
 Mixamo y Zombtoy externo permanecen **NO INSTALADOS**.
+
+**DER-01 — Clips del puerto:** `_Project/Art/Animations/Idle.anim` y `Run.anim`
+son copias derivadas de `Root|Idle` y `Root|Run` de los FBX Kenney Survivors ya
+auditados (CC0). Se convierten a Legacy/Loop y se enlazan al nodo Root del esqueleto;
+se excluyen los clips Targeting Pose. No se modifican archivos del proveedor ni
+sus hashes. Protagonista y seis infectados comparten las dos animaciones.

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T00:33:04Z",
+  "title": "Design System: ABISAL — primer puerto jugable",
+  "extensions": {},
+  "components": [
+    {
+      "name": "Botón de menú",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Vista previa HTML del botón nativo; el ColorBlock de Unity es la autoridad para sus estados.",
+      "html": "<button class=\"ds-button\">Comenzar nivel / Enter</button>",
+      "css": ".ds-button{width:382px;height:48px;border:0;border-radius:0;background:rgb(14%,28%,23%);color:white;text-align:left;padding-left:16px;font:20px Arial,sans-serif}.ds-button:hover,.ds-button:focus-visible{background:rgb(19.6%,39.2%,32.2%)}.ds-button:disabled{background:rgb(6.3%,14%,11.04%)}"
+    },
+    {
+      "name": "Signos vitales",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Representación ilustrativa del respaldo, valor y barra; no ejecuta Unity.",
+      "html": "<div class=\"ds-vitals\"><div>VIDA 072 / HEMORRAGIA [B]</div><div class=\"ds-track\"><div class=\"ds-fill\"></div></div><p>SUERO 65% INFECCION 0%</p></div>",
+      "css": ".ds-vitals{width:278px;padding:12px 16px;background:rgba(2.5%,5.5%,5.5%,.96);font:18px Arial,sans-serif;color:rgb(100%,55%,46%)}.ds-track{height:9px;margin-top:12px;background:rgb(15%,25%,23%)}.ds-fill{width:72%;height:100%;background:rgb(55%,94%,72%)}.ds-vitals p{color:rgb(67%,77%,74%);font-size:16px}"
+    },
+    {
+      "name": "Franja de misión",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Instrucción de misión sobre la superficie clínica.",
+      "html": "<div class=\"ds-mission\"><div>ABISAL / PUERTO 01</div><p>01 / Busca el repuesto en ALMACEN 03.</p></div>",
+      "css": ".ds-mission{padding:14px 28px;background:rgba(2.5%,5.5%,5.5%,.96);color:rgb(55%,94%,72%);font:18px Arial,sans-serif}.ds-mission p{font-size:21px;color:white;margin:12px 0 0}"
+    },
+    {
+      "name": "Marcador de objetivo",
+      "kind": "custom",
+      "refersTo": "objective-marker",
+      "description": "Respaldo oscuro corregido; vista previa sin reproducir el glifo provisional.",
+      "html": "<div class=\"ds-objective\">OBJETIVO 32m</div>",
+      "css": ".ds-objective{width:184px;height:25px;padding:5px 8px 0;background:rgba(2.5%,5.5%,5.5%,.96);color:rgb(55%,94%,72%);font:16px Arial,sans-serif}"
+    },
+    {
+      "name": "Resumen de equipo",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Resumen textual; no es un inventario de cuadrícula.",
+      "html": "<div class=\"ds-equipment\"><div>EQUIPO / TAB PARA CERRAR</div><p>Botiquines: 2 Vendas: 3 Suero: 1<br>Municion: 12 en arma / 24 en reserva<br>Repuesto: pendiente<br>Este panel no pausa la partida.</p></div>",
+      "css": ".ds-equipment{padding:18px 24px;background:rgba(2.5%,5.5%,5.5%,.96);color:rgb(55%,94%,72%);font:24px Arial,sans-serif}.ds-equipment p{font-size:21px;color:white;margin-top:18px}"
+    }
+  ],
+  "narrative": {
+    "overview": "Registro descriptivo del HUD de Unity uGUI implementado en Assets/_Project/Runtime/Gameplay/GameHud.cs, con presentación del mundo en IsometricView.cs. Conserva el lenguaje clínico oscuro, verde y rojo de la interfaz existente. No constituye una dirección creativa nueva ni aprobada por entrevista; no existe un PRODUCT.md de referencia.",
+    "keyCharacteristics": [
+      "Mundo de baja resolución y HUD independiente para lectura.",
+      "Paneles oscuros rectangulares, texto blanco/gris y foco visual verde menta.",
+      "Avisos de hemorragia y salud enemiga en rojo, acompañados de texto o barras."
+    ],
+    "rules": [],
+    "dos": [
+      "Do mantener el HUD separado del render de baja resolución.",
+      "Do conservar el respaldo oscuro del marcador y verificar su contraste sobre el mundo.",
+      "Do mostrar etiquetas y teclas junto a estados y cantidades."
+    ],
+    "donts": [
+      "Don't presentar este registro como identidad nueva aprobada o como norma para todos los niveles.",
+      "Don't convertir la fuente provisional o el glifo del marcador en un sistema de marca.",
+      "Don't afirmar adaptación a otras resoluciones o accesibilidad certificada con estas tres capturas."
+    ]
+  }
+}

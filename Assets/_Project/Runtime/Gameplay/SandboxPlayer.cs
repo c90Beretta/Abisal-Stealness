@@ -14,12 +14,17 @@ namespace Zombtoy.Gameplay
         private float nextShot;
         private float nextStep;
         private AudioSource audioSource;
+        private CharacterMotion motion;
+        private float nextMelee;
+        private Light flashlight;
 
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.spatialBlend = 0f;
+            motion = GetComponent<CharacterMotion>();
+            flashlight = GetComponentInChildren<Light>();
         }
 
         private void Update()
@@ -33,8 +38,9 @@ namespace Zombtoy.Gameplay
             Vector3 direction = Vector3.ClampMagnitude(right * input.x + forward * input.y, 1f);
             bool sprint = kb.leftShiftKey.isPressed;
             float speed = (sprint ? 5f : 3f) * (session.State.IsManic ? 1.3f : 1f);
-            if (session.Injecting) speed *= 0.3f;
+            if (session.Busy) speed *= 0.3f;
             controller.Move((direction * speed + Vector3.down * 8f) * Time.deltaTime);
+            if (motion != null) motion.SetMoving(direction.sqrMagnitude > 0.01f, speed);
             if (input.sqrMagnitude > 0 && Time.time >= nextStep)
             {
                 nextStep = Time.time + (sprint ? 0.28f : 0.48f);
@@ -53,12 +59,25 @@ namespace Zombtoy.Gameplay
                     aim.y = 0;
                     if (aim.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(aim);
                 }
-                if (Mouse.current.leftButton.isPressed && Time.time >= nextShot && !session.Injecting)
+                if (Mouse.current.leftButton.isPressed && Time.time >= nextShot && !session.Busy && !session.Hud.BlocksCombat)
                     Shoot();
             }
             if (kb.rKey.wasPressedThisFrame) session.Reload();
             if (kb.qKey.wasPressedThisFrame) session.BeginInjection();
             if (kb.eKey.wasPressedThisFrame) session.Interact();
+            if (kb.hKey.wasPressedThisFrame) session.BeginHeal();
+            if (kb.bKey.wasPressedThisFrame) session.BeginBandage();
+            if (kb.fKey.wasPressedThisFrame && flashlight != null) flashlight.enabled = !flashlight.enabled;
+            if (kb.spaceKey.wasPressedThisFrame && !session.Busy && !session.Hud.BlocksCombat && Time.time >= nextMelee)
+            {
+                nextMelee = Time.time + 0.85f;
+                session.EmitNoise(transform.position, 5);
+                if (Physics.SphereCast(transform.position + Vector3.up * 0.85f, 0.3f, transform.forward, out var meleeHit, 1.3f, ~0, QueryTriggerInteraction.Ignore))
+                {
+                    var enemy = meleeHit.collider.GetComponentInParent<SandboxEnemy>();
+                    if (enemy != null && !enemy.IsDead) { enemy.Damage(25); session.RegisterHit(); }
+                }
+            }
         }
 
         private void Shoot()
@@ -76,7 +95,7 @@ namespace Zombtoy.Gameplay
             {
                 end = hit.point;
                 var enemy = hit.collider.GetComponentInParent<SandboxEnemy>();
-                if (enemy != null) enemy.Damage(35f);
+                if (enemy != null && !enemy.IsDead) { enemy.Damage(35f); session.RegisterHit(); }
             }
             var tracer = new GameObject("Shot trace").AddComponent<LineRenderer>();
             tracer.sharedMaterial = session.tracerMaterial;
