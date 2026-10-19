@@ -30,6 +30,11 @@ crea materiales URP en `_Project/Art/Materials/Imported3D`, reutilizando albedo,
 normales, mapas metálicos y oclusión. La geometría estática, colisiones y NavMesh
 propios están en `Port_Environment_3D.prefab` y `Port03_NavMesh.asset`.
 
-Las armas pertenecen al subconjunto Kenney CC0 ya versionado, con modelos b/a/c
+En0.3 y0.4 las armas pertenecen al subconjunto Kenney CC0 ya versionado, con modelos b/a/c
 para pistola/carabina/dispersor. Los paquetes de armas AR/escopeta de la lista HTML
 no estaban descargados en este proyecto; esta entrega no afirma haberlos instalado.
+
+En0.5, `IndustrialWeaponsBuilder` genera tres armas de fuego y dos herramientas
+de melee originales. `IndustrialArtRebuild` adapta materiales y coloca mamparos,
+carros, estanterías, conductos y equipos adicionales de los mismos paquetes locales.
+La navegación vigente es `Port05_NavMesh.asset`; no se cambian los originales del proveedor.

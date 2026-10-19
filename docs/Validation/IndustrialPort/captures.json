@@ -1,0 +1,125 @@
+{
+  "sourceCommit": "0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb",
+  "count": 17,
+  "captures": [
+    {
+      "file": "first-level-help.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "e6bd855f5d4497dbb8b1280e17886e2086c22629b464310e3c26a556f5e40ea7",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, first-level-help.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "first-level-menu.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "19eedb0fc3351a8bdaf9d03c1c6555de436550c181eb107faed72de929f5de8c",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, first-level-menu.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-arrival.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "8d03edda72628ba089b53c4111718b0e534e815f0248c152043f05104614195a",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-arrival.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-control.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "ee7fce059c56c84e421a7ecf018f92e0c758e0256789b2937eca4969744f1201",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-control.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-fall-00.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "2ce2420783aff199f9b548742ba3af2c7aadbd0ef22859804a8913b0d722c641",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-fall-00.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-fall-01.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "4cef5d61c3e76df8309944af326f41bd0d5385063857025888e0551fe9e25fc8",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-fall-01.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-fall-02.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "f88d9643e25996804dd1227d4bf70303fc1b89e8b7ce06c8f15d7da4bed0cf8c",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-fall-02.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-fall-03.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "9c79512010c371660e1ca0bd0e80fa7e43827016582ce58a30c938cae97ac7ce",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-fall-03.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-fall-04.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "4ef0c3e8a47150931aaa891646517a9be7748545ed9c6863dcf06459d592a3c3",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-fall-04.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-ragdoll-1080.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "f5dd6d1b4d56f2f6d2e2e5d4b3bc1f5ba31ac10249674259cea2309079452a8c",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-ragdoll-1080.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-ragdoll.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "9b7671c26238e3769d83514669cca4a5e7d83a66c85bc90a1ec4b59807531d29",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-ragdoll.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-soldier.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "f1d8df237a1313a148c41f875329b59b68a52e655a946c07344f73bf1746ba07",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-soldier.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "industrial-warehouse.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "1981c2d3a22ba8447bd0ec2da0ad2a47446463885c6fea6938fb2bb2ad3c3a4d",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, industrial-warehouse.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "night-infected.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "0d104b6b70ff568ce4e0d53e31e7328d2ed4aefcf58be5a3d2cc32758d94df70",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, night-infected.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "night-inventory-1080.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "852d3e908b9bbef6da9db6e84127bb93edd829f26aeed72fd6e797b8c1006e80",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, night-inventory-1080.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "night-inventory-feedback.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "bc68106968dea913840b05222eb14d83c4c312c7b952bd3f3d2e39fd991394a8",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, night-inventory-feedback.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    },
+    {
+      "file": "night-inventory.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "68423b3f89633a40f4bb7563cf41090bc3c813aa5fced8c75adac42c0f4087cc",
+      "origin": "Origin: Actual Unity 6000.5.9f1 URP capture, night-inventory.png, 2026-10-19 13:03 UTC, final industrial interior/soldier F1/F2 correction. Source 0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb. SingleCameraRequest world plus live ScreenSpaceOverlay HUD; WorldSpace CRT remains in the world. Editor validation fixture, not AI imagery, standalone FPS evidence or human playtest. PNG pixels unchanged; origin metadata only."
+    }
+  ]
+}

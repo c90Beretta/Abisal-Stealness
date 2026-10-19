@@ -1,0 +1,24 @@
+{
+  "version": "0.5.0",
+  "utc": "2026-10-19T13:13:06.3832021Z",
+  "graphicsApi": "Direct3D11",
+  "gpu": "NVIDIA GeForce RTX 3070 Ti",
+  "cpu": "AMD Ryzen 5 5600X 6-Core Processor ",
+  "width": 1920,
+  "height": 1080,
+  "gpuTimingSamples": 0,
+  "peakAlive": 14,
+  "peakDynamicBodies": 52,
+  "peakEffects": 90,
+  "warmupSeconds": 60.0,
+  "measuredSeconds": 10.000602722167969,
+  "buildIdentity": {
+    "sourceCommit": "0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb",
+    "version": "0.5.0",
+    "builtUtc": "2026-10-19T13:09:15.1776152Z"
+  },
+  "runtimeCompleted": true,
+  "processExitCode": 3,
+  "renderingBenchmarkAccepted": false,
+  "reason": "Hidden-window runtime completed without logged exceptions. Zero GPU timings: exit 3 is the benchmark rejection; no FPS or frame/CPU percentiles accepted."
+}

@@ -83,3 +83,12 @@ prototipo. La presentación pixelada del plan inicial se sustituyó por3D nativo
 reutiliza clips y definiciones propios, sin regenerar la geometría. Solo ejecutarla
 en una copia limpia o con los cambios de escena guardados/versionados. Los clips
 derivados comparten referencias y no se duplican dentro de la escena.
+
+## Reconstrucción visual industrial0.5
+
+Se conservan los cuatro objetivos y sus puntos de interacción. Almacén y control
+ tienen recintos interiores más contenidos, bancos y estaciones junto a mamparos;
+ el acceso navegable original sigue probado de principio a fin. El corte visual
+ de muros cercanos permite ver al jugador dentro; no elimina colisiones ni deja
+ disparar a través de paredes. El acabado480×270 afecta al mundo3D, con HUD nativo.
+ Ver `INDUSTRIAL_PORT.md` y la revisión visual vigente para alcance y pendientes.

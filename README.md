@@ -1,6 +1,6 @@
 # Zombtoy — survival horror isométrico
 
-Proyecto Unity 6 / URP con **mundo 3D y cámara isométrica a resolución nativa**.
+Proyecto Unity 6 / URP con **mundo 3D y cámara isométrica, acabado PS1 marcado**.
 Meta de producción: 4 niveles, economía de suero y munición e IA por percepción.
 Incluye una **primera versión jugable del puerto**
 y el sandbox técnico. El juego completo y sus KPI de producción siguen en desarrollo.
@@ -10,9 +10,9 @@ y el sandbox técnico. El juego completo y sus KPI de producción siguen en desa
 En esta copia de trabajo, haz doble clic en **JUGAR ABISAL.cmd** y pulsa
 **Comenzar nivel / Enter**. El ejecutable esta en `Builds/Windows/AbisalStealness.exe`.
 El paquete Windows debe conservarse completo, incluida su carpeta Data.
-Consulta `LEEME PARA JUGAR.txt` para controles y recorrido.
+Consulta `LEEME PARA JUGAR.txt` para controles y recorrido. [Pruebas, capturas e identidad del ejecutable 0.5](docs/Validation/IndustrialPort/README.md).
 
-Para el equipo: [descargar el puerto nocturno 3D para Windows](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.4.0-night-playtest).
+Para el equipo: [descarga Windows 0.5 industrial](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.5.0-industrial-playtest).
 Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado.
 
 ## Desarrollar en Unity
@@ -33,18 +33,21 @@ Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado
 6. Consulta el [mapa y recorrido](docs/LEVEL01_PORT.md), la [validación del puerto](docs/PORT_VALIDATION.md)
    y la [validación inicial de la fundación](docs/VALIDATION.md).
 
-El nivel incluye cuatro variantes de infectados, hordas finitas atraídas por ruido,
-linterna y círculo de percepción, gore y desmembramiento, cuerpo a cuerpo con
+El nivel incluye cuatro arquetipos de infectados con dos variantes de datos cada uno,
+hordas finitas atraídas por ruido, linterna y pulso transitorio de ruido, gore y desmembramiento, cuerpo a cuerpo con
 resistencia, chaleco y máscara con oxígeno. TAB abre mochila y equipamiento;
 E registra cuerpos y contenedores. Las sobras permanecen en el mundo.
 F5 guarda cuando estás a salvo; F9 restaura inventario, botín y progreso de hordas.
 El soldado lleva ropa negra y tanque de oxígeno.
-[Controles, mecánicas y límites de esta entrega](docs/NIGHT_PORT.md).
+[Cambio gráfico industrial, ragdolls y límites de esta entrega](docs/INDUSTRIAL_PORT.md).
 
 El mapa integra muros, suelos, contenedores, estanterías, barriles, maquinaria,
-ordenador y puertas de los assets descargados. Cámara ortográfica35.264°/45°,
-sombras suaves y MSAA4. Se retiró la ampliación480×270: el mundo se renderiza
-directamente al tamaño de la ventana. [Detalle y evidencia de esta entrega](docs/PORT_3D.md).
+ordenador y puertas de los assets descargados. La versión0.5 sustituye personajes
+y armas por modelos originales de escala adulta, añade ragdolls de13 cuerpos y
+arquitectura de cuarentena. Cámara32°/45°, mundo480×270 ampliado con filtro Point,
+dithering y UV oscilante; el HUD conserva resolución nativa. **F2** alterna efectos.
+La inspiración en Mouthwashing y el PS1 marcado fueron pedidos por el usuario;
+la aceptación estética y las cinco sesiones externas del KPI siguen pendientes.
 
 Remoto del equipo: https://github.com/c90Beretta/Abisal-Stealness.
 Revisa `docs/VALIDATION.md` para el estado verificado de la publicación.

@@ -56,3 +56,21 @@ Kenney b/a/c ya incluidos en el subconjunto CC0. No hay nuevas descargas de arma
 ## Puerto nocturno v0.4
 
 Cuatro mallas ponderadas propias derivadas de Kenney Survivors CC0, materiales tácticos, shader NightSignal, geometría de casco/máscara/arnés y siete WAV sintetizados por el proyecto. Generador: `tools/generate_night_audio.py`. El tanque utiliza Oxy_ballon del paquete local KMProd; no se redistribuyen sus fuentes en Git público. Los sonidos y mallas derivados están versionados con sus metas.
+
+## Puerto industrial v0.5
+
+**OWN-05:** `Art/Industrial/Characters` y `Weapons`: nueve cuerpos originales
+ponderados (soldado +4arquetipos×2variantes), clips originales, cinco armas,
+materiales, malla de sangre/casquillo y montaje de esclusa. Generadores C#
+`HumanCharacterBuilder`, `IndustrialWeaponsBuilder`, `IndustrialPortBuilder`,
+`InteriorRebuild` y `ControlConsoleBuilder` (consolas y teclados propios).
+No son derivados de los cuerpos Kenney. El tanque sigue siendo KMProd LOCAL-03.
+
+**GEN-05:** cuatro albedos originales, `Art/Industrial/Textures/AgedEnamel_v1.png`,
+`InfectedFace_v1.png`, `WornCloth_v1.png` y `TacticalAtlas_v2.png`; herramienta integrada OpenAI `image_gen`, generación
+nueva sin imágenes de referencia, fondo opaco. Prompt exacto embebido y JSON de
+procedencia adyacente. Se integran como texturas3D, no como mockup del juego.
+
+**FONT-05:** Barlow Condensed Medium / Crimson Text SemiBold, archivos oficiales
+de Google Fonts bajo SIL OFL1.1; cuatro archivos fuente/licencia con SHA256 y
+URL exactos en `font-install-manifest.json`. Los OFL acompañan el binario.

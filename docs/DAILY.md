@@ -79,3 +79,22 @@
 Integración de oscuridad/linterna con carga, percepción próxima y ruido, seis patrullas y dieciséis reservas finitas, cuatro variantes de malla de infectados, soldado táctico negro con tanque local de oxígeno, VFX de disparos, sangre/desmembramiento, cuchillo/hacha y resistencia. Mochila de 24 kg, cuerpos/cajas saqueables, chaleco y máscara funcionales; fuga tóxica del generador. Checkpoint v2 conserva equipo, botín restante, miembros y reservas; lee v1. Ver `NIGHT_PORT.md`.
 
 Revisión visual fresca: único hallazgo R1 corregido (estados y mensajes de mochila); ver `UI_REVIEW_NIGHT.md`. Pruebas y compilación registradas en `Validation/NightPort`. No hay certificación de balance/FPS ni cambio de los KPI globales. Las fuentes Asset Store siguen locales y el prefab ModularAsset_Sandbox modificado por el usuario se preserva fuera de esta entrega.
+
+## 2026-10-19 / Puerto industrial PS1 0.5
+
+Rediseño solicitado hacia horror industrial inspirado en Mouthwashing. Usuario
+confirmó PS1 marcado y revisión de capturas Unity; tras dos rebuild eligió rehacer
+interiores y soldado. Se reemplazan personajes y armas por geometría propia de
+escala adulta, cuatro albedos originales y fuentesOFL. Mamparos, bancos, props
+locales, corte isométrico y luces prácticas componen cuartos contenidos. Control
+muestra consolas propias con estado real de red/embarque; HUD nativo compacto.
+
+Ragdolls de13 cuerpos/12 articulaciones, gore y loot anclado a pelvis; savev3
+con pose y orientación, recursos y timers en diez ciclos. CSV anónimo local para
+partidas futuras. 26PlayMode/18EditMode pasan; rutas y objetivos completos.
+La revisión completa final pidióF1/F2; el verdict los puntuóresolved, ship solo
+para esos dos hallazgos. No se obtuvo aprobación estética humana ni FPS válido.
+Preflight oculto rechazado por cero muestrasGPU; GTX1060 y cinco personas siguen
+pendientes. Fuentes/licencias/evidencia versionadas; prefab del usuario preservado.
+La interrupción por cuota impidió completar la ventana original de cinco horas;
+no se presenta tiempo inactivo como trabajo realizado.
