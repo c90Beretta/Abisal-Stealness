@@ -62,8 +62,8 @@ namespace Zombtoy.Gameplay
             weaponTitle = Label(weapon.transform, "", 18, Green, 16, -9, 170, 24);
             ammo = Label(weapon.transform, "", 42, Color.white, 16, -32, 175, 52);
             inventory = Label(weapon.transform, "", 15, Muted, 16, -91, 170, 23);
-            prompt = Label(gameplay, "", 23, Green, 0, 154, 650, 32, false, true);
-            message = Label(gameplay, "", 19, Color.white, 0, 103, 560, 45, false, true);
+            prompt = Label(gameplay, "", 23, Green, 0, 119, 650, 32, false, true);
+            message = Label(gameplay, "", 19, Color.white, 0, 72, 560, 45, false, true);
             action = Label(gameplay, "", 20, Green, 0, 211, 430, 30, false, true);
             actionFill = Bar(gameplay, 0, 202, 290, 4, Green, true);
             Label(gameplay, "E  INTERACTUAR     TAB  MOCHILA     F  LINTERNA", 15, Muted, 0, 25, 600, 24, false, true);

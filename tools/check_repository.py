@@ -41,6 +41,8 @@ def main():
                 if guid in guids:
                     errors.append(f"Duplicate GUID: {path} / {guids[guid]}")
                 guids[guid] = path
+            else:
+                errors.append(f"Missing or invalid GUID: {path.relative_to(ROOT)}")
             if not Path(str(path)[:-5]).exists():
                 errors.append(f"Orphan .meta: {path.relative_to(ROOT)}")
     lock = json.loads((ROOT / "Packages/packages-lock.json").read_text())['dependencies']

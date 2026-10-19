@@ -29,7 +29,7 @@ se conservan para compatibilidad y el sandbox. Tanque: Oxy_ballon, KMProd.
 - Crimson Text: The Crimson Text Project Authors, SIL Open Font License1.1.
   Fuentes obtenidas de Google Fonts; licencias completas en `Licenses/Fonts` de
   la distribución Windows, manifiesto de origen/hash en `docs/font-install-manifest.json`.
-- Albedos originales de esmalte gastado, rostro ficticio y tejido usado: generados con la
+- Albedos originales de esmalte gastado, rostro ficticio, tejido usado y atlas táctico: generados con la
   herramienta integrada OpenAI `image_gen`, sin extraer imágenes de otros juegos.
   Prompts exactos y procedencia conservados junto a los PNG del proyecto.
 - Referencia de dirección visual0.5: Mouthwashing, Wrong Organ. No se incorporan

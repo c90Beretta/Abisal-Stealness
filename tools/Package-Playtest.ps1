@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
 $buildRoot = Join-Path $projectRoot 'Builds\Windows'
 if (-not (Test-Path -LiteralPath (Join-Path $buildRoot 'AbisalStealness.exe'))) { throw 'Build Windows first.' }
-foreach ($document in @('LEEME PARA JUGAR.txt', 'CREDITS.md', 'LICENSES.md')) {
+foreach ($document in @('LEEME PARA JUGAR.txt', 'CREDITS.md', 'LICENSES.md', 'JUGAR ABISAL.cmd')) {
     Copy-Item -LiteralPath (Join-Path $projectRoot $document) -Destination $buildRoot -Force
 }
 $releaseRoot = Join-Path $projectRoot 'Builds\Releases'

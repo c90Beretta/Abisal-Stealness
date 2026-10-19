@@ -41,6 +41,7 @@ namespace Zombtoy.Editor
             var session = Object.FindAnyObjectByType<SandboxSession>();
             var faceImporter = (TextureImporter)AssetImporter.GetAtPath(Root + "/Textures/InfectedFace_v1.png"); faceImporter.maxTextureSize = 128; faceImporter.filterMode = FilterMode.Point; faceImporter.wrapMode = TextureWrapMode.Clamp; faceImporter.mipmapEnabled = true; faceImporter.SaveAndReimport();
             var clothImporter=(TextureImporter)AssetImporter.GetAtPath(Root+"/Textures/WornCloth_v1.png");clothImporter.maxTextureSize=128;clothImporter.filterMode=FilterMode.Point;clothImporter.wrapMode=TextureWrapMode.Repeat;clothImporter.mipmapEnabled=true;clothImporter.SaveAndReimport();
+            var tacticalImporter=(TextureImporter)AssetImporter.GetAtPath(Root+"/Textures/TacticalAtlas_v2.png");tacticalImporter.maxTextureSize=256;tacticalImporter.filterMode=FilterMode.Point;tacticalImporter.wrapMode=TextureWrapMode.Clamp;tacticalImporter.mipmapEnabled=true;tacticalImporter.SaveAndReimport();
             HumanCharacterBuilder.ReplaceAll(session); IndustrialWeaponsBuilder.Build(session);
             session.hudFont = lettering; session.displayFont = AssetDatabase.LoadAssetAtPath<Font>("Assets/ThirdParty/Fonts/crimsontext/CrimsonText-SemiBold.ttf");
             var environment = GameObject.Find("Port_Environment_3D");
@@ -55,11 +56,12 @@ namespace Zombtoy.Editor
                 if (renderer.name == "Quay deck") renderer.sharedMaterial = floor;
             foreach (var text in Object.FindObjectsByType<TextMesh>()) Object.DestroyImmediate(text.gameObject);
             Airlock(); ServiceRoute(); Dressing(session);
-            IndustrialArtRebuild.Run(session,art,lettering);
+            IndustrialArtRebuild.Run(session,art,lettering); InteriorRebuild.Build(session,art);
             Lighting(session);IndustrialArtRebuild.FinishLighting();
             var camera = session.player.view; camera.orthographicSize = 2.85f;
             var iso = camera.GetComponent<IsometricView>(); iso.minZoom = 2.6f; iso.maxZoom = 11; iso.pitch = 32; iso.yaw = 45;
             camera.transform.rotation = Quaternion.Euler(iso.pitch, iso.yaw, 0); camera.transform.position = session.player.transform.position + Vector3.up * .9f - camera.transform.forward * 28;
+            iso.framingOffset=new Vector3(1.15f,0,1.15f);camera.transform.position+=iso.framingOffset;
             var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>("Assets/_Project/Art/Night/NightScreen.asset");
             profile.TryGet(out Vignette vignette); vignette.intensity.Override(.23f); vignette.smoothness.Override(.62f);
             profile.TryGet(out FilmGrain grain); grain.intensity.Override(.055f);

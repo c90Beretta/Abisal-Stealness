@@ -200,7 +200,7 @@ namespace Zombtoy.Tests
             camera.orthographic = true; camera.orthographicSize = 5; camera.transform.position = new Vector3(0, 0, -10);
             camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = Color.black; camera.cullingMask = 1 << 5;
             var texture = new RenderTexture(width, height, 24); camera.targetTexture = texture;
-            var canvases = Object.FindObjectsByType<Canvas>();
+            var canvases = System.Array.FindAll(Object.FindObjectsByType<Canvas>(),c=>c.renderMode==RenderMode.ScreenSpaceOverlay);
             var layers = new System.Collections.Generic.Dictionary<GameObject, int>();
             var scalers = new System.Collections.Generic.Dictionary<CanvasScaler, bool>();
             foreach (var canvas in canvases)

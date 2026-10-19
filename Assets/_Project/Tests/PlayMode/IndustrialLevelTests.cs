@@ -101,6 +101,7 @@ namespace Zombtoy.Tests
             yield return Load(); Screen.SetResolution(1280, 720, FullScreenMode.Windowed); session.player.transform.rotation = Quaternion.Euler(0, 0, 0);
             yield return new WaitForSecondsRealtime(.3f); yield return FirstLevelTests.Capture(session, "industrial-arrival.png");
             var canvas = session.Hud.GetComponentInChildren<Canvas>(); canvas.gameObject.SetActive(false); session.player.view.orthographicSize = 2.65f;
+            session.player.transform.rotation=Quaternion.Euler(0,225,0);
             yield return null; yield return FirstLevelTests.Capture(session, "industrial-soldier.png"); canvas.gameObject.SetActive(true); session.player.view.orthographicSize = 2.85f;
             Move(session.player.transform, new Vector3(-22, .1f, 15.2f)); session.player.transform.forward = Vector3.forward;
             yield return null; yield return FirstLevelTests.Capture(session, "industrial-warehouse.png");

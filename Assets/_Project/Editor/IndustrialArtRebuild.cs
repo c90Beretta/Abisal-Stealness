@@ -52,7 +52,8 @@ namespace Zombtoy.Editor
             Imported(Rusty+"Tubes.prefab",new Vector3(12.8f,2.15f,19),new Vector3(.55f,.65f,3.5f),art,90,false);
             ReplaceMonitors(session);
             var camera=session.player.view;camera.orthographicSize=2.85f;camera.GetComponent<IsometricView>().minZoom=2.6f;
-            var fill=new GameObject("Equipment inspection bounce").AddComponent<Light>();fill.transform.SetParent(session.player.transform,false);fill.transform.localPosition=new Vector3(.25f,1.05f,.6f);fill.type=LightType.Point;fill.range=2.2f;fill.intensity=1.15f;fill.color=new Color(.78f,.82f,.75f);
+            var fill=new GameObject("Equipment inspection bounce").AddComponent<Light>();fill.transform.SetParent(session.player.transform,false);fill.transform.localPosition=new Vector3(-.5f,.9f,-.7f);fill.type=LightType.Point;fill.range=2.7f;fill.intensity=.75f;fill.color=new Color(.78f,.82f,.75f);
+            var lowerFill=new GameObject("Low equipment bounce").AddComponent<Light>();lowerFill.transform.SetParent(session.player.transform,false);lowerFill.transform.localPosition=new Vector3(-.35f,.4f,-.55f);lowerFill.type=LightType.Point;lowerFill.range=1.8f;lowerFill.intensity=.55f;lowerFill.color=new Color(.72f,.79f,.76f);
             foreach(var material in AssetDatabase.FindAssets("t:Material",new[]{Root,"Assets/_Project/Art/Materials/Imported3D"}).Select(AssetDatabase.GUIDToAssetPath).Select(AssetDatabase.LoadAssetAtPath<Material>))
             {
                 if(material.shader.name=="Universal Render Pipeline/Lit") { material.shader=Shader.Find("Abisal/Retro Surface");EditorUtility.SetDirty(material); }
@@ -137,15 +138,15 @@ namespace Zombtoy.Editor
             foreach(int x in new[]{-1,1})foreach(int zed in new[]{-1,1}){var leg=Box("Stretcher folding leg",center+new Vector3(x*.26f,-.28f,zed*.65f),new Vector3(.035f,.28f,.035f),Material("Stretcher steel",new Color(.24f,.25f,.23f)),false);leg.transform.SetParent(root,true);}
             for(int sign=-1;sign<=1;sign+=2){var rail=Box("Carrying rail",center+Vector3.right*sign*.36f+Vector3.down*.12f,new Vector3(.04f,.04f,2.35f),Material("Stretcher steel",new Color(.24f,.25f,.23f)),false);rail.transform.SetParent(root,true);}
         }
-        private static GameObject Box(string name,Vector3 center,Vector3 size,Material material,bool solid)
+        internal static GameObject Box(string name,Vector3 center,Vector3 size,Material material,bool solid)
         {
             var box=GameObject.CreatePrimitive(PrimitiveType.Cube);box.name=name;box.transform.SetParent(art);box.transform.position=center;box.transform.localScale=size;box.GetComponent<Renderer>().sharedMaterial=material;if(!solid)Object.DestroyImmediate(box.GetComponent<Collider>());return box;
         }
-        private static Material Material(string name,Color tint,string shader="Abisal/Retro Surface")
+        internal static Material Material(string name,Color tint,string shader="Abisal/Retro Surface")
         {
             string path=Root+"/Materials/"+name.Replace(' ','_')+".mat";var mat=AssetDatabase.LoadAssetAtPath<Material>(path);if(mat==null){mat=new Material(Shader.Find(shader));AssetDatabase.CreateAsset(mat,path);}mat.SetColor("_BaseColor",tint);mat.enableInstancing=true;EditorUtility.SetDirty(mat);return mat;
         }
-        private static GameObject Imported(string path,Vector3 center,Vector3 size,Transform parent,float yaw,bool solid)
+        internal static GameObject Imported(string path,Vector3 center,Vector3 size,Transform parent,float yaw,bool solid)
         {
             var source=AssetDatabase.LoadAssetAtPath<GameObject>(path);if(source==null)throw new InvalidOperationException("Missing licensed source: "+path);
             var wrapper=new GameObject("Industrial / "+source.name);var model=Object.Instantiate(source);model.transform.SetParent(wrapper.transform,false);model.transform.localRotation=Quaternion.Euler(0,yaw,0);

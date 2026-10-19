@@ -9,6 +9,7 @@ namespace Zombtoy.Gameplay
         public Transform target;
         public float pitch = 35.264f, yaw = 45f;
         public float minZoom = 6, maxZoom = 13;
+        public Vector3 framingOffset;
         private Camera view;
 
         private void Awake()
@@ -31,7 +32,7 @@ namespace Zombtoy.Gameplay
                 if (Mathf.Abs(scroll) > 0.01f) view.orthographicSize = Mathf.Clamp(view.orthographicSize - scroll / 120, minZoom, maxZoom);
             }
             transform.rotation = Quaternion.Euler(pitch, yaw, 0);
-            transform.position = target.position + Vector3.up * 0.9f - transform.forward * 28;
+            transform.position = target.position + Vector3.up * 0.9f + framingOffset - transform.forward * 28;
         }
     }
 }

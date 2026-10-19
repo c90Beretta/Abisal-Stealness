@@ -93,13 +93,15 @@ namespace Zombtoy.Editor
             if (mesh == null) { mesh = authoredMesh; AssetDatabase.CreateAsset(mesh, meshPath); }
             else { mesh.Clear(); mesh.vertices = authoredMesh.vertices; mesh.uv = authoredMesh.uv; mesh.boneWeights = authoredMesh.boneWeights; mesh.bindposes = authoredMesh.bindposes; mesh.subMeshCount = authoredMesh.subMeshCount; for (int s = 0; s < mesh.subMeshCount; s++) mesh.SetTriangles(authoredMesh.GetTriangles(s), s); mesh.RecalculateNormals(); mesh.RecalculateBounds(); EditorUtility.SetDirty(mesh); Object.DestroyImmediate(authoredMesh); }
             skin.sharedMesh = mesh;
-            var clothing = Mat("Cloth_" + key, soldier ? new Color(.58f, .60f, .62f) : variant == 0 ? new Color(.68f, .56f, .42f) : new Color(.75f, .76f, .64f));
-            clothing.SetTexture("_BaseMap",AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/Industrial/Textures/WornCloth_v1.png"));
+            var clothing = Mat("Cloth_" + key, soldier ? new Color(.50f, .52f, .54f) : variant == 0 ? new Color(.68f, .56f, .42f) : new Color(.75f, .76f, .64f));
+            var tactical=AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/Industrial/Textures/TacticalAtlas_v2.png");
+            clothing.SetTexture("_BaseMap",soldier?tactical:AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/Industrial/Textures/WornCloth_v1.png"));
             var flesh = Mat("Skin_" + key, soldier ? new Color(.48f, .38f, .31f) : variant == 0 ? new Color(.43f, .45f, .35f) : new Color(.48f, .41f, .36f));
-            var boots = Mat("Boot_leather", new Color(.10f, .09f, .08f)); var armour = Mat("Tactical_plates", new Color(.14f, .15f, .16f));
+            var boots = Mat(soldier?"Soldier_boot_leather":"Boot_leather", new Color(.10f, .09f, .08f)); var armour = Mat(soldier?"Soldier_tactical_plates":"Tactical_plates", new Color(.14f, .15f, .16f));
+            if(soldier){boots.SetTexture("_BaseMap",tactical);boots.SetTextureScale("_BaseMap",new Vector2(.35f,.22f));boots.SetTextureOffset("_BaseMap",new Vector2(.03f,.20f));boots.SetColor("_BaseColor",new Color(.85f,.87f,.89f));armour.SetTexture("_BaseMap",tactical);armour.SetTextureScale("_BaseMap",new Vector2(.5f,.5f));armour.SetTextureOffset("_BaseMap",new Vector2(.5f,0));armour.SetColor("_BaseColor",new Color(.65f,.67f,.69f));}
             var wound = Mat("Exposed_tissue", new Color(.25f, .035f, .03f));
             var face = Mat("Face_" + key, variant == 0 ? new Color(.94f, .93f, .84f) : new Color(.80f, .83f, .76f));
-            var faceTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/Industrial/Textures/InfectedFace_v1.png"); if (faceTexture != null) face.SetTexture("_BaseMap", faceTexture);
+            var faceTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/Industrial/Textures/InfectedFace_v1.png"); if (faceTexture != null&&!soldier) face.SetTexture("_BaseMap", faceTexture);else{face.SetTexture("_BaseMap",null);face.SetColor("_BaseColor",new Color(.48f,.38f,.31f));}
             skin.sharedMaterials = new[] { clothing, flesh, boots, armour, wound, face };
             var animation = rig.gameObject.AddComponent<Animation>();
             var idle = Animation(key, bones, rig, soldier, false); var move = Animation(key, bones, rig, soldier, true);
@@ -119,12 +121,22 @@ namespace Zombtoy.Editor
                 Attach(bones[2], rig, "Harness left", new Vector3(-.13f, 1.27f, .135f), new Vector3(.045f, .4f, .035f), armour);
                 Attach(bones[2], rig, "Harness right", new Vector3(.13f, 1.27f, .135f), new Vector3(.045f, .4f, .035f), armour);
                 var stitching=Mat("Tactical seams",new Color(.24f,.25f,.22f));
-                Attach(bones[14],rig,"Left knee pad",new Vector3(-.105f,.53f,.083f),new Vector3(.13f,.16f,.045f),armour);
-                Attach(bones[17],rig,"Right knee pad",new Vector3(.105f,.53f,.083f),new Vector3(.13f,.16f,.045f),armour);
+                var knee=Mat("Soldier_joint_protection",new Color(.20f,.23f,.22f));
+                Attach(bones[14],rig,"Left knee pad",new Vector3(-.125f,.53f,.083f),new Vector3(.13f,.16f,.045f),knee);
+                Attach(bones[17],rig,"Right knee pad",new Vector3(.125f,.53f,.083f),new Vector3(.13f,.16f,.045f),knee);
                 Attach(bones[2],rig,"Vest lower webbing",new Vector3(0,1.13f,.17f),new Vector3(.36f,.028f,.018f),stitching);
                 Attach(bones[2],rig,"Vest upper webbing",new Vector3(0,1.31f,.17f),new Vector3(.36f,.025f,.018f),stitching);
                 Attach(bones[0],rig,"Belt utility pouch",new Vector3(.19f,.94f,.045f),new Vector3(.115f,.13f,.1f),stitching);
-                Attach(bones[2], rig, "Armoured vest", new Vector3(0, 1.26f, .02f), new Vector3(.41f, .4f, .28f), armour);
+                Attach(bones[2], rig, "Armoured vest", new Vector3(0, 1.26f, .025f), new Vector3(.35f, .35f, .245f), armour);
+                foreach(int side in new[]{-1,1})
+                {
+                    Attach(bones[side<0?14:17],rig,"Knee rear fastening "+side,new Vector3(side*.125f,.51f,-.075f),new Vector3(.16f,.032f,.028f),knee);
+                    Attach(bones[side<0?14:17],rig,"Boot gaiter cuff "+side,new Vector3(side*.13f,.205f,.015f),new Vector3(.15f,.025f,.14f),knee);
+                    Attach(bones[side<0?13:16],rig,"Trouser outer seam "+side,new Vector3(side*.222f,.73f,.0f),new Vector3(.025f,.25f,.025f),stitching);
+                    Attach(bones[side<0?13:16],rig,"Cargo thigh pouch "+side,new Vector3(side*.205f,.76f,-.015f),new Vector3(.085f,.18f,.16f),clothing);
+                    Attach(bones[2],rig,"Carrier magazine pouch "+side,new Vector3(side*.095f,1.16f,.19f),new Vector3(.075f,.135f,.06f),armour);
+                    Attach(bones[0],rig,"Belt buckle "+side,new Vector3(side*.13f,.95f,.108f),new Vector3(.08f,.05f,.026f),stitching);
+                }
                 Attach(bones[4], rig, "Respirator mask", new Vector3(0, 1.63f, .115f), new Vector3(.17f, .105f, .10f), boots);
                 foreach (int sign in new[] { -1, 1 })
                 {
@@ -146,15 +158,15 @@ namespace Zombtoy.Editor
         }
         private static Mesh Body(string key, bool soldier, InfectedKind kind, int variant)
         {
-            var m = new Surface(); float girth = !soldier && kind == InfectedKind.Brute ? 1.3f : !soldier && kind == InfectedKind.Runner ? .9f : 1;
+            var m = new Surface { tacticalAtlas=soldier }; float girth = !soldier && kind == InfectedKind.Brute ? 1.3f : !soldier && kind == InfectedKind.Runner ? .9f : 1;
             float belly = !soldier && kind == InfectedKind.Brute ? .17f : .11f;
             m.Rings(new[] { new Vector3(0, .86f, 0), new Vector3(0, 1.02f, 0), new Vector3(0, 1.23f, 0), new Vector3(0, 1.4f, 0), new Vector3(0, 1.48f, 0) },
                 new[] { .15f * girth, .165f * girth, .23f * girth, .215f * girth, .13f }, new[] { .095f, belly, .135f, .12f, .08f }, new[] { 0, 1, 2, 2, 2 }, 0, false);
             foreach (int sign in new[] { -1, 1 })
             {
                 int thigh = sign < 0 ? 13 : 16, calf = thigh + 1, foot = thigh + 2;
-                m.Rings(new[] { new Vector3(sign * .105f, .94f, 0), new Vector3(sign * .105f, .78f, 0), new Vector3(sign * .105f, .53f, .01f) }, new[] { .105f, .1f, .075f }, new[] { .105f, .105f, .075f }, new[] { thigh, thigh, thigh }, 0, false);
-                m.Rings(new[] { new Vector3(sign * .105f, .53f, .01f), new Vector3(sign * .105f, .34f, 0), new Vector3(sign * .105f, .12f, .015f) }, new[] { .075f, .075f, .055f }, new[] { .075f, .075f, .055f }, new[] { calf, calf, calf }, 0, false);
+                m.Rings(new[] { new Vector3(sign * .115f, .94f, 0), new Vector3(sign * .13f, .80f, -.015f),new Vector3(sign*.13f,.65f,.025f), new Vector3(sign * .125f, .53f, .025f) }, new[] { .10f, .105f,.092f, .068f }, new[] { .11f, .12f,.10f, .075f }, new[] { thigh, thigh,thigh, thigh }, 0, false);
+                m.Rings(new[] { new Vector3(sign * .125f, .53f, .025f), new Vector3(sign * .13f, .38f, -.015f),new Vector3(sign*.13f,.24f,.015f), new Vector3(sign * .13f, .12f, .015f) }, new[] { .068f, .083f,.072f, .053f }, new[] { .075f, .09f,.08f, .055f }, new[] { calf, calf,calf, calf }, 0, false);
                 m.Rings(new[]{new Vector3(sign*.105f,.025f,.075f),new Vector3(sign*.105f,.07f,.085f),new Vector3(sign*.105f,.13f,.04f),new Vector3(sign*.105f,.20f,0)},new[]{.08f,.086f,.071f,.058f},new[]{.15f,.17f,.12f,.06f},new[]{foot,foot,foot,foot},2,false);
                 m.Rings(new[]{new Vector3(sign*.105f,.015f,.075f),new Vector3(sign*.105f,.035f,.075f)},new[]{.083f,.083f},new[]{.155f,.155f},new[]{foot,foot},2,false);
                 int arm = sign < 0 ? 6 : 10, fore = arm + 1, hand = arm + 2;
@@ -249,12 +261,18 @@ namespace Zombtoy.Editor
         }
         private sealed class Surface
         {
+            public bool tacticalAtlas;
             private readonly List<Vector3> vertices = new List<Vector3>(); private readonly List<Vector2> uv = new List<Vector2>(); private readonly List<BoneWeight> weights = new List<BoneWeight>();
             private readonly List<int>[] indices = Enumerable.Range(0, 6).Select(_ => new List<int>()).ToArray();
             private void Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, int bone, int mat, float u0 = 0, float u1 = 1)
             {
                 int first = vertices.Count; vertices.AddRange(new[] { a, b, c, d }); uv.AddRange(new[] { new Vector2(u0, 0), new Vector2(u0, 1), new Vector2(u1, 1), new Vector2(u1, 0) });
                 if (mat == 5) { var points = new[] { a, b, c, d }; for (int i = 0; i < 4; i++) { var p = points[i]; uv[first + i] = p.z > -.005f ? new Vector2(Mathf.Clamp01(.5f + p.x / .19f), Mathf.Clamp01((p.y - 1.565f) / .285f)) : new Vector2(.01f, Mathf.Clamp01((p.y - 1.565f) / .285f)); } }
+                if(tacticalAtlas&&mat==0)
+                {
+                    var points=new[]{a,b,c,d};
+                    for(int i=0;i<4;i++){var p=points[i];bool leg=bone>=13;float u=leg?Mathf.Clamp01(.5f+p.x*.8f):Mathf.Clamp01(.5f+p.x/ .5f);float v=leg?Mathf.Clamp01((p.y-.12f)/.82f):Mathf.Clamp01((p.y-.88f)/.62f);uv[first+i]=new Vector2((leg?.5f:0)+u*.5f,.5f+v*.5f);}
+                }
                 for (int i = 0; i < 4; i++) weights.Add(new BoneWeight { boneIndex0 = bone, weight0 = 1 }); indices[mat].AddRange(new[] { first, first + 1, first + 2, first, first + 2, first + 3 });
             }
             public void Rings(Vector3[] centers, float[] radiusA, float[] radiusB, int[] bones, int mat, bool alongX)
@@ -279,7 +297,11 @@ namespace Zombtoy.Editor
                     var n=normals[face];var u=us[face];var v=vs[face];
                     float hn=Mathf.Abs(Vector3.Dot(n,half)),hu=Mathf.Abs(Vector3.Dot(u,half)),hv=Mathf.Abs(Vector3.Dot(v,half));
                     float[] xs={-hu,-hu+radius,hu-radius,hu},ys={-hv,-hv+radius,hv-radius,hv};
-                    for(int x=0;x<3;x++)for(int y=0;y<3;y++)Quad(Round(n*hn+u*xs[x]+v*ys[y]),Round(n*hn+u*xs[x+1]+v*ys[y]),Round(n*hn+u*xs[x+1]+v*ys[y+1]),Round(n*hn+u*xs[x]+v*ys[y+1]),bone,mat);
+                    for(int x=0;x<3;x++)for(int y=0;y<3;y++)
+                    {
+                        int first=vertices.Count;Quad(Round(n*hn+u*xs[x]+v*ys[y]),Round(n*hn+u*xs[x+1]+v*ys[y]),Round(n*hn+u*xs[x+1]+v*ys[y+1]),Round(n*hn+u*xs[x]+v*ys[y+1]),bone,mat);
+                        uv[first]=new Vector2((xs[x]+hu)/(2*hu),(ys[y]+hv)/(2*hv));uv[first+1]=new Vector2((xs[x+1]+hu)/(2*hu),(ys[y]+hv)/(2*hv));uv[first+2]=new Vector2((xs[x+1]+hu)/(2*hu),(ys[y+1]+hv)/(2*hv));uv[first+3]=new Vector2((xs[x]+hu)/(2*hu),(ys[y+1]+hv)/(2*hv));
+                    }
                 }
             }
             public Mesh Finish(string name)

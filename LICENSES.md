@@ -47,7 +47,7 @@ del código ni la del resto del arte del proyecto. No se venden las fuentes sola
 
 Cuerpos ponderados, clips, armas, geometría de cuarentena, shader de daño y
 efectos: originales del proyecto, sujetos al titular indicado al principio.
-Los albedos `AgedEnamel_v1.png`, `InfectedFace_v1.png` y `WornCloth_v1.png` se generaron con
+Los albedos `AgedEnamel_v1.png`, `InfectedFace_v1.png`, `WornCloth_v1.png` y `TacticalAtlas_v2.png` se generaron con
 `image_gen` de OpenAI; se conserva el prompt exacto y procedencia en metadatos PNG
 y archivos `.provenance.json`. No se atribuyen a un artista externo ni se afirma
 exclusividad jurídica sobre material generado. Los paquetes Asset Store siguen
