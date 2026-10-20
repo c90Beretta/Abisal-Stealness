@@ -1,0 +1,6 @@
+{
+  "generator": "built-in image_gen",
+  "origin": "Original woven fabric albedo, 2026-10-19",
+  "purpose": "Tintable textile on original weighted characters and quarantine bag",
+  "prompt": "A production 3D game ALBEDO TEXTURE, a single perfectly flat square seamless tile of worn military workwear woven fabric. Neutral medium grey cloth so it can be tinted charcoal or dirty khaki in a shader. Fine utilitarian cotton weave, irregular broad worn patches, faded rubbing at seams, a few thin muted dark grease smudges and small frayed threads. No pockets, no buttons, no folds with directional shadows, no lettering, no camouflage, no people, no background, no gradients or lighting. Even flat diffuse albedo, restrained gritty hand-painted realism for original late-1990s PS1 industrial horror characters. Readable coarse texture at 128x128, not pixel art, no existing game assets. Both edges tile seamlessly. Fill the entire image with fabric."
+}

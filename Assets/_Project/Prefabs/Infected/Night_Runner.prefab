@@ -1,0 +1,257 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9184102665971874741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6886659487419021581}
+  - component: {fileID: 5215853276538032449}
+  - component: {fileID: 6442029140436357679}
+  - component: {fileID: 8008164844068795011}
+  - component: {fileID: 5552302428187042752}
+  - component: {fileID: 7440921046617979333}
+  - component: {fileID: 694699830005603719}
+  - component: {fileID: 7894714168885857936}
+  m_Layer: 0
+  m_Name: Night_Runner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6886659487419021581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 21, y: 0.1, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7930969688391862136}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &5215853276538032449
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1.7
+  m_Radius: 0.35
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &6442029140436357679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe2b50a8bf119604391f8fdd735c98ce, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SandboxEnemy
+  session: {fileID: 0}
+  definition: {fileID: 11400000, guid: cf017c75b34bb1542873787111cb9cac, type: 2}
+  speed: 2.8
+  health: 55
+  sightRange: 7
+  useNavigation: 1
+--- !u!114 &8008164844068795011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1951874bef3447c4e88f2aac55773331, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CharacterMotion
+  rig: {fileID: 5926028209040014752}
+--- !u!114 &5552302428187042752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afec1582410482042b7990b04f83153e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.InfectedVariant
+  kind: 1
+  nextCry: 0
+  groan: {fileID: 8300000, guid: dccda911b34ce8d4a877f8107ba6cb59, type: 3}
+  scream: {fileID: 8300000, guid: 4ab75ff669fc5024db7a9a8919e07ad7, type: 3}
+--- !u!114 &7440921046617979333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af072cc98a791145938bdd0685fe986, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.Dismemberment
+  woundMaterial: {fileID: 2100000, guid: 672048efe31e33441b343cf7b3ea306e, type: 2}
+--- !u!114 &694699830005603719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66cfef027f0f71544b0fd6ece6484d17, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.InfectedVisibility
+--- !u!114 &7894714168885857936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9184102665971874741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e81bbe6a8381379438b92e3e5140d596, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.LootContainer
+  id: corpse-patrol-1
+  label: 'Cuerpo: Corredor'
+  stock:
+    ammo: 5
+    medkits: 0
+    bandages: 1
+    doses: 0
+    cells: 0
+    oxygen: 0
+    plates: 0
+  corpse: {fileID: 6442029140436357679}
+--- !u!1001 &2663251203314512894
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6886659487419021581}
+    m_Modifications:
+    - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_Mesh
+      value:
+      objectReference: {fileID: 4300000, guid: ca10787f3451a2049905da2ac9b21e9c, type: 2}
+    - target: {fileID: 2785661741343319575, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value:
+      objectReference: {fileID: 2100000, guid: fb1d73c7d81aa0f4cb8db5905dced98c, type: 2}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980680333694423807, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      propertyPath: m_Name
+      value: Soldier_Visual
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5926028209040014752}
+  m_SourcePrefab: {fileID: 100100000, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+--- !u!1 &3157500094489152228 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091125930547001626, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 2663251203314512894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &5926028209040014752
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157500094489152228}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 7feba6ad9a190cf4b8f0841786162dc8, type: 2}
+  - {fileID: 7400000, guid: 1e90ccf95d8697743a21573b7aec0577, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
+--- !u!4 &7930969688391862136 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5396915659408782470, guid: eae199892df7c964abf04a0904dc68e3, type: 3}
+  m_PrefabInstance: {fileID: 2663251203314512894}
+  m_PrefabAsset: {fileID: 0}

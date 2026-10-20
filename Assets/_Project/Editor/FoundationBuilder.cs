@@ -165,15 +165,35 @@ namespace Zombtoy.Editor
         {
             if (!File.Exists(ScenePath)) throw new InvalidOperationException("Generate sandbox first.");
             Directory.CreateDirectory("Builds/Windows");
-            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
-                scenes = new[] { ScenePath }, locationPathName = "Builds/Windows/AbisalStealness.exe",
-                target = BuildTarget.StandaloneWindows64, options = BuildOptions.None });
+            var git = new System.Diagnostics.ProcessStartInfo("git", "rev-parse HEAD") { WorkingDirectory = Directory.GetCurrentDirectory(), UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
+            string source = "unavailable";
+            using (var process = System.Diagnostics.Process.Start(git)) { source = process.StandardOutput.ReadToEnd().Trim(); process.WaitForExit(); if (process.ExitCode != 0) source = "unavailable"; }
+            Directory.CreateDirectory("Assets/_Project/Resources");
+            File.WriteAllText("Assets/_Project/Resources/AbisalBuildIdentity.json", "{\"sourceCommit\":\"" + source + "\",\"version\":\"" + Application.version + "\",\"builtUtc\":\"" + DateTime.UtcNow.ToString("O") + "\"}");
+            AssetDatabase.Refresh(); PlayerSettings.enableFrameTimingStats = true;
+            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
+            {
+                scenes = EditorBuildSettings.scenes.Where(item => item.enabled).Select(item => item.path).ToArray(),
+                locationPathName = "Builds/Windows/AbisalStealness.exe",
+                target = BuildTarget.StandaloneWindows64,
+                options = BuildOptions.None
+            });
             Directory.CreateDirectory("TestResults");
             File.WriteAllText("TestResults/build-summary.txt", $"Result: {report.summary.result}\nErrors: {report.summary.totalErrors}\nWarnings: {report.summary.totalWarnings}\nBytes: {report.summary.totalSize}\n");
             if (report.summary.result != BuildResult.Succeeded)
                 throw new InvalidOperationException("Windows build failed. See build-summary.txt and Unity log.");
             foreach (string file in new[] { "CREDITS.md", "LICENSES.md" })
                 if (File.Exists(file)) File.Copy(file, "Builds/Windows/" + file, true);
+            if (File.Exists("docs/LOCAL_ASSETS.md"))
+            {
+                Directory.CreateDirectory("Builds/Windows/Licenses/AssetStore");
+                File.Copy("docs/LOCAL_ASSETS.md", "Builds/Windows/Licenses/AssetStore/NOTICE.md", true);
+            }
+            foreach (string fontLicense in Directory.GetFiles("Assets/ThirdParty/Fonts", "OFL.txt", SearchOption.AllDirectories))
+            {
+                string folder = "Builds/Windows/Licenses/Fonts/" + new DirectoryInfo(Path.GetDirectoryName(fontLicense)).Name;
+                Directory.CreateDirectory(folder); File.Copy(fontLicense, folder + "/OFL.txt", true);
+            }
             foreach (string file in Directory.GetFiles("Assets/ThirdParty/Kenney", "License.txt", SearchOption.AllDirectories))
             {
                 string pack = new DirectoryInfo(Path.GetDirectoryName(file)).Name;

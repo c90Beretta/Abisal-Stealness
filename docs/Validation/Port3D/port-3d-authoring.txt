@@ -1,0 +1,3 @@
+Imported mesh instances: 123
+URP material adapters: 15
+Native camera: orthographic 35.264 / 45; render scale 1; MSAA4

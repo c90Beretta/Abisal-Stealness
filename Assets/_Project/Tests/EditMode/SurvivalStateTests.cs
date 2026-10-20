@@ -87,5 +87,21 @@ namespace Zombtoy.Tests
             Assert.That(state.serum, Is.EqualTo(100));
             Assert.That(state.Inject(config), Is.False);
         }
+
+        [Test] public void MedicalItemsClampHealthAndDoNotConsumeWithoutNeed()
+        {
+            var state = new SurvivalState { medkits = 2, bandages = 2 };
+            Assert.That(state.Heal(), Is.False);
+            Assert.That(state.Bandage(), Is.False);
+            Assert.That(state.medkits, Is.EqualTo(2));
+            state.health = 80; Assert.That(state.Heal(), Is.True);
+            Assert.That(state.health, Is.EqualTo(100));
+            Assert.That(state.medkits, Is.EqualTo(1));
+            state.bleeding = 0.2f; state.Tick(10, config);
+            Assert.That(state.health, Is.EqualTo(98).Within(0.001));
+            Assert.That(state.Bandage(), Is.True);
+            state.Tick(10, config); Assert.That(state.health, Is.EqualTo(98).Within(0.001));
+            Assert.That(state.bandages, Is.EqualTo(1));
+        }
     }
 }

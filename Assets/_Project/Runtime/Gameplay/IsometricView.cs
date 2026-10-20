@@ -1,49 +1,38 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 namespace Zombtoy.Gameplay
 {
-    // Fixed camera for the foundation. Cinemachine is available for production rigs.
     [RequireComponent(typeof(Camera))]
     public sealed class IsometricView : MonoBehaviour
     {
         public Transform target;
-        public int width = 480;
-        public int height = 270;
+        public float pitch = 35.264f, yaw = 45f;
+        public float minZoom = 6, maxZoom = 13;
+        public Vector3 framingOffset;
         private Camera view;
-        private RenderTexture image;
-        private GameObject canvas;
 
-        private void Start()
+        private void Awake()
         {
             view = GetComponent<Camera>();
-            image = new RenderTexture(width, height, 24) { filterMode = FilterMode.Point, name = "MVP 480x270" };
-            image.Create();
-            view.targetTexture = image;
-            canvas = new GameObject("Low resolution presentation", typeof(Canvas), typeof(CanvasScaler));
-            canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-            var output = new GameObject("Point filtered image", typeof(RectTransform), typeof(RawImage));
-            output.transform.SetParent(canvas.transform, false);
-            var rect = output.GetComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = rect.offsetMax = Vector2.zero;
-            output.GetComponent<RawImage>().texture = image;
-            output.GetComponent<RawImage>().raycastTarget = false;
+            // World presentation is handled by the renderer feature; HUD stays native.
+            view.targetTexture = null;
+            view.orthographic = true;
+            view.allowMSAA = true;
+            view.allowHDR = true;
         }
 
         private void LateUpdate()
         {
             if (target == null) return;
-            transform.rotation = Quaternion.Euler(30, 45, 0);
-            transform.position = target.position + Vector3.up - transform.forward * 24f;
-        }
-
-        private void OnDestroy()
-        {
-            if (view != null) view.targetTexture = null;
-            if (image != null) { image.Release(); Destroy(image); }
-            if (canvas != null) Destroy(canvas);
+            var player = target.GetComponent<SandboxPlayer>();
+            if (Mouse.current != null && player != null && player.session.Running && !player.session.Hud.BlocksCombat)
+            {
+                float scroll = Mouse.current.scroll.ReadValue().y;
+                if (Mathf.Abs(scroll) > 0.01f) view.orthographicSize = Mathf.Clamp(view.orthographicSize - scroll / 120, minZoom, maxZoom);
+            }
+            transform.rotation = Quaternion.Euler(pitch, yaw, 0);
+            transform.position = target.position + Vector3.up * 0.9f + framingOffset - transform.forward * 28;
         }
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f22f49fc4deb6447bfa95d220ba6acf, type: 3}
+  m_Name: CombatArt
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.CombatArt
+  particles: {fileID: 2100000, guid: ed125f87f28979a47bc08a5ccd829ce5, type: 2}
+  blood: {fileID: 2100000, guid: 246e96d800baeb94595c1803b4e6068a, type: 2}
+  brass: {fileID: 2100000, guid: 7c5e68a14e4dfab4eb3f31cc159c7e5e, type: 2}
+  bloodPool: {fileID: 4300000, guid: a83f0aa213ac158428b5c1a6cd7029fe, type: 2}
+  casing: {fileID: 4300000, guid: 707c290cf738f5f4ca3a792e9465b9df, type: 2}
+  knife: {fileID: 1305833594834343587, guid: a8b31e28944b2b047a919f5296f3e9b3, type: 3}
+  axe: {fileID: 5202104120916627706, guid: de7a05f53a5fb0e4c8b37190dec4c099, type: 3}

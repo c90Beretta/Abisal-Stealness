@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "0b26d7e649b3301a20f5c14d5a77bd2a4517b3bb",
+  "sceneNavigationRenderer": [
+    {
+      "file": "Assets/_Project/Scenes/Level01_Port.unity",
+      "sha256": "5a84fd8dbf4b2f80bdd3498e9674b553a48d14f2a9c9e2c36dcd3b9ce6d5ff83",
+      "matchesValidationBuildInput": true
+    },
+    {
+      "file": "Assets/_Project/Navigation/Port05_NavMesh.asset",
+      "sha256": "c70df25fb8e1d5761b07de3465c95106b5d317449f29338df9fc3049e52074fb",
+      "matchesValidationBuildInput": true
+    },
+    {
+      "file": "Assets/Settings/PC_Renderer.asset",
+      "sha256": "3921127a6e7c4019857a6c85e3d212a4d69cc7e91a15ba28d6e4244264f6c60a",
+      "matchesValidationBuildInput": true
+    }
+  ],
+  "runtimeEditorTestsIndustrialArtCompared": true,
+  "userSandboxPrefabPreserved": true
+}

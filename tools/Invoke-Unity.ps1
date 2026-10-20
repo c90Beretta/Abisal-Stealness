@@ -1,8 +1,9 @@
 param(
-    [ValidateSet('Compile', 'Generate', 'EditMode', 'PlayMode', 'Build', 'Capture')]
+    [ValidateSet('Compile', 'Generate', 'GeneratePort', 'UpgradePort', 'Port3D', 'NightPort', 'NightFinalize', 'IndustrialPort', 'EditMode', 'PlayMode', 'Build', 'Capture', 'CapturePort')]
     [string]$Task = 'EditMode',
     [string]$ProjectPath = (Split-Path $PSScriptRoot -Parent),
-    [string]$UnityPath = 'C:\Program Files\Unity\Hub\Editor\6000.5.9f1\Editor\Unity.exe'
+    [string]$UnityPath = 'C:\Program Files\Unity\Hub\Editor\6000.5.9f1\Editor\Unity.exe',
+    [string]$TestFilter
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path -LiteralPath $ProjectPath).Path
@@ -24,16 +25,28 @@ $unityArgs = @('-batchmode', '-projectPath', ('"' + $projectRoot + '"'), '-logFi
 switch ($Task) {
     'Compile' { $unityArgs += @('-nographics', '-quit') }
     'Generate' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.FoundationBuilder.Generate') }
+    'GeneratePort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.PortMapBuilder.Generate') }
+    'UpgradePort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.GameplayUpgrade.Upgrade') }
+    'Port3D' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.Port3DBuilder.Build') }
+    'NightPort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.NightPortBuilder.Upgrade') }
+    'NightFinalize' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.NightPortBuilder.FinalizeNight') }
+    'IndustrialPort' { $unityArgs += @('-nographics', '-quit', '-executeMethod', 'Zombtoy.Editor.IndustrialPortBuilder.Upgrade') }
     'EditMode' { $unityArgs += @('-nographics', '-runTests', '-testPlatform', 'EditMode', '-testResults', ('"' + (Join-Path $resultRoot 'editmode.xml') + '"')) }
     'PlayMode' { $unityArgs += @('-runTests', '-testPlatform', 'PlayMode', '-testResults', ('"' + (Join-Path $resultRoot 'playmode.xml') + '"')) }
     'Build' { $unityArgs += @('-quit', '-executeMethod', 'Zombtoy.Editor.FoundationBuilder.BuildWindows') }
     'Capture' { $unityArgs += @('-quit', '-executeMethod', 'Zombtoy.Editor.FoundationBuilder.CaptureScene') }
+    'CapturePort' { $unityArgs += @('-quit', '-executeMethod', 'Zombtoy.Editor.PortMapBuilder.Capture') }
 }
-$process = Start-Process -FilePath $UnityPath -WindowStyle Hidden -ArgumentList $unityArgs -PassThru -Wait
+if($TestFilter -and $Task -in @('EditMode','PlayMode')) { $unityArgs += @('-testFilter',$TestFilter) }
+$startedUtc = [DateTime]::UtcNow
+$process = Start-Process -FilePath $UnityPath -WindowStyle Hidden -ArgumentList $unityArgs -PassThru
+# Unity's compiler servers may outlive the editor. Wait for this editor process only.
+$process.WaitForExit()
 if ($process.ExitCode -ne 0) { throw "Unity $Task failed with exit code $($process.ExitCode). Log: $logPath" }
 if ($Task -in @('EditMode', 'PlayMode')) {
     $file = Join-Path $resultRoot ($Task.ToLower() + '.xml')
     if (-not (Test-Path -LiteralPath $file)) { throw "No test result produced: $file" }
+    if ((Get-Item -LiteralPath $file).LastWriteTimeUtc -lt $startedUtc) { throw "Unity did not write fresh test results: $file" }
     [xml]$report = Get-Content -Raw -LiteralPath $file
     if ($report.'test-run'.result -ne 'Passed') { throw "Tests did not pass: $file" }
     Write-Output "PASS $Task : $($report.'test-run'.passed) tests"

@@ -1,0 +1,285 @@
+{
+  "pack": "Sci-Fi Old Rusty Props PBR",
+  "source": "Local Unity Asset Store cache supplied by user",
+  "url": "https://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-old-rusty-props-pbr-200267",
+  "license": "Unity Asset Store EULA; source assets remain local",
+  "packageSha256": "c723835efdbdd166a59865a993a143704f67959ce578ca6cb4e250eae629bde5",
+  "files": [
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Oxy_ballon.prefab",
+      "sha256": "5b9b399510d5219127a582f5b7ffb45ece99b2fe9870481bb668c8d018186648"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Props_01_Gameready.FBX",
+      "sha256": "83f5622f45504ad72fa98452871f7e9311465c8fe79cab16dd25754dd9904342"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/ore_container.prefab",
+      "sha256": "53c2dfb8b2366ca02148d8685044b24d14e331b1de5510b4edf08fccf44ad0d1"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props_02/Props_02_Paint_Material _27_Emission.png",
+      "sha256": "ae4c2e938c029b35c120809081f95c6e1c0ea2af2d5bea7f4436e3f28dfb9f88"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Container_Big.prefab",
+      "sha256": "5a07d8500eade2bfc47f0e1f7e42d78bbad502a140bb79e36145fd6746745889"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Floor/Tutor_floor_Paint_Material _27_AlbedoTransparency.png",
+      "sha256": "5acb45c37262b8fe355da35e386470b7aec26f301413899ca0e5ce83c9bb4a67"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/SpotLight_base.prefab",
+      "sha256": "f7ebf1ee095675fda70a58534ef7e493588bbfdedbde2830a22907538ed52adb"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Items_Gameready.FBX",
+      "sha256": "ef3ba798d79fea5529ab943dba1ce45dac76b02b7e722a83bbeaa30ec010c51a"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Container_BigOpen.prefab",
+      "sha256": "8bd3aa9e440e09d333cb05fc5b3c10ed7257523d73e5e00f90dda20c01d07bd5"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Base_part.prefab",
+      "sha256": "0d522cc602b105bd942a31537a4e0250ca7f492c437e01eb85f5f78fa2be85b5"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/TurnBlock.prefab",
+      "sha256": "60a87d56297a8eae4216b1e9b96191b5e9f4ac84f3685e225df706bdf8dbc239"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Items/Items_PAint_DefaultMaterial_AlbedoTransparency.png",
+      "sha256": "066098ea10f50e3c59042b9788c7a26c219901b959e6e819efe10b554c322ee9"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Tutorial_base_Gameready.FBX",
+      "sha256": "24f1654f345dfd83cfb352e024725803ddb132d2628c8ecf3124ab6866e04d47"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Broken_panel.prefab",
+      "sha256": "eccedb97300c6fd99467d64acaf29da7f2597b41a7a9a53231acfa622f1ac4a5"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Base/Tutorial_base_Gameready_Material _25_Normal.png",
+      "sha256": "2415372f2aa25f06f8b1e7c27e6cc236b593027f523cd3d4ff67992fd90d2992"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/SideBlock.prefab",
+      "sha256": "1bb6955f4920f75831173fe0c850f9270fb3f4c8376cdc09f447cf6ae4c7fcf1"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Items/Items_tut.mat",
+      "sha256": "cfd0f79329a1436074363939cd51604dde59a88f085919a20d4d2aca5a33c439"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Containers/Big_storage_Containers_PAINT_Material _27_AlbedoTransparency.png",
+      "sha256": "e93a82593898f3723f336ff066f1a72459f75e7dcfdd9973a6aa5c89b16b3d2e"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Items_Gameready_caps.FBX",
+      "sha256": "29965c6d54a89a7fce0c258c6397218f5755fd61c26c8e67976435490176c0ab"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Geo_ant (1).prefab",
+      "sha256": "d3b0ee46f3c3ead43eab021e5f1062c0d0ef82ea7611feea7d545961cd9dbae8"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Ladder.prefab",
+      "sha256": "20301af144acadeeb5561bffb0c3ba8081b934fc3904d7be0423ba6ec36606f6"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Oxygen_sint.prefab",
+      "sha256": "1661b46c1c21523992827298b60f486e9354463bd8b4ba714d25c2668982be8a"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Data Caps.prefab",
+      "sha256": "3cb857f43489ba27d25e6c34783972f63644ca77dd2a3dc55998305134aa95a2"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Ladder/Part_E.mat",
+      "sha256": "1a048f57c61241d219fa96cd68b5dcd78a4ab5f3fb746e7f442c850e3ccb2072"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Tubes.prefab",
+      "sha256": "129a403a6affc686361cd4b091e7ecd95f30ed1d7d2962e4aaa3e1488f32ca83"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Base/UnderFloor.mat",
+      "sha256": "f003eedfe5d30abd9779650dfcb08bf3501bc31618b40259758a3ad5f61d98b5"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Wall_add.prefab",
+      "sha256": "482e1f3394f2fa1ece07b01a6226cb9110e513dafde15202e88292f9a5e85986"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Props_02_Gameready.FBX",
+      "sha256": "5fda79f8421029cd1851862f90d07560a41f126e02e6e18cd748bf15615f5efc"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props/Props_01_Gameready_Material _27_Normal.png",
+      "sha256": "79f5ae700d2c4e8fda5c5e0c5b6e93901980a81c32bd6d979efb96930808a096"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props_02/Props_02_Paint_Material _27_AlbedoTransparency.png",
+      "sha256": "d83ee66cacb21e95cc505544868152ef29c4a33ecc574aad8fbe6206f87c408e"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Container_small.prefab",
+      "sha256": "4073849f71f88f1c04eafbd1ccc491bb352b265bb71d61305dbe0e5aabe74949"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Old_computer.prefab",
+      "sha256": "5c6a3d49e0524a87db6a09ccd07dad3447a1ec044fbb76c79a5e9cc08cdfa9ed"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props/Props_01_Gameready_Material _27_AlbedoTransparency.png",
+      "sha256": "66205fe3eca144d8d05841fae363ceb834ee113f506391cac62c4518c1f0f374"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props/Props_01_Gameready_Material _27_MetallicSmoothness.png",
+      "sha256": "5632456d66d90a91ffb3d6a76c77de62a1b69337f17b1695503d27f7d4df1ad1"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Floor/Tutor_floor_Paint_Material _27_Normal.png",
+      "sha256": "588a268be408b8aa43d1f1ed6261ddf33fe1492613ed5ce269f31707131290cf"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Floor/Tutor_floor_Paint_Material _27_MetallicSmoothness.png",
+      "sha256": "f32b88e0b34db1bac56f17e056da45d3a4e474bf10f635d8e0fd36c23e28b095"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/BulkHead.prefab",
+      "sha256": "94d7cb63578d2714d9817a8cfd46b564bd67302da1106aff607adc7b3ccb6c1d"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props/Props_01.mat",
+      "sha256": "111162bb5bb3e00111668efdb25000552e3a9e295f32fe7bb60cd0476857fac2"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Terraform_base.prefab",
+      "sha256": "e764f932eb8bcd648292e773006ea18864a56bbfeca8531e32d28ddc3d1edcb0"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Base/Tutorial_base.mat",
+      "sha256": "917e7ac9ccb324d3211bdf2254111b779a63a0cf4d15dd4b90d96856848ce618"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Doors.prefab",
+      "sha256": "50ae42c57bf38827fad69cdd4a9403a6331c2a7cfe25ed1a5988945f7652f594"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props_02/Props_02_Paint_Material _27_Normal.png",
+      "sha256": "d90d4178454756b78e7322118194733e66ba6b42183db64f90503d9c0ff29b33"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/StairBlock.prefab",
+      "sha256": "0261b10bfb84fc7e24f257f6cda4fcf702d1ee6d4148fbab6797c6dd5901b5dd"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Containers/Containers.mat",
+      "sha256": "00900d0a4c95f656ec75d9d299f2c6dc7ae2ed823a7bdbc592f2aa06e9bfcc6f"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Oxy_agregate.prefab",
+      "sha256": "c80b55083b0d132d38ddcd3b013e7fb7ce2dff66c4306bd6c7956b477c70cc96"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Ladder.FBX",
+      "sha256": "a61423638e6fc0707c3945b74e123a134f8b1d63339ac4a1c0a29906b0519b84"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Containers/Big_storage_Containers_PAINT_Material _27_Normal.png",
+      "sha256": "ba32b8e4f65ccd13f8ba521c102053e3329b8e1806746c19182c8ec70bf6d72d"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Ladder/Part_E_GameReady_Material _26_AlbedoTransparency.png",
+      "sha256": "22e958f73664f52df4186b4a0f4b57fbb6e9fb01eee9853030ddddfb1409429d"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Items/Items_PAint_DefaultMaterial_MetallicSmoothness.png",
+      "sha256": "eae66cde68ed463e874c273b3dcc179a6c941f9771c2728520aa418e233b09ed"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Vents.prefab",
+      "sha256": "b867e25fc80f97e4cc28a4530f9e9212a02fb6ab73bf058b7dd1e3911f614720"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Ore_Holder_exp.prefab",
+      "sha256": "c8bed2b9c0f7950e53d763846af8222e257546efd3eeba30a2cc96187c4d336b"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Base/Tutorial_base_Gameready_Material _25_MetallicSmoothness.png",
+      "sha256": "9228200d2eddcc07a0d59a8560c15fcc125db36c2af03f3d31a4d465a04828e2"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props_02/Light.mat",
+      "sha256": "40bfb29a384529457f4bf082d0b51e260b82d838200688aa2e844719422efd52"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Ladder/Part_E_GameReady_Material _26_MetallicSmoothness.png",
+      "sha256": "65ab549120ddd95c48519e592668d7ab67bac07889fcbf4af1343e99dbce0b0e"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Floor/Floor.mat",
+      "sha256": "8fa74314c5aa3a92b518e453135ded8b3a01b65d332067b17bff86322a355879"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props_02/Props_02_Paint_Material _27_MetallicSmoothness.png",
+      "sha256": "261e84daa240c747d796fbf3612923bc2e9b6d7fbc32b79326b5e135c81320c2"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Containers/Big_storage_Containers_PAINT_Material _27_Emission.png",
+      "sha256": "f77491e5c087925ec3f0b5ebbd4f327e538d2c172e7fdef677cc6ebb1cf0eb3e"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Electroboxes.prefab",
+      "sha256": "1752b96b38652310fc23b7747c3ae81ac37d507e0eeb199b87f1d7f34dc75c48"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Containers/Big_storage_Containers_PAINT_Material _27_MetallicSmoothness.png",
+      "sha256": "2a216f475bc23eb6c7c176ab6c701d9b03a2d8fff1362bafd2ddd4a3f157964a"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Tutor_floor_Gameready.FBX",
+      "sha256": "722350990591ba3e8e897972dac3f0dea0cf04ae63ace3b7e4e4e859a5540fb6"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Models/Big_storage_Containers_Gameready.FBX",
+      "sha256": "010d502fe2391592c78676f79148fce3c29051d1f489875db42f8817d51cf4ef"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Supply_box.prefab",
+      "sha256": "9aa3538605a8c5b5c8fb20a3fa18390bf025ddeb7dc3e0719b4a240a5049772d"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Base/Tutorial_base_Gameready_Material _25_AlbedoTransparency.png",
+      "sha256": "7075fc43fc341d5d9150e319bcdfa3ac88f0e257d7cfd1d56cd09e9dc46ef4e7"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Rack.prefab",
+      "sha256": "48f0ca965abd0793d92948e87614615f25db832ba2511fee4b2ea08165dcfe13"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Items/Items_PAint_DefaultMaterial_Normal.png",
+      "sha256": "33d16771b8ba91e8c1acd493037b7623b82af3523e099f3a2d1a07a05d1b6d73"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props_02/Proprs_02.mat",
+      "sha256": "dd77f332b896452a3542a430e1a71939704e2f0e6ae1b74fb04e28025912b58d"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Ladder/Part_E_GameReady_Material _26_Normal.png",
+      "sha256": "49b33be67f46c90a6f1b2fa0b6495d1c81de869e9783738f8ff4f8626bf5b843"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Data/Textures/Props/Glass.mat",
+      "sha256": "2cb2115d29cd6566a8e89b06e443aaabd5d6af5e6d9cb4632af91f15a1a4f3c0"
+    },
+    {
+      "path": "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/Geo_base.prefab",
+      "sha256": "dd0ac78fd39e6d89117487574a0170aab0dd11f8e840bd1c66ea6607ad46d517"
+    }
+  ]
+}

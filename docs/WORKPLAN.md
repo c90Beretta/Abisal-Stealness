@@ -3,6 +3,17 @@
 Fecha: 18 octubre 2026. Ventana solicitada: **19 octubre–13 diciembre 2026**.
 Fuente: `Refs/ORIGINAL_BRIEF.md`; decisiones de ejecución: `DECISIONS.md`.
 
+Actualización de presentación por petición del usuario: **3D isométrico a resolución
+nativa**, con los paquetes de entorno descargados y tres armas visibles. Se retira
+el objetivo de ampliación pixelada480×270 de la entrega vigente; ver ADR-008 y
+`PORT_3D.md`. Las menciones PSX de la planificación original son históricas y no
+deben reintroducir el render pixelado sin nueva petición del usuario.
+
+Estado del primer mapa: `Level01_Port` ya tiene trazado, misión repuesto/energía/
+control/embarque, suministros opcionales, seis encuentros y NavMesh. Véanse
+`LEVEL01_PORT.md` y `PORT_VALIDATION.md`. L01 avanza como prototipo; su duración,
+balance y aceptación del MVP requieren playtests humanos.
+
 ## Entregas separadas
 
 **F0, preparación actual:** proyecto preservado en Git, assets mínimos importables,

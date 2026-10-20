@@ -1,17 +1,53 @@
 # Zombtoy — survival horror isométrico
 
-Proyecto Unity 6 / URP. Meta de producción: 4 niveles, economía de suero y munición,
-IA por percepción y estética PSX. La entrega de esta preparación es una **fundación
-técnica y sandbox**, no la certificación del juego final ni de sus KPI.
+Proyecto Unity 6 / URP con **mundo 3D y cámara isométrica, acabado PS1 marcado**.
+Meta de producción: 4 niveles, economía de suero y munición e IA por percepción.
+Incluye una **primera versión jugable del puerto**
+y el sandbox técnico. El juego completo y sus KPI de producción siguen en desarrollo.
 
-## Empezar
+## Jugar sin abrir Unity
+
+En esta copia de trabajo, haz doble clic en **JUGAR ABISAL.cmd** y pulsa
+**Comenzar nivel / Enter**. El ejecutable esta en `Builds/Windows/AbisalStealness.exe`.
+El paquete Windows debe conservarse completo, incluida su carpeta Data.
+Consulta `LEEME PARA JUGAR.txt` para controles y recorrido. [Pruebas, capturas e identidad del ejecutable 0.5](docs/Validation/IndustrialPort/README.md).
+
+Para el equipo: [descarga Windows 0.5 industrial](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.5.0-industrial-playtest).
+Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado.
+
+## Desarrollar en Unity
 
 1. Instala Git, Git LFS y **Unity 6000.5.9f1**, Windows Build Support (Mono).
-2. `git clone <URL-del-repositorio>`; `git lfs install`; `git lfs pull`.
+2. `git clone https://github.com/c90Beretta/Abisal-Stealness.git`; `git lfs install`; `git lfs pull`.
+   Mientras se revisa el PR1, usa `git switch codex/first-port-map` y `git lfs pull`
+   para trabajar sobre esta entrega; la rama main conserva la versión integrada anterior.
 3. Abre esta carpeta (la que contiene `Assets`, `Packages`, `ProjectSettings`) en Unity Hub.
-4. Espera la resolución de paquetes. Abre `Assets/_Project/Scenes/MVP_Sandbox.unity`.
-   Si falta, usa **Zombtoy > Generate foundation sandbox**. Play para explorar.
-5. Consulta los controles que aparecen en pantalla y el estado en [VALIDATION](docs/VALIDATION.md).
+   Importa tus copias autorizadas de los [tres paquetes de entorno](docs/LOCAL_ASSETS.md).
+   Sus fuentes de Asset Store permanecen locales; el ejecutable sí contiene el nivel completo.
+4. Espera la resolución de paquetes. Usa **Abisal > Abrir puerto y jugar**.
+   Play también inicia el puerto aunque estés editando SampleScene.
+5. Pulsa **Comenzar nivel**. WASD mover, ratón apuntar, clic disparar, R recargar,
+   espacio golpe, Q suero, H botiquín, B venda, F linterna, E interactuar y Esc pausa.
+   **1/2/3** cambian pistola, carabina y dispersor; **rueda del ratón** ajusta el zoom.
+   Recoge el repuesto del almacén, repara el generador, activa control y embarca.
+6. Consulta el [mapa y recorrido](docs/LEVEL01_PORT.md), la [validación del puerto](docs/PORT_VALIDATION.md)
+   y la [validación inicial de la fundación](docs/VALIDATION.md).
+
+El nivel incluye cuatro arquetipos de infectados con dos variantes de datos cada uno,
+hordas finitas atraídas por ruido, linterna y pulso transitorio de ruido, gore y desmembramiento, cuerpo a cuerpo con
+resistencia, chaleco y máscara con oxígeno. TAB abre mochila y equipamiento;
+E registra cuerpos y contenedores. Las sobras permanecen en el mundo.
+F5 guarda cuando estás a salvo; F9 restaura inventario, botín y progreso de hordas.
+El soldado lleva ropa negra y tanque de oxígeno.
+[Cambio gráfico industrial, ragdolls y límites de esta entrega](docs/INDUSTRIAL_PORT.md).
+
+El mapa integra muros, suelos, contenedores, estanterías, barriles, maquinaria,
+ordenador y puertas de los assets descargados. La versión0.5 sustituye personajes
+y armas por modelos originales de escala adulta, añade ragdolls de13 cuerpos y
+arquitectura de cuarentena. Cámara32°/45°, mundo480×270 ampliado con filtro Point,
+dithering y UV oscilante; el HUD conserva resolución nativa. **F2** alterna efectos.
+La inspiración en Mouthwashing y el PS1 marcado fueron pedidos por el usuario;
+la aceptación estética y las cinco sesiones externas del KPI siguen pendientes.
 
 Remoto del equipo: https://github.com/c90Beretta/Abisal-Stealness.
 Revisa `docs/VALIDATION.md` para el estado verificado de la publicación.

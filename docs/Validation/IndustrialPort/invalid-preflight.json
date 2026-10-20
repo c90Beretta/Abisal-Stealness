@@ -1,0 +1,28 @@
+{
+  "accepted": false,
+  "reason": "Zero GPU timing samples; no rendered FPS inference. Preliminary dirty build, not final build. Frame/CPU percentiles deliberately excluded.",
+  "runs": [
+    {
+      "graphicsApi": "Direct3D12",
+      "gpu": "NVIDIA GeForce RTX 3070 Ti",
+      "cpu": "AMD Ryzen 5 5600X 6-Core Processor ",
+      "width": 1920,
+      "height": 1080,
+      "gpuTimingSamples": 0,
+      "warmupSeconds": 60.0,
+      "measuredSeconds": 10.000045776367188,
+      "buildIdentity": "{\"sourceCommit\":\"4c95185bb117b828d80a961185ef0783b522b96b\",\"version\":\"0.5.0\",\"builtUtc\":\"2026-10-19T12:15:20.3785457Z\"}"
+    },
+    {
+      "graphicsApi": "Direct3D11",
+      "gpu": "NVIDIA GeForce RTX 3070 Ti",
+      "cpu": "AMD Ryzen 5 5600X 6-Core Processor ",
+      "width": 1920,
+      "height": 1080,
+      "gpuTimingSamples": 0,
+      "warmupSeconds": 60.0,
+      "measuredSeconds": 10.000751495361328,
+      "buildIdentity": "{\"sourceCommit\":\"4c95185bb117b828d80a961185ef0783b522b96b\",\"version\":\"0.5.0\",\"builtUtc\":\"2026-10-19T12:15:20.3785457Z\"}"
+    }
+  ]
+}

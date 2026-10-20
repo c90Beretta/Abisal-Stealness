@@ -172,3 +172,7 @@ LightingData.asset     binary
 
 # Preserve vendor license bytes so cross-platform checkouts match the intake hashes.
 Assets/ThirdParty/**/License.txt -text
+
+# Unity serializes baked navigation as binary even with Force Text enabled.
+Assets/_Project/Navigation/*.asset lfs
+Assets/ThirdParty/Fonts/**/OFL.txt -text

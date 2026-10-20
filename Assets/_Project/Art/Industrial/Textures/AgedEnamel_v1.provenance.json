@@ -1,0 +1,6 @@
+{
+  "generator": "built-in image_gen",
+  "origin": "Original generated albedo, 2026-10-19",
+  "purpose": "Industrial painted enamel on original geometry; not UI mockup or a copied game texture",
+  "prompt": "Production game texture asset, NOT concept art and NOT a screenshot. A single square 2048x2048 seamless, perfectly flat orthographic albedo texture for old painted industrial bulkhead enamel. Dirty desaturated warm grey-ivory paint on steel, worn matte surface with irregular subtle grey fingerprints, accumulated grime, tiny scratches, a few small muted dark reddish-brown rusty chips. Edges tile seamlessly both axes. No panel seams, no bolts, no labels, no lettering, no logos, no perspective, no shadows, no highlights, no directional illumination, no vignette. Even diffuse flat lighting. Authentic utilitarian 1990s industrial ship interior horror material, weathered like a maintained factory neglected for months, restrained small-scale detail and broad calm areas. Do not copy any existing game texture. It should remain readable on low polygon 3D geometry with filtered 256-512px textures; no pixel art. Palette dominated by neutral light grey-cream #8e8b7d, muted grime #4e514b and rare rust #664437."
+}

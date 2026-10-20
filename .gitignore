@@ -128,3 +128,17 @@ InitTestScene*.unity*
 # Unity performance test metadata (generated during test/build runs)
 /Assets/Resources/PerformanceTestRunInfo.json*
 
+# User-acquired Asset Store source packs remain local; collaborators import their licensed copies.
+/Assets/SciFi Warehouse Kit/
+/Assets/SciFi Warehouse Kit.meta
+/Assets/Sci Fi Modular Pack/
+/Assets/Sci Fi Modular Pack.meta
+/Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/
+/Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR.meta
+/Assets/Data/Sci-fi_assets.meta
+/Assets/Data.meta
+
+
+# Transient visual review copies; canonical release evidence lives in docs/Validation.
+/.impeccable/review/
+/Assets/_Project/Resources/AbisalBuildIdentity.json*

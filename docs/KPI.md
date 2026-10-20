@@ -25,3 +25,19 @@ Guardar CSV en `docs/Playtests/` (sin datos personales):
 
 Para perfilado adjuntar CSV/Profiler capture en artefactos de release, con enlace
 desde VALIDATION. Las mediciones del Editor o de otra GPU no certifican GTX1060.
+
+## Estado de la base industrial 0.5 — 19 oct 2026
+
+| Criterio | Evidencia disponible | Estado |
+|---|---|---|
+| Nivel y progresión | Ruta NavMesh completa, fusible→generador→control→extracción probada | Integrado; duración y4/5 completan sin ayuda pendientes de cinco personas |
+| Enemigos MVP | Cuatro arquetipos×dos variantes de datos, cuerpos adultos y encuentros fixture | Catálogo supera mínimo; legibilidad visual aceptada por revisor, balance externo pendiente |
+| Supervivencia | Suero, salud, sangrado, armas, ruido, recursos y pausa con regresiones | Pruebas funcionales; no balance certificado |
+| Checkpoint | Diez ciclos: pose19huesos, orientación, salud, loot, recursos, temporizadores y contadores; corrupción rechazada | Cumple el escenario automatizado; sesiones externas y migración real de saves históricos pendientes |
+| Economía | CSV local por partida con origen/build, recursos y fases | Instrumentación integrada; faltan cinco rutas humanas exitosas para la mediana10–20% |
+| Rendimiento | Preflight D3D11/D3D12 oculto devuelve cero muestras GPU, rechazado automáticamente | Sin FPS válido; ruta10min/GTX1060 pendiente |
+| Calidad gráfica pedida | Reconstrucción adicional autorizada y capturas Unity720p/1080p | Revisión completa posterior fix; verdict ship soloF1/F2 resueltos. Aceptación estética humana pendiente |
+| Colaboración | Rama/PR, LFS, fuentesOFL, ledger, packs privados fuera del Git público | Comprobaciones locales disponibles; segunda persona/equipo pendiente |
+
+Los26PlayMode y18EditMode no sustituyen aceptación estética, FPS ni playtests.
+Consultar `Validation/IndustrialPort/README.md` para hashes y alcance de evidencia.

@@ -1,5 +1,5 @@
 {
   "name": "Zombtoy.Gameplay",
   "rootNamespace": "Zombtoy.Gameplay",
-  "references": ["Zombtoy.Core", "Unity.InputSystem", "UnityEngine.UI"]
+  "references": ["Zombtoy.Core", "Unity.InputSystem", "UnityEngine.UI", "Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.Universal.Runtime"]
 }

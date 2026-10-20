@@ -77,3 +77,34 @@ Los números del brief están invertidos respecto a los adjuntos: imagen1 es
 legibilidad doméstica, imagen2 es sala verde del submarino. Se preservan con nombres
 descriptivos. No se adjuntaron capturas de Endoparasitic: guía UI provisional,
 sin afirmar análisis de capturas inexistentes. El sandbox no certifica look PSX final.
+
+## ADR-008 — Mundo 3D isométrico nativo y assets del usuario
+
+Petición posterior del usuario, 18octubre2026: implementar el mapa con sus assets
+descargados y modelos de armas; descartar el aspecto pixelado2D y mantener vista
+isométrica3D. Esta petición sustituye la presentación480×270/point del brief inicial.
+El mundo renderiza directamente a la ventana con cámara ortográfica35.264°/45°,
+zoom por rueda, texturas PBR, sombras suaves y MSAA4; el HUD sigue independiente.
+
+Se integran los paquetes locales Warehouse/Modular Corridor/Old Rusty Props y tres
+modelos Kenney de armas. Se conservan colisiones, misión y encuentros del puerto,
+con NavMesh rehecho para el mobiliario añadido. Asset Store queda local, con guías
+de importación para colaboradores; fuentes propias y CC0 siguen en Git público.
+`LOCAL_ASSETS.md` recoge rutas, autores y términos. El binario integra el nivel.
+El nuevo look no certifica todavía rendimiento, dificultad ni duración.
+
+## ADR-009 — Sustituir la dirección gráfica0.4 y añadir ragdolls
+
+19octubre2026UTC: el usuario rechaza el diseño anterior, fija Mouthwashing como
+referencia y pide continuar el KPI durante hasta cinco horas. Se sustituye la
+presentación de figuras pequeñas/colores fríos por cuerpos adultos y cuarentena
+industrial, texturas gastadas y luz práctica. Sigue vigente la cámara isométrica
+3D del ADR-008. La referencia no autoriza copiar sus assets y no constituye una
+aprobación del resultado de esta implementación.
+
+Los infectados reciben malla propia ponderada y13cuerpos articulados. El reposo
+desactiva la simulación para limitar coste; el checkpoint3 conserva pose,
+orientación y métricas de partida, con lectura de versiones1/2. El CSV local y
+el estrés sintético permiten recoger evidencia. Se mantienen los umbrales y
+las condiciones de aceptación de KPI.md; no se sustituyen sesiones externas o
+GTX1060 por tests del Editor o resultados de RTX3070Ti.

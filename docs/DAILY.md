@@ -26,3 +26,75 @@
 - Rama publicada y CI GitHub/Ubuntu verde en `da6892c`. Protección main aplicada
   (1 revisión, check repository, conversaciones, sin force-push/borrado; admin con bypass).
   Etiqueta de preparación: v0.1.0-foundation. Los límites pendientes figuran en VALIDATION.
+
+## 18 octubre 2026 — primer mapa de puerto
+
+- Rama `codex/first-port-map`, a partir de la fundación publicada.
+- Escena Level01_Port con muelle56×44m, patio de seis contenedores, almacén,
+  generador, control, pasarela y submarino. Geometría en prefab propio y NavMesh horneado.
+- Misión: repuesto → energía → autorización en control → embarque. Caja opcional
+  de munición/suero de un solo uso. Seis encuentros, con búsqueda de ruta sobre NavMesh.
+- Interacciones bloqueadas por paredes, objetivos fuera de orden rechazados,
+  recuperación de caída al agua y ocultación de muros/contenedores que tapan al jugador.
+- Se conserva el sandbox; el build arranca en el puerto. Sin nuevas dependencias
+  ni assets externos. Pruebas, captura y build se registran en PORT_VALIDATION.
+
+## 18 octubre 2026 — primer nivel accesible y sistemas de supervivencia
+
+- Acceso `JUGAR ABISAL.cmd`, instrucciones de juego y menú Abisal en Unity;
+  Play inicia el puerto aun desde SampleScene. Build Windows en ventana1280×720.
+- Menú inicial, HUD de salud/sangrado/suero/munición, equipo, ayuda, pausa,
+  muerte y victoria. Marcador de objetivo con respaldo oscuro tras revisión visual.
+- Botiquines/vendas, tiempos de aplicación, interrupción por daño, melee y
+  linterna. Suministros recogibles de una sola vez y recarga con tiempo de uso.
+- IA con patrulla, investigación, persecución, búsqueda, preparación de ataque,
+  recuperación, impacto y muerte. Dos definiciones de infectados y clips Idle/Run.
+- Checkpoint del generador, F5/F9, validación de JSON y recuperación de objetivos,
+  puertas, recursos y enemigos abatidos.
+- 18 EditMode +10 PlayMode pasan; build con0 errores/0 advertencias. Capturas
+  compuestas desde canvases reales; no se completó partida humana de validación.
+- Continúan pendientes inventario por cuadrícula, arsenal, efectos PSX completos,
+  fases mentales audiovisuales y aceptación de KPI de duración/rendimiento/balance.
+- Distribución publicada: [v0.2.0-port-playtest](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.2.0-port-playtest),
+  paquete Windows de198 archivos con créditos/licencias. Código de juego en8feb561;
+  PR1 conserva la revisión del equipo antes de integrar en main.
+
+## 18 octubre 2026 — puerto3D nativo y armas visibles
+
+- Petición del usuario sustituye la presentación pixelada por3D isométrico nativo;
+  cámara35.264°/45°, zoom por rueda, MSAA4, materiales PBR y sombras suaves.
+- Integrados los tres paquetes locales del usuario:120 instancias de entorno,
+  materiales URP propios, mobiliario y NavMesh rehecho. Fuentes Asset Store locales
+  y referencias/guía de importación para colaboradores, sin subirlas al repo público.
+- Tres armas Kenney equipables por1/2/3 con modelo en manos, punto de salida,
+  retroceso, daño/cadencia/dispersión y selección persistida por checkpoint.
+- 18 EditMode +12 PlayMode pasan, incluidas armas reales/munición, disparos
+  bloqueados por paredes, compatibilidad de checkpoint y ruta completa del puerto.
+- Build Windows0errores/1advertenciaCS0618 de una demo del proveedor no habilitada
+  como escena. Evidencia en `Validation/Port3D`; el look anterior se conserva como
+  evidencia histórica. Pendientes playtests humanos, balance y perfilado.
+
+## 2026-10-18 / Puerto nocturno v0.4
+
+Integración de oscuridad/linterna con carga, percepción próxima y ruido, seis patrullas y dieciséis reservas finitas, cuatro variantes de malla de infectados, soldado táctico negro con tanque local de oxígeno, VFX de disparos, sangre/desmembramiento, cuchillo/hacha y resistencia. Mochila de 24 kg, cuerpos/cajas saqueables, chaleco y máscara funcionales; fuga tóxica del generador. Checkpoint v2 conserva equipo, botín restante, miembros y reservas; lee v1. Ver `NIGHT_PORT.md`.
+
+Revisión visual fresca: único hallazgo R1 corregido (estados y mensajes de mochila); ver `UI_REVIEW_NIGHT.md`. Pruebas y compilación registradas en `Validation/NightPort`. No hay certificación de balance/FPS ni cambio de los KPI globales. Las fuentes Asset Store siguen locales y el prefab ModularAsset_Sandbox modificado por el usuario se preserva fuera de esta entrega.
+
+## 2026-10-19 / Puerto industrial PS1 0.5
+
+Rediseño solicitado hacia horror industrial inspirado en Mouthwashing. Usuario
+confirmó PS1 marcado y revisión de capturas Unity; tras dos rebuild eligió rehacer
+interiores y soldado. Se reemplazan personajes y armas por geometría propia de
+escala adulta, cuatro albedos originales y fuentesOFL. Mamparos, bancos, props
+locales, corte isométrico y luces prácticas componen cuartos contenidos. Control
+muestra consolas propias con estado real de red/embarque; HUD nativo compacto.
+
+Ragdolls de13 cuerpos/12 articulaciones, gore y loot anclado a pelvis; savev3
+con pose y orientación, recursos y timers en diez ciclos. CSV anónimo local para
+partidas futuras. 26PlayMode/18EditMode pasan; rutas y objetivos completos.
+La revisión completa final pidióF1/F2; el verdict los puntuóresolved, ship solo
+para esos dos hallazgos. No se obtuvo aprobación estética humana ni FPS válido.
+Preflight oculto rechazado por cero muestrasGPU; GTX1060 y cinco personas siguen
+pendientes. Fuentes/licencias/evidencia versionadas; prefab del usuario preservado.
+La interrupción por cuota impidió completar la ventana original de cinco horas;
+no se presenta tiempo inactivo como trabajo realizado.

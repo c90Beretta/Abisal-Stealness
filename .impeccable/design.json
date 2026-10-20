@@ -1,0 +1,1321 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T13:10:17Z",
+  "title": "Design System: ABISAL — puerto industrial 0.5",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Carbón cálido",
+        "tonalRamp": [
+          "oklch(15% 0.0035 86.15)",
+          "oklch(25% 0.0035 86.15)",
+          "oklch(36% 0.0035 86.15)",
+          "oklch(47% 0.0035 86.15)",
+          "oklch(59% 0.0035 86.15)",
+          "oklch(71% 0.0035 86.15)",
+          "oklch(83% 0.0035 86.15)",
+          "oklch(95% 0.0035 86.15)"
+        ]
+      },
+      "hud-surface": {
+        "role": "neutral",
+        "displayName": "Carbón de vitales",
+        "tonalRamp": [
+          "oklch(15% 0.0035 86.15)",
+          "oklch(25% 0.0035 86.15)",
+          "oklch(36% 0.0035 86.15)",
+          "oklch(47% 0.0035 86.15)",
+          "oklch(59% 0.0035 86.15)",
+          "oklch(71% 0.0035 86.15)",
+          "oklch(83% 0.0035 86.15)",
+          "oklch(95% 0.0035 86.15)"
+        ]
+      },
+      "mission-surface": {
+        "role": "neutral",
+        "displayName": "Carbón de misión",
+        "tonalRamp": [
+          "oklch(15% 0.0032 80.16)",
+          "oklch(25% 0.0032 80.16)",
+          "oklch(36% 0.0032 80.16)",
+          "oklch(47% 0.0032 80.16)",
+          "oklch(59% 0.0032 80.16)",
+          "oklch(71% 0.0032 80.16)",
+          "oklch(83% 0.0032 80.16)",
+          "oklch(95% 0.0032 80.16)"
+        ]
+      },
+      "menu-surface": {
+        "role": "neutral",
+        "displayName": "Carbón de menú",
+        "tonalRamp": [
+          "oklch(15% 0.0038 86.39)",
+          "oklch(25% 0.0038 86.39)",
+          "oklch(36% 0.0038 86.39)",
+          "oklch(47% 0.0038 86.39)",
+          "oklch(59% 0.0038 86.39)",
+          "oklch(71% 0.0038 86.39)",
+          "oklch(83% 0.0038 86.39)",
+          "oklch(95% 0.0038 86.39)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Hueso cálido",
+        "tonalRamp": [
+          "oklch(15% 0.0627 91.81)",
+          "oklch(25% 0.0627 91.81)",
+          "oklch(36% 0.0627 91.81)",
+          "oklch(47% 0.0627 91.81)",
+          "oklch(59% 0.0627 91.81)",
+          "oklch(71% 0.0627 91.81)",
+          "oklch(83% 0.0627 91.81)",
+          "oklch(95% 0.0627 91.81)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Papel gastado",
+        "tonalRamp": [
+          "oklch(15% 0.0286 95.42)",
+          "oklch(25% 0.0286 95.42)",
+          "oklch(36% 0.0286 95.42)",
+          "oklch(47% 0.0286 95.42)",
+          "oklch(59% 0.0286 95.42)",
+          "oklch(71% 0.0286 95.42)",
+          "oklch(83% 0.0286 95.42)",
+          "oklch(95% 0.0286 95.42)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Blanco de lectura",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(25% 0.0000 89.88)",
+          "oklch(36% 0.0000 89.88)",
+          "oklch(47% 0.0000 89.88)",
+          "oklch(59% 0.0000 89.88)",
+          "oklch(71% 0.0000 89.88)",
+          "oklch(83% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "button-surface": {
+        "role": "neutral",
+        "displayName": "Metal de acción",
+        "tonalRamp": [
+          "oklch(15% 0.0139 91.74)",
+          "oklch(25% 0.0139 91.74)",
+          "oklch(36% 0.0139 91.74)",
+          "oklch(47% 0.0139 91.74)",
+          "oklch(59% 0.0139 91.74)",
+          "oklch(71% 0.0139 91.74)",
+          "oklch(83% 0.0139 91.74)",
+          "oklch(95% 0.0139 91.74)"
+        ]
+      },
+      "gauge-track": {
+        "role": "neutral",
+        "displayName": "Pista vacía",
+        "tonalRamp": [
+          "oklch(15% 0.0135 91.71)",
+          "oklch(25% 0.0135 91.71)",
+          "oklch(36% 0.0135 91.71)",
+          "oklch(47% 0.0135 91.71)",
+          "oklch(59% 0.0135 91.71)",
+          "oklch(71% 0.0135 91.71)",
+          "oklch(83% 0.0135 91.71)",
+          "oklch(95% 0.0135 91.71)"
+        ]
+      },
+      "warning": {
+        "role": "neutral",
+        "displayName": "Herida coral",
+        "tonalRamp": [
+          "oklch(15% 0.1437 32.43)",
+          "oklch(25% 0.1437 32.43)",
+          "oklch(36% 0.1437 32.43)",
+          "oklch(47% 0.1437 32.43)",
+          "oklch(59% 0.1437 32.43)",
+          "oklch(71% 0.1437 32.43)",
+          "oklch(83% 0.1437 32.43)",
+          "oklch(95% 0.1437 32.43)"
+        ]
+      },
+      "loot-feedback": {
+        "role": "neutral",
+        "displayName": "Aviso de recuperación",
+        "tonalRamp": [
+          "oklch(15% 0.1010 52.16)",
+          "oklch(25% 0.1010 52.16)",
+          "oklch(36% 0.1010 52.16)",
+          "oklch(47% 0.1010 52.16)",
+          "oklch(59% 0.1010 52.16)",
+          "oklch(71% 0.1010 52.16)",
+          "oklch(83% 0.1010 52.16)",
+          "oklch(95% 0.1010 52.16)"
+        ]
+      },
+      "enemy-health": {
+        "role": "neutral",
+        "displayName": "Rojo de daño",
+        "tonalRamp": [
+          "oklch(15% 0.1759 31.68)",
+          "oklch(25% 0.1759 31.68)",
+          "oklch(36% 0.1759 31.68)",
+          "oklch(47% 0.1759 31.68)",
+          "oklch(59% 0.1759 31.68)",
+          "oklch(71% 0.1759 31.68)",
+          "oklch(83% 0.1759 31.68)",
+          "oklch(95% 0.1759 31.68)"
+        ]
+      },
+      "noise-pulse": {
+        "role": "neutral",
+        "displayName": "Ámbar de ruido",
+        "tonalRamp": [
+          "oklch(15% 0.1295 63.89)",
+          "oklch(25% 0.1295 63.89)",
+          "oklch(36% 0.1295 63.89)",
+          "oklch(47% 0.1295 63.89)",
+          "oklch(59% 0.1295 63.89)",
+          "oklch(71% 0.1295 63.89)",
+          "oklch(83% 0.1295 63.89)",
+          "oklch(95% 0.1295 63.89)"
+        ]
+      },
+      "aged-enamel": {
+        "role": "neutral",
+        "displayName": "Esmalte envejecido",
+        "tonalRamp": [
+          "oklch(15% 0.0466 89.49)",
+          "oklch(25% 0.0466 89.49)",
+          "oklch(36% 0.0466 89.49)",
+          "oklch(47% 0.0466 89.49)",
+          "oklch(59% 0.0466 89.49)",
+          "oklch(71% 0.0466 89.49)",
+          "oklch(83% 0.0466 89.49)",
+          "oklch(95% 0.0466 89.49)"
+        ]
+      },
+      "service-wall": {
+        "role": "neutral",
+        "displayName": "Acero verdoso",
+        "tonalRamp": [
+          "oklch(15% 0.0161 163.87)",
+          "oklch(25% 0.0161 163.87)",
+          "oklch(36% 0.0161 163.87)",
+          "oklch(47% 0.0161 163.87)",
+          "oklch(59% 0.0161 163.87)",
+          "oklch(71% 0.0161 163.87)",
+          "oklch(83% 0.0161 163.87)",
+          "oklch(95% 0.0161 163.87)"
+        ]
+      },
+      "dull-steel": {
+        "role": "neutral",
+        "displayName": "Acero mate",
+        "tonalRamp": [
+          "oklch(15% 0.0092 128.74)",
+          "oklch(25% 0.0092 128.74)",
+          "oklch(36% 0.0092 128.74)",
+          "oklch(47% 0.0092 128.74)",
+          "oklch(59% 0.0092 128.74)",
+          "oklch(71% 0.0092 128.74)",
+          "oklch(83% 0.0092 128.74)",
+          "oklch(95% 0.0092 128.74)"
+        ]
+      },
+      "oxide": {
+        "role": "neutral",
+        "displayName": "Óxido oscuro",
+        "tonalRamp": [
+          "oklch(15% 0.0707 43.63)",
+          "oklch(25% 0.0707 43.63)",
+          "oklch(36% 0.0707 43.63)",
+          "oklch(47% 0.0707 43.63)",
+          "oklch(59% 0.0707 43.63)",
+          "oklch(71% 0.0707 43.63)",
+          "oklch(83% 0.0707 43.63)",
+          "oklch(95% 0.0707 43.63)"
+        ]
+      },
+      "safety-paint": {
+        "role": "neutral",
+        "displayName": "Ocre de precaución",
+        "tonalRamp": [
+          "oklch(15% 0.1125 63.98)",
+          "oklch(25% 0.1125 63.98)",
+          "oklch(36% 0.1125 63.98)",
+          "oklch(47% 0.1125 63.98)",
+          "oklch(59% 0.1125 63.98)",
+          "oklch(71% 0.1125 63.98)",
+          "oklch(83% 0.1125 63.98)",
+          "oklch(95% 0.1125 63.98)"
+        ]
+      },
+      "concrete": {
+        "role": "neutral",
+        "displayName": "Hormigón usado",
+        "tonalRamp": [
+          "oklch(15% 0.0176 84.58)",
+          "oklch(25% 0.0176 84.58)",
+          "oklch(36% 0.0176 84.58)",
+          "oklch(47% 0.0176 84.58)",
+          "oklch(59% 0.0176 84.58)",
+          "oklch(71% 0.0176 84.58)",
+          "oklch(83% 0.0176 84.58)",
+          "oklch(95% 0.0176 84.58)"
+        ]
+      },
+      "service-deck": {
+        "role": "neutral",
+        "displayName": "Cubierta de servicio",
+        "tonalRamp": [
+          "oklch(15% 0.0309 101.49)",
+          "oklch(25% 0.0309 101.49)",
+          "oklch(36% 0.0309 101.49)",
+          "oklch(47% 0.0309 101.49)",
+          "oklch(59% 0.0309 101.49)",
+          "oklch(71% 0.0309 101.49)",
+          "oklch(83% 0.0309 101.49)",
+          "oklch(95% 0.0309 101.49)"
+        ]
+      },
+      "soldier-cloth": {
+        "role": "neutral",
+        "displayName": "Tinte de tejido táctico",
+        "tonalRamp": [
+          "oklch(15% 0.0098 247.99)",
+          "oklch(25% 0.0098 247.99)",
+          "oklch(36% 0.0098 247.99)",
+          "oklch(47% 0.0098 247.99)",
+          "oklch(59% 0.0098 247.99)",
+          "oklch(71% 0.0098 247.99)",
+          "oklch(83% 0.0098 247.99)",
+          "oklch(95% 0.0098 247.99)"
+        ]
+      },
+      "tactical-plates": {
+        "role": "neutral",
+        "displayName": "Protección de infectado",
+        "tonalRamp": [
+          "oklch(15% 0.0060 248.05)",
+          "oklch(25% 0.0060 248.05)",
+          "oklch(36% 0.0060 248.05)",
+          "oklch(47% 0.0060 248.05)",
+          "oklch(59% 0.0060 248.05)",
+          "oklch(71% 0.0060 248.05)",
+          "oklch(83% 0.0060 248.05)",
+          "oklch(95% 0.0060 248.05)"
+        ]
+      },
+      "boot-leather": {
+        "role": "neutral",
+        "displayName": "Cuero de infectado",
+        "tonalRamp": [
+          "oklch(15% 0.0064 67.46)",
+          "oklch(25% 0.0064 67.46)",
+          "oklch(36% 0.0064 67.46)",
+          "oklch(47% 0.0064 67.46)",
+          "oklch(59% 0.0064 67.46)",
+          "oklch(71% 0.0064 67.46)",
+          "oklch(83% 0.0064 67.46)",
+          "oklch(95% 0.0064 67.46)"
+        ]
+      },
+      "oxygen-tank": {
+        "role": "neutral",
+        "displayName": "Tanque mate",
+        "tonalRamp": [
+          "oklch(15% 0.0180 128.97)",
+          "oklch(25% 0.0180 128.97)",
+          "oklch(36% 0.0180 128.97)",
+          "oklch(47% 0.0180 128.97)",
+          "oklch(59% 0.0180 128.97)",
+          "oklch(71% 0.0180 128.97)",
+          "oklch(83% 0.0180 128.97)",
+          "oklch(95% 0.0180 128.97)"
+        ]
+      },
+      "soldier-boots": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0089 247.93)",
+          "oklch(25% 0.0089 247.93)",
+          "oklch(36% 0.0089 247.93)",
+          "oklch(47% 0.0089 247.93)",
+          "oklch(59% 0.0089 247.93)",
+          "oklch(71% 0.0089 247.93)",
+          "oklch(83% 0.0089 247.93)",
+          "oklch(95% 0.0089 247.93)"
+        ],
+        "displayName": "Tinte de cuero táctico"
+      },
+      "soldier-plates": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0094 247.95)",
+          "oklch(25% 0.0094 247.95)",
+          "oklch(36% 0.0094 247.95)",
+          "oklch(47% 0.0094 247.95)",
+          "oklch(59% 0.0094 247.95)",
+          "oklch(71% 0.0094 247.95)",
+          "oklch(83% 0.0094 247.95)",
+          "oklch(95% 0.0094 247.95)"
+        ],
+        "displayName": "Tinte de chaleco táctico"
+      },
+      "soldier-knees": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0112 173.60)",
+          "oklch(25% 0.0112 173.60)",
+          "oklch(36% 0.0112 173.60)",
+          "oklch(47% 0.0112 173.60)",
+          "oklch(59% 0.0112 173.60)",
+          "oklch(71% 0.0112 173.60)",
+          "oklch(83% 0.0112 173.60)",
+          "oklch(95% 0.0112 173.60)"
+        ],
+        "displayName": "Protección de rodilla"
+      },
+      "tactical-seams": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0133 122.08)",
+          "oklch(25% 0.0133 122.08)",
+          "oklch(36% 0.0133 122.08)",
+          "oklch(47% 0.0133 122.08)",
+          "oklch(59% 0.0133 122.08)",
+          "oklch(71% 0.0133 122.08)",
+          "oklch(83% 0.0133 122.08)",
+          "oklch(95% 0.0133 122.08)"
+        ],
+        "displayName": "Costura táctica"
+      },
+      "interior-steel": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0111 145.33)",
+          "oklch(25% 0.0111 145.33)",
+          "oklch(36% 0.0111 145.33)",
+          "oklch(47% 0.0111 145.33)",
+          "oklch(59% 0.0111 145.33)",
+          "oklch(71% 0.0111 145.33)",
+          "oklch(83% 0.0111 145.33)",
+          "oklch(95% 0.0111 145.33)"
+        ],
+        "displayName": "Acero de mamparo"
+      },
+      "interior-enamel": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0548 91.82)",
+          "oklch(25% 0.0548 91.82)",
+          "oklch(36% 0.0548 91.82)",
+          "oklch(47% 0.0548 91.82)",
+          "oklch(59% 0.0548 91.82)",
+          "oklch(71% 0.0548 91.82)",
+          "oklch(83% 0.0548 91.82)",
+          "oklch(95% 0.0548 91.82)"
+        ],
+        "displayName": "Crema de banco usado"
+      },
+      "interior-deck": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0279 100.66)",
+          "oklch(25% 0.0279 100.66)",
+          "oklch(36% 0.0279 100.66)",
+          "oklch(47% 0.0279 100.66)",
+          "oklch(59% 0.0279 100.66)",
+          "oklch(71% 0.0279 100.66)",
+          "oklch(83% 0.0279 100.66)",
+          "oklch(95% 0.0279 100.66)"
+        ],
+        "displayName": "Cubierta pintada"
+      },
+      "crt-case": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0214 116.66)",
+          "oklch(25% 0.0214 116.66)",
+          "oklch(36% 0.0214 116.66)",
+          "oklch(47% 0.0214 116.66)",
+          "oklch(59% 0.0214 116.66)",
+          "oklch(71% 0.0214 116.66)",
+          "oklch(83% 0.0214 116.66)",
+          "oklch(95% 0.0214 116.66)"
+        ],
+        "displayName": "Carcasa CRT"
+      },
+      "crt-bezel": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0100 145.10)",
+          "oklch(25% 0.0100 145.10)",
+          "oklch(36% 0.0100 145.10)",
+          "oklch(47% 0.0100 145.10)",
+          "oklch(59% 0.0100 145.10)",
+          "oklch(71% 0.0100 145.10)",
+          "oklch(83% 0.0100 145.10)",
+          "oklch(95% 0.0100 145.10)"
+        ],
+        "displayName": "Bisel CRT"
+      },
+      "keyboard-keys": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0186 129.06)",
+          "oklch(25% 0.0186 129.06)",
+          "oklch(36% 0.0186 129.06)",
+          "oklch(47% 0.0186 129.06)",
+          "oklch(59% 0.0186 129.06)",
+          "oklch(71% 0.0186 129.06)",
+          "oklch(83% 0.0186 129.06)",
+          "oklch(95% 0.0186 129.06)"
+        ],
+        "displayName": "Teclas elevadas"
+      },
+      "phosphor-glass": {
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0153 157.75)",
+          "oklch(25% 0.0153 157.75)",
+          "oklch(36% 0.0153 157.75)",
+          "oklch(47% 0.0153 157.75)",
+          "oklch(59% 0.0153 157.75)",
+          "oklch(71% 0.0153 157.75)",
+          "oklch(83% 0.0153 157.75)",
+          "oklch(95% 0.0153 157.75)"
+        ],
+        "displayName": "Cristal fósforo"
+      },
+      "terminal-powered": {
+        "role": "secondary",
+        "tonalRamp": [
+          "oklch(15% 0.1165 133.94)",
+          "oklch(25% 0.1165 133.94)",
+          "oklch(36% 0.1165 133.94)",
+          "oklch(47% 0.1165 133.94)",
+          "oklch(59% 0.1165 133.94)",
+          "oklch(71% 0.1165 133.94)",
+          "oklch(83% 0.1165 133.94)",
+          "oklch(95% 0.1165 133.94)"
+        ],
+        "displayName": "Fósforo activo"
+      },
+      "terminal-offline": {
+        "role": "secondary",
+        "tonalRamp": [
+          "oklch(15% 0.1354 67.51)",
+          "oklch(25% 0.1354 67.51)",
+          "oklch(36% 0.1354 67.51)",
+          "oklch(47% 0.1354 67.51)",
+          "oklch(59% 0.1354 67.51)",
+          "oklch(71% 0.1354 67.51)",
+          "oklch(83% 0.1354 67.51)",
+          "oklch(95% 0.1354 67.51)"
+        ],
+        "displayName": "Ámbar sin red"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "ABISAL",
+        "purpose": "Crimson Text SemiBold; marca de menú."
+      },
+      "headline": {
+        "displayName": "Encabezado operativo",
+        "purpose": "Estado del menú y título de ayuda."
+      },
+      "title": {
+        "displayName": "Misión y columnas",
+        "purpose": "Objetivo y rótulos de mochila/botín."
+      },
+      "body": {
+        "displayName": "Cuerpo operativo",
+        "purpose": "Ayuda y botones del menú."
+      },
+      "label": {
+        "displayName": "Detalle",
+        "purpose": "Equipo, feedback y marcador próximo."
+      },
+      "ammo": {
+        "displayName": "Munición",
+        "purpose": "Cifra dominante de cargador; reserva menor."
+      },
+      "interaction": {
+        "displayName": "Interacción",
+        "purpose": "Prompt E del HUD, 23 unidades de Canvas."
+      },
+      "terminal": {
+        "displayName": "Estado CRT",
+        "purpose": "36 unidades en WorldSpace, escala 0.0036; no 36px finales nativos."
+      }
+    },
+    "tonalRampPolicy": "Eight-step OKLCH ramps are panel-generated metadata, not additional runtime Unity tokens; alpha is represented by the primitive only.",
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [],
+    "nativeUGUI": {
+      "platform": "Windows / Unity 6000.5.9f1 / URP",
+      "source": [
+        "Assets/_Project/Runtime/Gameplay/GameHud.cs",
+        "Assets/_Project/Runtime/Gameplay/NightHud.cs",
+        "Assets/_Project/Runtime/Gameplay/NightSurvival.cs",
+        "Assets/_Project/Runtime/Gameplay/PresentationOptions.cs",
+        "Assets/_Project/Runtime/Gameplay/RetroRenderFeature.cs",
+        "Assets/_Project/Editor/HumanCharacterBuilder.cs",
+        "Assets/_Project/Editor/IndustrialPortBuilder.cs",
+        "Assets/_Project/Editor/IndustrialArtRebuild.cs",
+        "Assets/_Project/Art/Industrial/RetroSurface.shader",
+        "Assets/_Project/Art/Industrial/RetroScreen.shader",
+        "Assets/_Project/Art/Industrial/DamageVignette.shader",
+        "Assets/_Project/Runtime/Gameplay/IsometricView.cs",
+        "Assets/_Project/Runtime/Gameplay/TerminalDisplay.cs",
+        "Assets/_Project/Runtime/Gameplay/InteriorCutaway.cs",
+        "Assets/_Project/Editor/InteriorRebuild.cs",
+        "Assets/_Project/Editor/ControlConsoleBuilder.cs"
+      ],
+      "units": "px in frontmatter = Canvas reference units; world uses meters. Color percentages preserve numeric Unity Color channels, not a measured final screenshot color.",
+      "canvas": {
+        "referenceResolution": [
+          1280,
+          720
+        ],
+        "scaleMode": "ScaleWithScreenSize",
+        "matchWidthOrHeight": 0.5,
+        "sortingOrder": 100
+      },
+      "geometry": {
+        "mission": {
+          "width": "{components.mission.width}",
+          "height": "{components.mission.height}",
+          "anchor": "top-left",
+          "position": [
+            26,
+            -22
+          ]
+        },
+        "vitals": {
+          "width": "{components.vitals.width}",
+          "height": "{components.vitals.height}",
+          "anchor": "bottom-left",
+          "pivot": [
+            0,
+            1
+          ],
+          "position": [
+            26,
+            150
+          ],
+          "healthGauge": [
+            246,
+            4
+          ],
+          "serumGauge": [
+            246,
+            3
+          ]
+        },
+        "ammunition": {
+          "width": "{components.ammunition.width}",
+          "height": "{components.ammunition.height}",
+          "anchor": "bottom-right",
+          "pivot": [
+            0,
+            1
+          ],
+          "position": [
+            -224,
+            150
+          ]
+        },
+        "menu": {
+          "size": [
+            470,
+            590
+          ],
+          "anchor": "left-center",
+          "position": [
+            46,
+            0
+          ],
+          "buttonStepY": 54
+        },
+        "help": {
+          "size": [
+            860,
+            580
+          ],
+          "anchor": "center"
+        },
+        "equipment": {
+          "width": "{components.equipment.width}",
+          "height": "{components.equipment.height}",
+          "anchor": "center"
+        },
+        "equipment-action": {
+          "width": "{components.equipment-action.width}",
+          "height": "{components.equipment-action.height}",
+          "supplyX": 26,
+          "gearX": 260,
+          "rowsY": [
+            -294,
+            -340,
+            -386
+          ]
+        },
+        "equipment-weapon": {
+          "width": "{components.equipment-weapon.width}",
+          "height": "{components.equipment-weapon.height}",
+          "firstX": 26,
+          "stepX": 151,
+          "y": -480
+        },
+        "loot-take": {
+          "width": "{components.loot-take.width}",
+          "height": "{components.loot-take.height}",
+          "position": [
+            536,
+            -306
+          ]
+        },
+        "equipment-feedback": {
+          "width": "{components.equipment-feedback.width}",
+          "height": "{components.equipment-feedback.height}",
+          "position": [
+            536,
+            -354
+          ]
+        },
+        "columns": {
+          "carriedPosition": [
+            26,
+            -112
+          ],
+          "carriedSize": [
+            450,
+            100
+          ],
+          "gearPosition": [
+            26,
+            -220
+          ],
+          "gearSize": [
+            450,
+            65
+          ],
+          "lootPosition": [
+            536,
+            -126
+          ],
+          "lootSize": [
+            410,
+            160
+          ],
+          "helperPosition": [
+            536,
+            -410
+          ],
+          "helperSize": [
+            410,
+            110
+          ]
+        },
+        "prompt": {
+          "position": [
+            0,
+            119
+          ],
+          "size": [
+            650,
+            32
+          ],
+          "anchor": "bottom-center",
+          "typography": "{typography.interaction}"
+        },
+        "message": {
+          "position": [
+            0,
+            72
+          ],
+          "size": [
+            560,
+            45
+          ],
+          "anchor": "bottom-center",
+          "fontSize": 19
+        }
+      },
+      "inventory": {
+        "capacityKg": 24,
+        "replacementMaximumChargePercent": 70,
+        "requiresReplacementStock": true,
+        "supplyDisabledWhen": [
+          "charge > 70%",
+          "no replacement stock",
+          "session not running",
+          "busy",
+          "inventory locked"
+        ],
+        "feedback": "Mirrors unexpired session.Message inside the equipment card, above helper copy.",
+        "simulation": "Help/equipment block combat; world keeps running. ESC pauses."
+      },
+      "buttonStates": {
+        "menu": {
+          "highlightedRGBMultiplier": 1.4,
+          "selected": "same as highlighted",
+          "disabledRGBMultiplier": [
+            0.45,
+            0.43,
+            0.38
+          ],
+          "otherStates": "Unity defaults"
+        },
+        "equipment": "Unity default ColorBlock; do not inherit menu multiplier.",
+        "preview": "Literal CSS approximations only; font fallback and compositing differ from Unity. Native source remains authority."
+      },
+      "world": {
+        "perceptionRadiusMeters": 2.7,
+        "perceptionRingEnabled": false,
+        "noiseDisplayMaximumMeters": 7,
+        "noisePulseVisibleAtLeastMeters": 2,
+        "noiseLineWidthMeters": 0.045,
+        "noisePointCount": 65,
+        "noiseColor": "{colors.noise-pulse}",
+        "perceptionLampRangeMeters": 15,
+        "perceptionLampHalfAngleDegrees": 38,
+        "camera": {
+          "orthographicSize": 2.85,
+          "minZoom": 2.6,
+          "maxZoom": 11,
+          "pitch": 32,
+          "yaw": 45,
+          "framingOffset": [
+            1.15,
+            0,
+            1.15
+          ]
+        },
+        "interiorCutaway": {
+          "source": "Assets/_Project/Runtime/Gameplay/InteriorCutaway.cs",
+          "method": "nearShell Renderer.forceRenderingOff while actor occupies XZ room bounds",
+          "collisionUnchanged": true,
+          "aiSightUnchanged": true
+        }
+      },
+      "evidence": {
+        "directory": "docs/Validation/IndustrialPort",
+        "screenshots": [
+          "industrial-arrival.png",
+          "industrial-soldier.png",
+          "industrial-warehouse.png",
+          "industrial-control.png",
+          "industrial-ragdoll.png",
+          "night-infected.png",
+          "first-level-menu.png",
+          "first-level-help.png",
+          "night-inventory.png",
+          "night-inventory-1080.png",
+          "night-inventory-feedback.png",
+          "industrial-ragdoll-1080.png"
+        ],
+        "resolutions": [
+          [
+            1280,
+            720
+          ],
+          [
+            1920,
+            1080
+          ]
+        ],
+        "review": "docs/UI_REVIEW_INDUSTRIAL.md",
+        "previousReview": "docs/UI_REVIEW_INDUSTRIAL_ROUND1.md",
+        "verdict": "ship",
+        "humanVisualAcceptance": false,
+        "scope": "Final documentation of the human-authorized detailed interior/soldier reconstruction and local F1/F2 fixes. Capture scene came from Library/ZombtoyValidationClean; source synchronization and final executable identity are recorded in docs/Validation/IndustrialPort/README.md.",
+        "staticCaptureLimits": [
+          "No sequential UV/snapping/F2/comfort certification",
+          "No FPS or target-hardware certification",
+          "No general accessibility or other aspect ratio certification",
+          "Visual review does not certify all gameplay interactions"
+        ],
+        "ragdollEvidence": "Current CSV: 13 dynamic bodies; pelvis 0.9056 to 0.1754 m between 0.167 and 2.797 s. One fall only.",
+        "reviewerHistory": "First reviewer attempt ended because of quota and was replaced; no pass inferred.",
+        "detector": "HTML/CSS detector not applicable to native Unity Windows runtime.",
+        "reviewDisposition": "fix",
+        "verdictFile": "docs/UI_VERDICT_INDUSTRIAL.md",
+        "verdictScope": "F1/F2 only; not a new complete review, whole-game approval or human aesthetic acceptance.",
+        "findings": {
+          "F1": "resolved",
+          "F2": "resolved"
+        },
+        "previousReviews": [
+          "docs/UI_REVIEW_INDUSTRIAL_ROUND1.md",
+          "docs/UI_REVIEW_INDUSTRIAL_ROUND2.md"
+        ],
+        "captureDateUTC": "2026-10-19",
+        "captureTimeUTC": "13:03",
+        "fallScreenshots": [
+          "industrial-fall-00.png",
+          "industrial-fall-01.png",
+          "industrial-fall-02.png",
+          "industrial-fall-03.png",
+          "industrial-fall-04.png"
+        ],
+        "fallCSV": "docs/Validation/IndustrialPort/industrial-fall-sequence.csv",
+        "captureCount": 17,
+        "functionalTests": {
+          "playModePassed": 26,
+          "editModePassed": 18,
+          "humanSessions": false
+        },
+        "externalPending": [
+          "Human aesthetic acceptance",
+          "Five external human sessions",
+          "Valid target-hardware performance profiling and FPS evidence",
+          "Other KPI not measured"
+        ],
+        "testResults": {
+          "playMode": "docs/Validation/IndustrialPort/tests.json",
+          "editMode": "docs/Validation/IndustrialPort/tests.json",
+          "checkpointCycles": "docs/Validation/IndustrialPort/checkpoint-ten-cycles.csv",
+          "scope": "Automated functional evidence, not human sessions or visual acceptance."
+        }
+      }
+    },
+    "retroWorld": {
+      "source": [
+        "Assets/_Project/Runtime/Gameplay/RetroRenderFeature.cs",
+        "Assets/_Project/Art/Industrial/RetroSurface.shader",
+        "Assets/_Project/Art/Industrial/RetroScreen.shader",
+        "Assets/_Project/Runtime/Gameplay/PresentationOptions.cs"
+      ],
+      "renderHeight": 270,
+      "renderWidth": "round(270 * outputWidth / outputHeight)",
+      "renderAt16by9": [
+        480,
+        270
+      ],
+      "filter": "Point",
+      "passEvent": "AfterRenderingPostProcessing; ScreenSpaceOverlay HUD excluded",
+      "dither": {
+        "pattern": "Bayer 4x4",
+        "matrix": [
+          0,
+          8,
+          2,
+          10,
+          12,
+          4,
+          14,
+          6,
+          3,
+          11,
+          1,
+          9,
+          15,
+          7,
+          13,
+          5
+        ],
+        "levelsPerRGBChannel": 32,
+        "colorSpace": "quantized in sRGB"
+      },
+      "vertexSnapGrid": [
+        480,
+        270
+      ],
+      "uv": {
+        "stepsPerSecond": 8,
+        "amplitude": 0.0015,
+        "worldXZMultiplier": 2.1
+      },
+      "toggle": {
+        "key": "F2",
+        "owner": "Assets/_Project/Runtime/Gameplay/PresentationOptions.cs",
+        "reduced": "Global retro strength=0, render feature skipped, FilmGrain/Bloom inactive; ReducedEffects also read by CameraTrauma.",
+        "captureVerified": false
+      },
+      "renderingCostLimit": "Native color is downsampled after native post-processing with RenderGraph, then point-upscaled. This does not establish geometry/lighting cost at 270p."
+    },
+    "worldMaterials": {
+      "source": [
+        "Assets/_Project/Editor/IndustrialPortBuilder.cs",
+        "Assets/_Project/Editor/HumanCharacterBuilder.cs",
+        "Assets/_Project/Editor/IndustrialArtRebuild.cs",
+        "Assets/_Project/Editor/InteriorRebuild.cs",
+        "Assets/_Project/Editor/ControlConsoleBuilder.cs"
+      ],
+      "ownedBuilder": {
+        "smoothness": 0.035,
+        "metallic": 0
+      },
+      "exceptions": {
+        "tankSmoothness": 0.08,
+        "lensSmoothness": 0.18,
+        "legacyImportedAdapter": {
+          "smoothness": 0.06,
+          "metallic": 0.03
+        }
+      },
+      "shader": "Abisal/Retro Surface / URP Simple Lit forward, default specular black. Legacy PBR properties do not certify rendered material readability.",
+      "imports": {
+        "enamel": {
+          "maximumSize": 256,
+          "filter": "Point",
+          "wrap": "Repeat",
+          "mipmaps": true,
+          "anisotropy": 2
+        },
+        "face": {
+          "maximumSize": 128,
+          "filter": "Point",
+          "wrap": "Clamp",
+          "mipmaps": true
+        },
+        "cloth": {
+          "maximumSize": 128,
+          "filter": "Point",
+          "wrap": "Repeat",
+          "mipmaps": true
+        },
+        "tacticalAtlas": {
+          "maximumSize": 256,
+          "filter": "Point",
+          "wrap": "Clamp",
+          "mipmaps": true
+        }
+      },
+      "soldierAtlas": {
+        "texture": "Assets/_Project/Art/Industrial/Textures/TacticalAtlas_v2.png",
+        "cloth": "{colors.soldier-cloth}",
+        "boots": "{colors.soldier-boots}",
+        "armour": "{colors.soldier-plates}",
+        "knees": "{colors.soldier-knees}",
+        "seams": "{colors.tactical-seams}",
+        "note": "Material tints multiply dark atlas regions; pale boot tint does not imply white footwear."
+      }
+    },
+    "lighting": {
+      "source": [
+        "Assets/_Project/Editor/IndustrialPortBuilder.cs",
+        "Assets/_Project/Editor/IndustrialArtRebuild.cs"
+      ],
+      "effectiveAmbient": {
+        "sky": [
+          0.09,
+          0.085,
+          0.07
+        ],
+        "equator": [
+          0.04,
+          0.045,
+          0.035
+        ],
+        "ground": [
+          0.025,
+          0.024,
+          0.021
+        ]
+      },
+      "fogDensity": 0.018,
+      "post": {
+        "vignette": 0.23,
+        "vignetteSmoothness": 0.62,
+        "filmGrain": 0.055,
+        "bloom": 0.16,
+        "bloomThreshold": 1.6,
+        "tonemapping": "Neutral",
+        "postExposure": 0.15,
+        "contrast": 10,
+        "saturation": -12
+      },
+      "warning": "Extraction of implementation, not an instruction to obscure focal materials.",
+      "actorLocalFill": [
+        {
+          "name": "Equipment inspection bounce",
+          "intensity": 0.75,
+          "rangeMeters": 2.7,
+          "localPosition": [
+            -0.5,
+            0.9,
+            -0.7
+          ]
+        },
+        {
+          "name": "Low equipment bounce",
+          "intensity": 0.55,
+          "rangeMeters": 1.8,
+          "localPosition": [
+            -0.35,
+            0.4,
+            -0.55
+          ]
+        }
+      ]
+    },
+    "ragdoll": {
+      "source": "Assets/_Project/Editor/HumanCharacterBuilder.cs",
+      "rigBones": 19,
+      "rigidBodies": 13,
+      "joint": "ConfigurableJoint",
+      "characterCollider": {
+        "height": 1.82,
+        "centerY": 0.91,
+        "radius": 0.29
+      },
+      "scope": "Reviewed fall only; variants, collisions and severing not generally certified.",
+      "joints": 12,
+      "checkpoint": {
+        "formatVersion": 3,
+        "compatibleVersions": [
+          1,
+          2
+        ],
+        "automatedCycles": 10,
+        "checks": "pose, corpse loot and resources",
+        "humanSessions": false,
+        "source": "Assets/_Project/Tests/PlayMode/IndustrialLevelTests.cs"
+      }
+    },
+    "provenance": {
+      "fonts": [
+        {
+          "family": "Barlow Condensed",
+          "file": "Assets/ThirdParty/Fonts/barlowcondensed/BarlowCondensed-Medium.ttf",
+          "license": "Assets/ThirdParty/Fonts/barlowcondensed/OFL.txt"
+        },
+        {
+          "family": "Crimson Text",
+          "file": "Assets/ThirdParty/Fonts/crimsontext/CrimsonText-SemiBold.ttf",
+          "license": "Assets/ThirdParty/Fonts/crimsontext/OFL.txt"
+        }
+      ],
+      "rasters": [
+        {
+          "file": "Assets/_Project/Art/Industrial/Textures/AgedEnamel_v1.png",
+          "receipt": "Assets/_Project/Art/Industrial/Textures/AgedEnamel_v1.provenance.json",
+          "origin": "Original built-in image_gen; prompt/purpose in receipt; embedded PNG provenance retained."
+        },
+        {
+          "file": "Assets/_Project/Art/Industrial/Textures/InfectedFace_v1.png",
+          "receipt": "Assets/_Project/Art/Industrial/Textures/InfectedFace_v1.provenance.json",
+          "origin": "Original built-in image_gen; prompt/purpose in receipt; embedded PNG provenance retained."
+        },
+        {
+          "file": "Assets/_Project/Art/Industrial/Textures/WornCloth_v1.png",
+          "receipt": "Assets/_Project/Art/Industrial/Textures/WornCloth_v1.provenance.json",
+          "origin": "Original built-in image_gen; prompt/purpose in receipt; embedded PNG provenance retained."
+        },
+        {
+          "file": "Assets/_Project/Art/Industrial/Textures/TacticalAtlas_v2.png",
+          "receipt": "Assets/_Project/Art/Industrial/Textures/TacticalAtlas_v2.provenance.json",
+          "origin": "Original OpenAI image_gen tactical albedo, not screenshot; prompt/purpose in receipt; source PNG retained."
+        }
+      ],
+      "licensedLocalSources": [
+        "Assets/SciFi Warehouse Kit/Prefabs/Props/",
+        "Assets/Data/Sci-fi_assets/Sci-Fi Old rusty props PBR/Prefabs/"
+      ],
+      "reference": {
+        "file": ".impeccable/review/references/mouthwashing-official-interior.jpg",
+        "receipt": ".impeccable/review/references/mouthwashing-official-interior.provenance.json",
+        "origin": "Official Mouthwashing / Steam / Wrong Organ",
+        "purpose": "Internal QA reference only; not a shipping game asset",
+        "compApproved": false
+      },
+      "seed": {
+        "value": "faceb9b7",
+        "independentReceipt": false,
+        "authority": "Human direction supersedes seed annotation."
+      }
+    },
+    "sourceMap": {
+      "colors": {
+        "hud": "Assets/_Project/Runtime/Gameplay/GameHud.cs",
+        "inventory": "Assets/_Project/Runtime/Gameplay/NightHud.cs",
+        "noise": "Assets/_Project/Runtime/Gameplay/NightSurvival.cs",
+        "environment": "Assets/_Project/Editor/IndustrialPortBuilder.cs",
+        "serviceDeck": "Assets/_Project/Editor/IndustrialArtRebuild.cs",
+        "soldier": "Assets/_Project/Editor/HumanCharacterBuilder.cs",
+        "interiors": "Assets/_Project/Editor/InteriorRebuild.cs",
+        "terminal": "Assets/_Project/Runtime/Gameplay/TerminalDisplay.cs"
+      },
+      "typography": {
+        "assignment": "Assets/_Project/Editor/IndustrialPortBuilder.cs",
+        "nativeHUD": "Assets/_Project/Runtime/Gameplay/GameHud.cs",
+        "nativeInventory": "Assets/_Project/Runtime/Gameplay/NightHud.cs",
+        "terminal": "Assets/_Project/Runtime/Gameplay/TerminalDisplay.cs"
+      },
+      "contracts": [
+        "PRODUCT.md",
+        ".impeccable/industrial-horror.md",
+        ".impeccable/quality-industrial.md",
+        "docs/UI_REVIEW_INDUSTRIAL.md",
+        "docs/UI_VERDICT_INDUSTRIAL.md"
+      ],
+      "documentationReference": "C:/Users/braya/.codex/skills/impeccable/reference/document.md",
+      "save": "Assets/_Project/Runtime/Gameplay/CheckpointStore.cs"
+    },
+    "terminal": {
+      "source": "Assets/_Project/Runtime/Gameplay/TerminalDisplay.cs",
+      "builder": "Assets/_Project/Editor/ControlConsoleBuilder.cs",
+      "canvas": "WorldSpace",
+      "referenceSize": [
+        320,
+        180
+      ],
+      "localScale": 0.0036,
+      "fontSize": 36,
+      "lineSpacing": 0.9,
+      "states": [
+        {
+          "condition": "!portMission.PowerOn",
+          "text": "B-07\nSIN RED\nBLOQUEO",
+          "color": "{colors.terminal-offline}"
+        },
+        {
+          "condition": "portMission.PowerOn && !portMission.BoardingAuthorized",
+          "text": "B-07\nRED OK\nCONTROL",
+          "color": "{colors.terminal-powered}"
+        },
+        {
+          "condition": "portMission.BoardingAuthorized",
+          "text": "B-07\nACCESO\nABIERTO",
+          "color": "{colors.terminal-powered}"
+        }
+      ],
+      "worldTreatment": "World UI is retro-rendered; recognition of operating surface is verified, not native-size legibility of every glyph.",
+      "physicalKeyboard": {
+        "rows": 4,
+        "keysPerRow": 11
+      },
+      "orientationYaw": 45
+    }
+  },
+  "components": [
+    {
+      "name": "Botón de menú",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Traducción ilustrativa del botón uGUI. Highlight/selected explícito; pressed conserva Unity. La fuente local puede faltar en el panel.",
+      "html": "<button class=\"ds-menu-button\">Comenzar nivel / Enter</button>",
+      "css": ".ds-menu-button{width:382px;height:48px;border:0;border-radius:0;background:rgb(18% 17% 14%);color:white;text-align:left;padding:11px 16px;font:500 20px \"Barlow Condensed\",Arial,sans-serif}.ds-menu-button:hover:not(:disabled),.ds-menu-button:focus-visible:not(:disabled){background:rgb(25.2% 23.8% 19.6%);outline:none}.ds-menu-button:active:not(:disabled){background:rgb(14.1176% 13.3333% 10.9804%)}.ds-menu-button:disabled{background:rgb(8.1% 7.31% 5.32%)}"
+    },
+    {
+      "name": "Signos vitales compactos",
+      "kind": "card",
+      "refersTo": "vitals",
+      "description": "Geometría del HUD vigente; barras estáticas ilustrativas, sin lógica de daño o consumo.",
+      "html": "<div class=\"ds-vitals\"><div class=\"ds-life\">VIDA 100</div><div class=\"ds-health-track\"><i></i></div><div class=\"ds-serum\">SUERO 65% / INFECCION 0%</div><div class=\"ds-serum-track\"><i></i></div><div class=\"ds-night\">O2 100% / LUZ 100% / RES 100%</div></div>",
+      "css": ".ds-vitals{position:relative;width:276px;height:122px;background:rgb(2.5% 2.3% 1.9% / 78%);color:white;font:500 20px \"Barlow Condensed\",Arial,sans-serif}.ds-life{position:absolute;left:14px;top:9px;width:250px;height:24px}.ds-health-track,.ds-serum-track{position:absolute;left:14px;width:246px;background:rgb(22% 21% 18%)}.ds-health-track{top:37px;height:4px}.ds-serum-track{top:72px;height:3px}.ds-health-track i,.ds-serum-track i{display:block;height:100%;background:rgb(88% 82% 64%)}.ds-health-track i{width:100%}.ds-serum-track i{width:65%}.ds-serum{position:absolute;left:14px;top:47px;font-size:17px;color:rgb(76% 74% 66%)}.ds-night{position:absolute;left:14px;top:84px;width:250px;height:34px;font-size:16px;color:rgb(76% 74% 66%)}"
+    },
+    {
+      "name": "Objetivo de misión",
+      "kind": "custom",
+      "refersTo": "mission",
+      "description": "Franja superior izquierda nativa. Preview sin el mundo 3D.",
+      "html": "<div class=\"ds-mission\"><span>01 / Busca el repuesto en ALMACEN 03.</span></div>",
+      "css": ".ds-mission{position:relative;width:510px;height:52px;background:rgb(2% 1.8% 1.5% / 65%);color:rgb(88% 82% 64%);font:500 22px \"Barlow Condensed\",Arial,sans-serif}.ds-mission span{position:absolute;left:14px;top:9px;width:480px;height:40px}"
+    },
+    {
+      "name": "Munición",
+      "kind": "card",
+      "refersTo": "ammunition",
+      "description": "Nombre y cifra en textos separados; reserva menor. Preview estática del estado equipado.",
+      "html": "<div class=\"ds-ammo\"><div class=\"ds-ammo-title\">Pistola</div><div class=\"ds-ammo-count\">12 <span>/ 024</span></div><div class=\"ds-ammo-helper\">R RECARGAR / 1 2 3 ARMAS</div></div>",
+      "css": ".ds-ammo{position:relative;width:198px;height:122px;background:rgb(2.5% 2.3% 1.9% / 78%);color:white;font:500 18px \"Barlow Condensed\",Arial,sans-serif}.ds-ammo-title{position:absolute;left:16px;top:9px;color:rgb(88% 82% 64%)}.ds-ammo-count{position:absolute;left:16px;top:32px;font-size:42px}.ds-ammo-count span{font-size:23px}.ds-ammo-helper{position:absolute;left:16px;top:91px;width:170px;font-size:15px;color:rgb(76% 74% 66%)}"
+    },
+    {
+      "name": "Marcador próximo",
+      "kind": "custom",
+      "refersTo": "objective-marker",
+      "description": "Distancia textual con respaldo oscuro; el runtime posiciona y limita su ancla. Sin glifo de 0.4.",
+      "html": "<div class=\"ds-marker\"><span>OBJETIVO 2 m</span></div>",
+      "css": ".ds-marker{position:relative;width:164px;height:27px;background:rgb(2.5% 2.3% 1.9%);color:rgb(88% 82% 64%);font:500 17px \"Barlow Condensed\",Arial,sans-serif}.ds-marker span{position:absolute;left:8px;top:3px;width:150px;height:24px}"
+    },
+    {
+      "name": "Mochila y botín",
+      "kind": "card",
+      "refersTo": "equipment",
+      "description": "Geometría de 1000×550 y feedback interior. Ilustración del uGUI; no ejecuta inventario, capacidad, navegación o juego. Las tipografías requieren estar disponibles en el host.",
+      "html": "<div class=\"ds-equipment\"><div class=\"ds-equipment-title\">MOCHILA Y EQUIPO / TAB PARA CERRAR</div><div class=\"ds-e-heading\">MOCHILA</div><div class=\"ds-e-carried\">Carga 21.9 / 24 kg<br>Cartuchos 240 · Botiquines 2 · Vendas 3<br>Suero 1 · Pilas 8 · Botellas O2 4<br>Placas de repuesto 1</div><div class=\"ds-e-gear\">Chaleco puesto 100% · Mascara puesta<br>O2 100% · Linterna 100%<br>Cuerpo a cuerpo: cuchillo</div><button class=\"ds-e-action ds-e-cell\" disabled>Cambiar pila</button><button class=\"ds-e-action ds-e-oxygen\" disabled>Recargar oxigeno</button><button class=\"ds-e-action ds-e-plate\" disabled>Cambiar placa</button><button class=\"ds-e-action ds-e-mask\">Mascara: activar / quitar</button><button class=\"ds-e-action ds-e-armor\">Chaleco: equipar / quitar</button><button class=\"ds-e-action ds-e-melee\">Cuchillo / hacha</button><div class=\"ds-e-weapons\">ARMAS [1 / 2 / 3]</div><button class=\"ds-e-action ds-e-w1\">1 Pistola</button><button class=\"ds-e-action ds-e-w2\">2 Carabina</button><button class=\"ds-e-action ds-e-w3\">3 Dispersor</button><div class=\"ds-e-loot\">TAQUILLA DE DESEMBARCO</div><div class=\"ds-e-contents\">Cartuchos 24 · Botiquines 0 · Vendas 0<br>Suero 0 · Pilas 2 · O2 1 · Placas 0</div><button class=\"ds-e-action ds-e-take\">Recoger lo que quepa</button><div class=\"ds-e-feedback\">Mochila o pila llena. Usa suministros para hacer espacio.</div><div class=\"ds-e-helper\">E abre cuerpos y cajas a menos de 2.5 m.<br>Las sobras permanecen en el contenedor.<br>Repuestos: carga &lt;=70% y uno disponible.<br>TAB cierra / El mundo sigue avanzando.</div></div>",
+      "css": ".ds-equipment{position:relative;width:1000px;height:550px;background:rgb(2.5% 2.3% 1.9%);color:white;font:500 18px \"Barlow Condensed\",Arial,sans-serif}.ds-equipment-title{position:absolute;left:24px;top:18px;font-size:24px;color:rgb(88% 82% 64%)}.ds-e-heading,.ds-e-loot{position:absolute;top:72px;font-size:22px;color:rgb(88% 82% 64%)}.ds-e-heading{left:26px}.ds-e-loot{left:536px;width:410px}.ds-e-carried{position:absolute;left:26px;top:112px;width:450px;height:100px}.ds-e-gear{position:absolute;left:26px;top:220px;width:450px;height:65px;font-size:17px;color:rgb(76% 74% 66%)}.ds-e-action{width:224px;height:38px;border:0;border-radius:0;background:rgb(18% 17% 14%);color:white;text-align:left;padding:8px 10px;font:500 17px \"Barlow Condensed\",Arial,sans-serif}.ds-e-action:hover:not(:disabled),.ds-e-action:focus-visible:not(:disabled){background:rgb(17.2941% 16.3333% 13.451%);outline:none}.ds-e-action:active:not(:disabled){background:rgb(14.1176% 13.3333% 10.9804%)}.ds-e-action:disabled{background:rgb(14.1176% 13.3333% 10.9804% / 50%)}.ds-e-action{position:absolute}.ds-e-cell,.ds-e-oxygen,.ds-e-plate{left:26px}.ds-e-mask,.ds-e-armor,.ds-e-melee{left:260px}.ds-e-cell,.ds-e-mask{top:294px}.ds-e-oxygen,.ds-e-armor{top:340px}.ds-e-plate,.ds-e-melee{top:386px}.ds-e-weapons{position:absolute;left:26px;top:442px}.ds-e-w1,.ds-e-w2,.ds-e-w3{top:480px;width:143px}.ds-e-w1{left:26px}.ds-e-w2{left:177px}.ds-e-w3{left:328px}.ds-e-contents{position:absolute;left:536px;top:126px;width:410px;height:160px;font-size:19px}.ds-e-take{left:536px;top:306px;width:410px;height:42px}.ds-e-feedback{position:absolute;left:536px;top:354px;width:410px;height:44px;font-size:17px;color:rgb(100% 72% 55%)}.ds-e-helper{position:absolute;left:536px;top:410px;width:410px;height:110px;font-size:17px;color:rgb(76% 74% 66%)}"
+    },
+    {
+      "name": "Acción de equipo",
+      "kind": "button",
+      "refersTo": "equipment-action",
+      "description": "Variante con ColorBlock predeterminado de Unity. Estados CSS ilustrativos; habilitación real en NightHud.",
+      "html": "<button class=\"ds-gear-button\">Cambiar pila</button>",
+      "css": ".ds-gear-button{width:224px;height:38px;border:0;border-radius:0;background:rgb(18% 17% 14%);color:white;text-align:left;padding:8px 10px;font:500 17px \"Barlow Condensed\",Arial,sans-serif}.ds-gear-button:hover:not(:disabled),.ds-gear-button:focus-visible:not(:disabled){background:rgb(17.2941% 16.3333% 13.451%);outline:none}.ds-gear-button:active:not(:disabled){background:rgb(14.1176% 13.3333% 10.9804%)}.ds-gear-button:disabled{background:rgb(14.1176% 13.3333% 10.9804% / 50%)}"
+    },
+    {
+      "name": "Recoger botín",
+      "kind": "button",
+      "refersTo": "loot-take",
+      "description": "Acción ancha de la columna derecha; el resultado real se muestra debajo dentro de la tarjeta.",
+      "html": "<button class=\"ds-loot-button\">Recoger lo que quepa</button>",
+      "css": ".ds-loot-button{width:410px;height:42px;border:0;border-radius:0;background:rgb(18% 17% 14%);color:white;text-align:left;padding:8px 10px;font:500 17px \"Barlow Condensed\",Arial,sans-serif}.ds-loot-button:hover:not(:disabled),.ds-loot-button:focus-visible:not(:disabled){background:rgb(17.2941% 16.3333% 13.451%);outline:none}.ds-loot-button:active:not(:disabled){background:rgb(14.1176% 13.3333% 10.9804%)}.ds-loot-button:disabled{background:rgb(14.1176% 13.3333% 10.9804% / 50%)}"
+    },
+    {
+      "name": "Consola CRT de estado",
+      "kind": "custom",
+      "refersTo": "terminal-surface",
+      "description": "Traducción ilustrativa de WorldSpace; el runtime actualiza texto y lámpara desde la misión. No reproduce reducción PS1 ni teclas 3D.",
+      "html": "<div class=\"ds-crt\"><span class=\"ds-crt-lamp\"></span><div>B-07<br>ACCESO<br>ABIERTO</div></div>",
+      "css": ".ds-crt{position:relative;display:flex;align-items:center;justify-content:center;width:320px;height:180px;background:rgb(1.2% 3.2% 1.9%);color:rgb(69% 88% 57%);font:500 36px/.9 \"Barlow Condensed\",Arial,sans-serif;text-align:center}.ds-crt-lamp{position:absolute;right:11px;top:22px;width:8px;height:8px;background:rgb(69% 88% 57%)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Desembarco de cuarentena abandonado",
+    "overview": "ABISAL conserva el survival horror 3D isométrico y al soldado negro con tanque de oxígeno. La dirección humana toma Mouthwashing como referencia: escala adulta, industria gastada, superficies mate y luz práctica. El usuario confirmó PS1 marcado —baja resolución, dithering y textura inestable— y construcción directa en Unity con capturas reales. Después de dos revisiones rebuild eligió expresamente «Reconstruir interiores y soldado con más detalle»; este registro sustituye la documentación intermedia bajo esa autorización.\n\nLa reconstrucción final organiza mamparos, bancos y equipo como interiores contenidos; diferencia textil, rodilleras y botas; y presenta consolas CRT con teclado físico y estado de misión. [La revisión completa](docs/UI_REVIEW_INDUSTRIAL.md) emitió fix y [el veredicto posterior](docs/UI_VERDICT_INDUSTRIAL.md) cerró F1 y F2 como resolved, con disposition: ship exclusivamente para esa lista. No hubo una nueva auditoría integral ni aceptación estética humana. Las diecisiete capturas del 19 de octubre de 2026, 13:03 UTC, y el CSV de caída documentan el estado revisado; pruebas funcionales y capturas no cierran los KPI externos.",
+    "keyCharacteristics": [
+      "Mundo 3D de escala adulta, interiores industriales contenidos y cadáveres con caída física.",
+      "Uniforme negro con atlas por zonas, equipo volumétrico, costuras y respuesta local diferenciada.",
+      "Render PS1 marcado en el mundo; HUD operativo uGUI a resolución nativa.",
+      "Crimson Text para ABISAL y Barlow Condensed para información operativa.",
+      "Iluminación práctica cálida/fría y consolas diegéticas que muestran estado real."
+    ],
+    "rules": [
+      {
+        "name": "The Native Readout Rule",
+        "body": "El HUD de pantalla permanece fuera del pass retro; el CRT pertenece al mundo y recibe su tratamiento PS1.",
+        "section": "typography"
+      },
+      {
+        "name": "The Local Matter Rule",
+        "body": "La separación del uniforme y del equipo se conserva con atlas, geometría y luz local, manteniendo negro e intensidad PS1 confirmados.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Occupied Room Rule",
+        "body": "El corte del muro próximo cambia visibilidad, conserva colisiones y deja reconocibles los límites y la función del recinto.",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "**Do** conservar 3D isométrico, escala adulta, soldado negro con tanque y PS1 marcado confirmado por el usuario.",
+      "**Do** mantener el HUD fuera del pass retro y mostrar teclas junto a acciones y estados.",
+      "**Do** conservar lectura local de muslo, rodilla y bota, equipo volumétrico y cuartos organizados contra mamparos.",
+      "**Do** alimentar la pantalla CRT desde PowerOn y BoardingAuthorized, con superficie de operación y teclado visibles.",
+      "**Do** conservar feedback de botín y la condición de repuestos ≤70% junto a suministros.",
+      "**Do** juzgar futuras variaciones en capturas Unity de la cámara jugable a 720p y 1080p."
+    ],
+    "donts": [
+      "**Don't** presentar ship de F1/F2 como aprobación estética humana, auditoría integral o cierre de KPI no medidos.",
+      "**Don't** convertir el negro que borra materia o los interiores como plataforma en mandatos de diseño.",
+      "**Don't** reducir el PS1 confirmado para disimular deficiencias de materiales o encuadre.",
+      "**Don't** importar personajes, logos o imágenes de Mouthwashing ni restablecer el mundo 0.4 rechazado.",
+      "**Don't** afirmar que geometría e iluminación se calculan a 270p: la reducción ocurre después del postprocesado nativo.",
+      "**Don't** inferir verificación temporal de UV, snapping, F2 o confort a partir de capturas estáticas."
+    ]
+  }
+}

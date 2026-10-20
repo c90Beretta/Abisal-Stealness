@@ -1,0 +1,30 @@
+[
+  {
+    "file": "Assets/ThirdParty/Fonts/barlowcondensed/BarlowCondensed-Medium.ttf",
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/BarlowCondensed-Medium.ttf",
+    "author": "Google Fonts / font authors in OFL.txt",
+    "license": "SIL-OFL-1.1",
+    "sha256": "262bd143292ce479ee0cd09a42b47ab173fca8e9c6eb5ed0b5c8a845bc371d17"
+  },
+  {
+    "file": "Assets/ThirdParty/Fonts/barlowcondensed/OFL.txt",
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlowcondensed/OFL.txt",
+    "author": "Google Fonts / font authors in OFL.txt",
+    "license": "SIL-OFL-1.1",
+    "sha256": "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f"
+  },
+  {
+    "file": "Assets/ThirdParty/Fonts/crimsontext/CrimsonText-SemiBold.ttf",
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/crimsontext/CrimsonText-SemiBold.ttf",
+    "author": "Google Fonts / font authors in OFL.txt",
+    "license": "SIL-OFL-1.1",
+    "sha256": "802e84000740fec2a9fbe0ae09b6b6811bd86a78a0173b15d44450a1530e9410"
+  },
+  {
+    "file": "Assets/ThirdParty/Fonts/crimsontext/OFL.txt",
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/crimsontext/OFL.txt",
+    "author": "Google Fonts / font authors in OFL.txt",
+    "license": "SIL-OFL-1.1",
+    "sha256": "50fd67cddc097377a5c871e8452b778bc5aedfa3480a705cb27c5e3a078218df"
+  }
+]

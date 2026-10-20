@@ -28,8 +28,49 @@ no se instancian como personaje. Rig/clips medidos se reportan en la evidencia d
 
 ## Antes de sustituir un placeholder
 
+**OWN-02 — Puerto inicial:** geometría procedural propia (muelle, contenedores,
+almacén/control, grúa, pasarela, submarino), materiales URP, NavMesh y prefab
+Port_Environment. Usa las tres skins Kenney ya incluidas en MVP-CHR; no añade
+descargas ni licencias de terceros. Véase `LEVEL01_PORT.md`.
+
 Asignar ID, registrar autor/URL/licencia exacta y hash, validar permisos para este
 repositorio público, rig/clips/escala y URP; crear wrapper nuevo en `_Project`,
 probar escena y build; actualizar manifest/ledger/créditos en el mismo PR.
-Los modelos de Sketchfab, paquetes Asset Store, Zara, Perfect Pixel, Pixabay,
+Los modelos de Sketchfab, Zara, Perfect Pixel, Pixabay,
 Mixamo y Zombtoy externo permanecen **NO INSTALADOS**.
+
+**DER-01 — Clips del puerto:** `_Project/Art/Animations/Idle.anim` y `Run.anim`
+son copias derivadas de `Root|Idle` y `Root|Run` de los FBX Kenney Survivors ya
+auditados (CC0). Se convierten a Legacy/Loop y se enlazan al nodo Root del esqueleto;
+se excluyen los clips Targeting Pose. No se modifican archivos del proveedor ni
+sus hashes. Protagonista y seis infectados comparten las dos animaciones.
+
+**LOCAL-03 — Entornos 3D del usuario:** Sci-Fi Construction Kit (Sickhead Games),
+Modular Sci-Fi Corridor (MagixBox) y Sci-Fi Old Rusty Props PBR (KMProd), locales
+bajo Asset Store EULA. Datos y referencias en `LOCAL_ASSETS.md`; inventario SHA256
+de las69 entradas Rusty importadas en `local-rusty-manifest.json`. No se publican
+sus fuentes. Materiales URP propios conservan las referencias originales. El puerto
+incluye120 instancias estáticas de estos modelos, además de los3 prefabs de armas
+Kenney b/a/c ya incluidos en el subconjunto CC0. No hay nuevas descargas de armas.
+
+## Puerto nocturno v0.4
+
+Cuatro mallas ponderadas propias derivadas de Kenney Survivors CC0, materiales tácticos, shader NightSignal, geometría de casco/máscara/arnés y siete WAV sintetizados por el proyecto. Generador: `tools/generate_night_audio.py`. El tanque utiliza Oxy_ballon del paquete local KMProd; no se redistribuyen sus fuentes en Git público. Los sonidos y mallas derivados están versionados con sus metas.
+
+## Puerto industrial v0.5
+
+**OWN-05:** `Art/Industrial/Characters` y `Weapons`: nueve cuerpos originales
+ponderados (soldado +4arquetipos×2variantes), clips originales, cinco armas,
+materiales, malla de sangre/casquillo y montaje de esclusa. Generadores C#
+`HumanCharacterBuilder`, `IndustrialWeaponsBuilder`, `IndustrialPortBuilder`,
+`InteriorRebuild` y `ControlConsoleBuilder` (consolas y teclados propios).
+No son derivados de los cuerpos Kenney. El tanque sigue siendo KMProd LOCAL-03.
+
+**GEN-05:** cuatro albedos originales, `Art/Industrial/Textures/AgedEnamel_v1.png`,
+`InfectedFace_v1.png`, `WornCloth_v1.png` y `TacticalAtlas_v2.png`; herramienta integrada OpenAI `image_gen`, generación
+nueva sin imágenes de referencia, fondo opaco. Prompt exacto embebido y JSON de
+procedencia adyacente. Se integran como texturas3D, no como mockup del juego.
+
+**FONT-05:** Barlow Condensed Medium / Crimson Text SemiBold, archivos oficiales
+de Google Fonts bajo SIL OFL1.1; cuatro archivos fuente/licencia con SHA256 y
+URL exactos en `font-install-manifest.json`. Los OFL acompañan el binario.
