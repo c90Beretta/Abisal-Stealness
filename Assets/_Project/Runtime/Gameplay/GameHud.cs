@@ -104,6 +104,7 @@ namespace Zombtoy.Gameplay
             if (session.GetComponent<NightSurvival>() != null) { fieldHud = gameObject.AddComponent<NightHud>(); fieldHud.Setup(session, gear.transform); }
             equipment.gameObject.SetActive(false);
         }
+        
         private Text equipmentText, nightStatus;
         private NightHud fieldHud;
         public void OpenLoot(LootContainer box) { session.ClearMessage();showingEquipment = true; equipment.gameObject.SetActive(true); fieldHud?.Select(box); }
