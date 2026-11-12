@@ -1,0 +1,196 @@
+{
+  "playmode": {
+    "passed": 27,
+    "startUTC": "2026-11-12 08:10:22Z",
+    "endUTC": "2026-11-12 08:11:20Z",
+    "cases": [
+      {
+        "name": "DeploymentSelectsHeavyWeaponAndGrantsKitOnlyOnce",
+        "result": "Passed"
+      },
+      {
+        "name": "AllWeaponModelsShootFromTheirMuzzlesAndCannotBypassWalls",
+        "result": "Passed"
+      },
+      {
+        "name": "CaptureCompositedMenuHudAndHelp",
+        "result": "Passed"
+      },
+      {
+        "name": "CheckpointRestoresMissionHealthEnemiesAndCollectedSupplies",
+        "result": "Passed"
+      },
+      {
+        "name": "InfectedAttackHasWindupCanMissAndWallsBlockSight",
+        "result": "Passed"
+      },
+      {
+        "name": "MenuButtonsStartAndPauseSimulation",
+        "result": "Passed"
+      },
+      {
+        "name": "Native3DWeaponsSwitchWithoutCreatingAmmoAndBlockDuringActions",
+        "result": "Passed"
+      },
+      {
+        "name": "TreatmentTakesTimeCanBeInterruptedAndDeathFreezesPlay",
+        "result": "Passed"
+      },
+      {
+        "name": "InjectionsWaitForAnimationAndDoNotCreateAmmo",
+        "result": "Passed"
+      },
+      {
+        "name": "SandboxLoadsAndObjectiveCanBeCompleted",
+        "result": "Passed"
+      },
+      {
+        "name": "AdultBodiesHaveWeightedFacesAndThirteenJointedBodies",
+        "result": "Passed"
+      },
+      {
+        "name": "CaptureIndustrialPortAndRagdollAtNativeResolution",
+        "result": "Passed"
+      },
+      {
+        "name": "CorruptRagdollQuaternionIsRejectedBeforeChangingSession",
+        "result": "Passed"
+      },
+      {
+        "name": "MissingLimbsHaveNoRagdollCollisionAndCanBeLooted",
+        "result": "Passed"
+      },
+      {
+        "name": "RagdollFallsFromImpactAndSettlesWithoutExploding",
+        "result": "Passed"
+      },
+      {
+        "name": "TenCheckpointCyclesPreserveRagdollPoseLootAndResources",
+        "result": "Passed"
+      },
+      {
+        "name": "ArmorAndOxygenHaveGameplayConsequences",
+        "result": "Passed"
+      },
+      {
+        "name": "CaptureNightWorldInventoryAndInfectedModels",
+        "result": "Passed"
+      },
+      {
+        "name": "DarknessHasFlashlightAwarenessAndPausedResources",
+        "result": "Passed"
+      },
+      {
+        "name": "EquipmentDisablesUnusableSuppliesAndShowsLootFeedback",
+        "result": "Passed"
+      },
+      {
+        "name": "HordesAreFiniteCappedAndPreserveReleasedEnemies",
+        "result": "Passed"
+      },
+      {
+        "name": "LootRespectsCapacityAndCheckpointDoesNotDuplicateContents",
+        "result": "Passed"
+      },
+      {
+        "name": "MeleeCostsStaminaAndWallsBlockTheSwing",
+        "result": "Passed"
+      },
+      {
+        "name": "SeveredLegsSlowEnemiesAndHeadKillsOnlyOnce",
+        "result": "Passed"
+      },
+      {
+        "name": "ArrivalHasFloorAndWaterFallReturnsPlayerSafely",
+        "result": "Passed"
+      },
+      {
+        "name": "ObjectivesRequireFuseAndPowerBeforeBoarding",
+        "result": "Passed"
+      },
+      {
+        "name": "SuppliesCannotBeDuplicatedAndWallsBlockInteractions",
+        "result": "Passed"
+      }
+    ]
+  },
+  "editmode": {
+    "passed": 18,
+    "startUTC": "2026-11-12 08:11:36Z",
+    "endUTC": "2026-11-12 08:11:37Z",
+    "cases": [
+      {
+        "name": "RequiredTest",
+        "result": "Passed"
+      },
+      {
+        "name": "SceneHasNoMissingScriptsAndHasRequiredBindings(\"Assets/_Project/Scenes/MVP_Sandbox.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "SceneHasNoMissingScriptsAndHasRequiredBindings(\"Assets/_Project/Scenes/Level01_Port.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "DeadAndPausedSimulationDoNotConsumeResources",
+        "result": "Passed"
+      },
+      {
+        "name": "InjectionClampsAndConsumesOneDose",
+        "result": "Passed"
+      },
+      {
+        "name": "InjectionsOutsideWindowDoNotTriggerMania",
+        "result": "Passed"
+      },
+      {
+        "name": "MaximumInfectionTriggersOnceAndCanExpire",
+        "result": "Passed"
+      },
+      {
+        "name": "MedicalItemsClampHealthAndDoNotConsumeWithoutNeed",
+        "result": "Passed"
+      },
+      {
+        "name": "OnlyLowSerumIncreasesInfection",
+        "result": "Passed"
+      },
+      {
+        "name": "PhaseBoundaries(0,0)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhaseBoundaries(29,0)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhaseBoundaries(30,1)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhaseBoundaries(64,1)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhaseBoundaries(65,2)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhaseBoundaries(99,2)",
+        "result": "Passed"
+      },
+      {
+        "name": "PhaseBoundaries(100,3)",
+        "result": "Passed"
+      },
+      {
+        "name": "SixSecondsConsumeOneSerumPoint",
+        "result": "Passed"
+      },
+      {
+        "name": "TwoInjectionsAtWindowBoundaryTriggerManiaAndLock",
+        "result": "Passed"
+      }
+    ]
+  }
+}

@@ -10,6 +10,10 @@ colors:
   muted: "rgb(76% 74% 66%)"
   text: "rgb(100% 100% 100%)"
   button-surface: "rgb(18% 17% 14%)"
+  deployment-surface: "rgb(2.5% 2.3% 1.9% / 98%)"
+  deployment-option: "rgb(12% 11.5% 9%)"
+  deployment-selected: "rgb(38% 32% 18%)"
+  deployment-focus: "rgb(95% 90% 73%)"
   gauge-track: "rgb(22% 21% 18%)"
   warning: "rgb(100% 55% 46%)"
   loot-feedback: "rgb(100% 72% 55%)"
@@ -143,6 +147,20 @@ components:
     typography: "{typography.label}"
     width: "410px"
     height: "44px"
+  deployment-panel:
+    backgroundColor: "{colors.deployment-surface}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.native}"
+    width: "650px"
+    height: "640px"
+  deployment-option:
+    backgroundColor: "{colors.deployment-option}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.native}"
+  deployment-option-selected:
+    backgroundColor: "{colors.deployment-selected}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.native}"
   terminal-surface:
     backgroundColor: "{colors.phosphor-glass}"
     textColor: "{colors.terminal-powered}"
@@ -161,6 +179,8 @@ components:
 ABISAL conserva el survival horror 3D isométrico y al soldado negro con tanque de oxígeno. La dirección humana toma Mouthwashing como referencia: escala adulta, industria gastada, superficies mate y luz práctica. El usuario confirmó PS1 marcado —baja resolución, dithering y textura inestable— y construcción directa en Unity con capturas reales. Después de dos revisiones rebuild eligió expresamente «Reconstruir interiores y soldado con más detalle»; este registro sustituye la documentación intermedia bajo esa autorización.
 
 La reconstrucción final organiza mamparos, bancos y equipo como interiores contenidos; diferencia textil, rodilleras y botas; y presenta consolas CRT con teclado físico y estado de misión. [La revisión completa](docs/UI_REVIEW_INDUSTRIAL.md) emitió fix y [el veredicto posterior](docs/UI_VERDICT_INDUSTRIAL.md) cerró F1 y F2 como resolved, con disposition: ship exclusivamente para esa lista. No hubo una nueva auditoría integral ni aceptación estética humana. Las diecisiete capturas del 19 de octubre de 2026, 13:03 UTC, y el CSV de caída documentan el estado revisado; pruebas funcionales y capturas no cierran los KPI externos.
+
+Extensión de arsenal (12 de noviembre de 2026): el menú de despliegue amplía el uGUI operativo dentro de esta misma dirección. La documentación registra especialidades, arma inicial y kit. El [veredicto acotado del arsenal](docs/UI_VERDICT_ARSENAL.md) cierra F1/F2 como resolved y ship solo para esa lista; preserva el historial industrial y sus límites.
 
 **Key Characteristics:**
 
@@ -190,6 +210,8 @@ Hueso cálido, acero terroso, carbón y óxido con luz práctica localizada. Los
 
 `aged-enamel`, `service-wall`, `dull-steel`, `concrete`, `service-deck` y los tres `interior-*` corresponden a albedos industriales. `soldier-cloth` tiñe el atlas táctico; `soldier-plates`, `soldier-knees`, `soldier-boots` y `tactical-seams` separan equipo. El tinte claro de bota se multiplica por cuero negro del atlas: no prescribe botas blancas. `tactical-plates` y `boot-leather` conservan usos de otros actores. `oxygen-tank` mantiene tanque mate. `crt-case`, `crt-bezel`, `keyboard-keys` y `phosphor-glass` distinguen carcasa, cristal y operación.
 
+`deployment-surface` respalda el armario; `deployment-option` distingue opciones disponibles y `deployment-selected` marca una elección persistente en cada grupo. Son tintes base de Image; el ColorBlock de Unity conserva sus estados de interacción. No heredan el multiplicador explícito del menú izquierdo. `deployment-focus` identifica foco de navegación con Outline independiente del estado elegido.
+
 `warning` acompaña HERIDA [B] o vida inferior a 30; `enemy-health` marca daño reciente. `loot-feedback` comunica éxito o rechazo de recogida. `noise-pulse` es un pulso breve de ruido; `oxide` representa corrosión material.
 
 ## Typography
@@ -200,6 +222,8 @@ El contraste es un título serif sobrio frente a lectura operativa condensada. D
 
 Las unidades px del intercambio representan unidades del Canvas de referencia. Terminal utiliza un Canvas WorldSpace de 320 × 180, escala 0.0036, texto 36 e interlineado 0.9: no son 36 píxeles finales de HUD. Señalética física TextMesh usa fontSize 64 con characterSize proporcional a la pieza.
 
+El despliegue reutiliza Barlow Condensed: título 28, encabezados y resumen 20, opciones 19 y ayuda 17 unidades Canvas. El contenedor de resumen comunica beneficio de especialidad, arma y beneficio del kit; el veredicto acotado confirmó los beneficios legibles antes del despliegue, incluido el texto más largo de Asalto en una recaptura previa.
+
 **The Native Readout Rule.** El HUD de pantalla permanece fuera del pass retro; el CRT pertenece al mundo y recibe su tratamiento PS1.
 
 ## Layout
@@ -209,6 +233,8 @@ ScreenSpaceOverlay, sortingOrder 100, ScaleWithScreenSize, referencia 1280 × 72
 Misión arriba a la izquierda en (26, -22); vitales abajo a la izquierda en (26, 150), pivote superior izquierdo; arma abajo a la derecha en (-224, 150). Vida mide 246 × 4 y suero 246 × 3. Prompt centrado abajo en y 119 y mensaje en y 72; son contenedores independientes. Marcador de objetivo solo a menos de 9 m, limitado a anclas x 0.13–0.87 / y 0.27–0.83.
 
 Menú de 470 × 590 a x 46, centrado verticalmente, paso de botones 54. Ayuda centrada de 860 × 580. Mochila centrada con columnas x 26 y x 536; suministros/equipo a x 26/260 y filas y -294/-340/-386. Armas a y -480 con paso 151. Botín y feedback permanecen en la columna derecha, con helper debajo. La simulación continúa mientras ayuda o mochila bloquean combate; ESC pausa.
+
+El armario de despliegue se ancla al centro derecho, margen derecho 35, panel de 650 × 640 y sortingOrder 101 sobre el HUD 100. Reutiliza referencia 1280 × 720 y match 0.5. Inset 24; especialidades en una fila de tres opciones (194 × 42, paso 202), seis armas en dos columnas y tres filas (290 × 44, paso 302/52), kits en una fila de tres (194 × 46). Resumen de 600 × 90 en y 490 y ayuda en y 592. Convive con la tarjeta izquierda de inicio; esta geometría observada no acredita legibilidad en otras relaciones de aspecto.
 
 Cámara ortográfica: tamaño inicial 2.85, zoom 2.6–11, pitch 32°, yaw 45° y framingOffset (1.15, 0, 1.15). Sigue al actor a altura base 0.9 y distancia 28. Los interiores agrupan banco, estantería y equipo contra mamparos, con cubierta soldada y luz de trabajo. InteriorCutaway oculta nearShell al entrar en los límites de cada cuarto mediante forceRenderingOff; no cambia colliders ni visión de IA.
 
@@ -242,7 +268,19 @@ Paneles, botones y barras uGUI son rectángulos sin radio. El mundo conserva cue
 - **Infectado y cadáver:** barra 62 ×6 solo vivo, percibido, activo y dañado en últimos 3 s. Rig 19 huesos, 13 Rigidbody y 12 ConfigurableJoint. Diez ciclos automatizados de checkpoint comprueban pose, botín y recursos; formato de guardado v3 admite v1/v2. No son diez sesiones humanas.
 - **Consola CRT:** WorldSpace integrado al mundo, texto y lámpara actualizados desde PowerOn/BoardingAuthorized. Estados B-07 / SIN RED / BLOQUEO, B-07 / RED OK / CONTROL y B-07 / ACCESO / ABIERTO. Carcasa usada, pantalla con estructura y teclado físico orientados a cámara resolvieron F2; no se promete lectura nativa de cada glifo.
 
-Evidencia final: doce capturas principales en `docs/Validation/IndustrialPort/` —industrial-arrival, industrial-soldier, industrial-warehouse, industrial-control, industrial-ragdoll, industrial-ragdoll-1080, first-level-menu, first-level-help, night-inventory, night-inventory-1080, night-inventory-feedback y night-infected— más industrial-fall-00..04 y [CSV](docs/Validation/IndustrialPort/industrial-fall-sequence.csv). Archivos finales de 13:03 UTC. El CSV actual registra 13 cuerpos dinámicos, pelvis 0.9056→0.1754 m entre 0.167 y 2.797 s; no reutilizar las cifras de capturas previas. Acredita una caída, no todas las variantes/superficies/colisiones.
+### Extensión: armario de despliegue
+
+Selección operativa de rectángulos planos, texto hueso y estado persistente por grupo, visible en Title cuando la ayuda está cerrada. `ArsenalExpansion.cs` mantiene tres especialidades sobre el mismo rig: Asalto (dotación base equilibrada), Explorador (+1 pila) y Sanitario (+1 botiquín). El encabezado declara explícitamente «MISMO SOLDADO, DISTINTA ESPECIALIDAD».
+
+El grupo de arma inicial presenta Arma corta, Fusil de asalto, Escopeta, Precision, Subfusil y Arma pesada. Elegir determina el arma equipada al comenzar: el jugador lleva las seis y cambia con 1–6; la munición y los recursos de armas se comparten en el runtime. Las tres armas añadidas derivan de la geometría del fusil original mediante proporciones distintas; no son seis modelos premium independientes.
+
+Los kits son suministros de una sola aplicación por salida nueva: Placa reforzada (+1 placa de repuesto), Suministros medicos (+2 vendas), Reserva de municion (+24 cartuchos). Los beneficios respetan topes de inventario. Al recuperar checkpoint se conservan recursos y arma guardados; el kit no se reaplica. El resumen comunica beneficio de especialidad, arma/munición compartida, beneficio del kit. Los controles de combate se documentan por separado en la ayuda. La elección base usa `deployment-selected`; las restantes, `deployment-option`. Cada opción antepone `[X]` si está elegida y `[ ]` si no; el color persistente refuerza esa señal textual. El foco usa Outline claro independiente, con effectDistance (2, 2), derivado de EventSystem.currentSelectedGameObject. ColorBlock de Unity conserva el tinte de interacción para hover/foco/pulsado; no define la elección persistente.
+
+Alcance artístico: el perro procedural y las siluetas humanoides alteradas son variantes construidas con recursos del proyecto; esta extensión no los presenta como modelos premium finales. Se mantienen la dirección, fuentes, mundo PS1 y revisión industrial anteriores.
+
+Evidencia de esta extensión: el [veredicto del arsenal](docs/UI_VERDICT_ARSENAL.md) cierra F1 (identificación persistente) y F2 (beneficios previos al despliegue) como resolved, con ship exclusivo para ambos hallazgos de la revisión original. Registra la recaptura Unity 1280 × 720 con Explorador, Arma pesada y Reserva de municion elegidos, y foco separado sobre Arma corta sin elegir. La recaptura válida sobre la escena actual confirma texto, marcadores `[X]`/`[ ]`, beneficios y foco separado; su [captura canónica](docs/Validation/Arsenal/arsenal-menu.png) conserva esa evidencia. La imagen transitoria sin texto queda descartada. Esta evidencia no acredita un recorrido manual completo por teclado ni otras resoluciones. El lote funcional final de la escena actual aprobó 27 PlayMode y 18 EditMode; [tests.json](docs/Validation/Arsenal/tests.json) registra sus resultados. La navegación reconstruida permite completar la ruta hasta extracción. Son evidencias separadas del veredicto visual. El preview del sidecar es ilustrativo; no hay nueva auditoría integral del juego, certificación FPS/accesibilidad ni aceptación estética humana.
+
+Evidencia final del lote industrial anterior: doce capturas principales en `docs/Validation/IndustrialPort/` —industrial-arrival, industrial-soldier, industrial-warehouse, industrial-control, industrial-ragdoll, industrial-ragdoll-1080, first-level-menu, first-level-help, night-inventory, night-inventory-1080, night-inventory-feedback y night-infected— más industrial-fall-00..04 y [CSV](docs/Validation/IndustrialPort/industrial-fall-sequence.csv). Archivos finales de 13:03 UTC. El CSV actual registra 13 cuerpos dinámicos, pelvis 0.9056→0.1754 m entre 0.167 y 2.797 s; no reutilizar las cifras de capturas previas. Acredita una caída, no todas las variantes/superficies/colisiones.
 
 26 PlayMode y 18 EditMode aprobadas acompañan el lote funcional. Faltan aceptación estética humana, cinco sesiones externas y perfilado válido para los KPI pendientes. No hay medición válida de FPS, ni certificación de confort, accesibilidad, ataque o temporalidad UV/F2 por esta revisión visual. La escena de las capturas procede de `Library/ZombtoyValidationClean`; la sincronización de Assets y la identidad del ejecutable se registran en [la evidencia de entrega](docs/Validation/IndustrialPort/README.md), separadas del verdict visual. No aplica detector HTML/CSS ni reglas de plataforma iOS/Android a Unity Windows. Los snippets HTML del sidecar ilustran uGUI y CRT, no ejecutan juego ni son evidencia de render nativo.
 
