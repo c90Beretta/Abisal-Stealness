@@ -1,6 +1,6 @@
 ---
-name: "ABISAL — puerto industrial 0.5"
-description: "Registro final del rediseño industrial PS1 en Unity Windows; F1/F2 resueltos, aceptación estética humana pendiente."
+name: "ABISAL — puerto unificado 0.7"
+description: "Sistema industrial PS1 integrado 0.7; U1/U2 resueltos con ship acotado, build final en curso."
 colors:
   ink: "rgb(2.5% 2.3% 1.9%)"
   hud-surface: "rgb(2.5% 2.3% 1.9% / 78%)"
@@ -151,8 +151,8 @@ components:
     backgroundColor: "{colors.deployment-surface}"
     textColor: "{colors.primary}"
     rounded: "{rounded.native}"
-    width: "650px"
-    height: "640px"
+    width: "665px"
+    height: "670px"
   deployment-option:
     backgroundColor: "{colors.deployment-option}"
     textColor: "{colors.primary}"
@@ -170,7 +170,7 @@ components:
     height: "180px"
 ---
 
-# Design System: ABISAL — puerto industrial 0.5
+# Design System: ABISAL — puerto unificado 0.7
 
 ## Overview
 
@@ -180,12 +180,12 @@ ABISAL conserva el survival horror 3D isométrico y al soldado negro con tanque 
 
 La reconstrucción final organiza mamparos, bancos y equipo como interiores contenidos; diferencia textil, rodilleras y botas; y presenta consolas CRT con teclado físico y estado de misión. [La revisión completa](docs/UI_REVIEW_INDUSTRIAL.md) emitió fix y [el veredicto posterior](docs/UI_VERDICT_INDUSTRIAL.md) cerró F1 y F2 como resolved, con disposition: ship exclusivamente para esa lista. No hubo una nueva auditoría integral ni aceptación estética humana. Las diecisiete capturas del 19 de octubre de 2026, 13:03 UTC, y el CSV de caída documentan el estado revisado; pruebas funcionales y capturas no cierran los KPI externos.
 
-Extensión de arsenal (12 de noviembre de 2026): el menú de despliegue amplía el uGUI operativo dentro de esta misma dirección. La documentación registra especialidades, arma inicial y kit. El [veredicto acotado del arsenal](docs/UI_VERDICT_ARSENAL.md) cierra F1/F2 como resolved y ship solo para esa lista; preserva el historial industrial y sus límites.
+Integración 0.7 (12 de noviembre de 2026): cuatro supervivientes, seis armas de fuego, cuatro armas cuerpo a cuerpo y tres kits conviven en un nivel ampliado. Conserva la dirección industrial PS1; los cambios paralelos de personajes, combate, mapa y hordas se documentan como sistema actual. La [revisión unificada](docs/UI_REVIEW_UNIFIED.md) emitió fix U1/U2 y su [veredicto acotado](docs/UI_VERDICT_UNIFIED.md) los cerró como resolved, ship solo para esa lista. Cantidades, dotación e identificación del arma inicial están verificadas en código y captura. Los cierres anteriores siguen siendo históricos.
 
 **Key Characteristics:**
 
 - Mundo 3D de escala adulta, interiores industriales contenidos y cadáveres con caída física.
-- Uniforme negro con atlas por zonas, equipo volumétrico, costuras y respuesta local diferenciada.
+- Rig de soldado compartido, atlas por zonas y equipo volumétrico; cuatro perfiles cambian tintes y accesorios sobre esa base.
 - Render PS1 marcado en el mundo; HUD operativo uGUI a resolución nativa.
 - Crimson Text para ABISAL y Barlow Condensed para información operativa.
 - Iluminación práctica cálida/fría y consolas diegéticas que muestran estado real.
@@ -222,7 +222,7 @@ El contraste es un título serif sobrio frente a lectura operativa condensada. D
 
 Las unidades px del intercambio representan unidades del Canvas de referencia. Terminal utiliza un Canvas WorldSpace de 320 × 180, escala 0.0036, texto 36 e interlineado 0.9: no son 36 píxeles finales de HUD. Señalética física TextMesh usa fontSize 64 con characterSize proporcional a la pieza.
 
-El despliegue reutiliza Barlow Condensed: título 28, encabezados y resumen 20, opciones 19 y ayuda 17 unidades Canvas. El contenedor de resumen comunica beneficio de especialidad, arma y beneficio del kit; el veredicto acotado confirmó los beneficios legibles antes del despliegue, incluido el texto más largo de Asalto en una recaptura previa.
+El despliegue 0.7 reutiliza Barlow Condensed: título 24, encabezados y resumen 16, opciones 17 unidades Canvas. El resumen separa identidad, pasiva, dotación de salida, arsenal y kit. Se conserva espacio para beneficios y cantidades sin reducir el texto; la captura Unity corregida a 720p conserva las cinco líneas y footer sin recorte visible.
 
 **The Native Readout Rule.** El HUD de pantalla permanece fuera del pass retro; el CRT pertenece al mundo y recibe su tratamiento PS1.
 
@@ -234,7 +234,7 @@ Misión arriba a la izquierda en (26, -22); vitales abajo a la izquierda en (26,
 
 Menú de 470 × 590 a x 46, centrado verticalmente, paso de botones 54. Ayuda centrada de 860 × 580. Mochila centrada con columnas x 26 y x 536; suministros/equipo a x 26/260 y filas y -294/-340/-386. Armas a y -480 con paso 151. Botín y feedback permanecen en la columna derecha, con helper debajo. La simulación continúa mientras ayuda o mochila bloquean combate; ESC pausa.
 
-El armario de despliegue se ancla al centro derecho, margen derecho 35, panel de 650 × 640 y sortingOrder 101 sobre el HUD 100. Reutiliza referencia 1280 × 720 y match 0.5. Inset 24; especialidades en una fila de tres opciones (194 × 42, paso 202), seis armas en dos columnas y tres filas (290 × 44, paso 302/52), kits en una fila de tres (194 × 46). Resumen de 600 × 90 en y 490 y ayuda en y 592. Convive con la tarjeta izquierda de inicio; esta geometría observada no acredita legibilidad en otras relaciones de aspecto.
+El armario 0.7 se ancla al centro derecho, margen 30, panel 665 × 670, sortingOrder 101 sobre HUD 100; referencia 1280 × 720 y match 0.5. Inset 22. Personajes: dos columnas y dos filas (302 × 38, paso 312/42, y 76). Armas: dos columnas y tres filas (302 × 38, y 194). Melee: dos columnas y dos filas (302 × 36, paso 312/40, y 352). Kits: tres columnas (198 × 40, paso 208, y 464). Resumen 620 × 112 en y 514; footer y 634. La tarjeta izquierda conserva inicio/continuar/ayuda. La composición densa se verifica en captura nativa; no se infiere adaptación a otras relaciones de aspecto.
 
 Cámara ortográfica: tamaño inicial 2.85, zoom 2.6–11, pitch 32°, yaw 45° y framingOffset (1.15, 0, 1.15). Sigue al actor a altura base 0.9 y distancia 28. Los interiores agrupan banco, estantería y equipo contra mamparos, con cubierta soldada y luz de trabajo. InteriorCutaway oculta nearShell al entrar en los límites de cada cuarto mediante forceRenderingOff; no cambia colliders ni visión de IA.
 
@@ -268,17 +268,27 @@ Paneles, botones y barras uGUI son rectángulos sin radio. El mundo conserva cue
 - **Infectado y cadáver:** barra 62 ×6 solo vivo, percibido, activo y dañado en últimos 3 s. Rig 19 huesos, 13 Rigidbody y 12 ConfigurableJoint. Diez ciclos automatizados de checkpoint comprueban pose, botín y recursos; formato de guardado v3 admite v1/v2. No son diez sesiones humanas.
 - **Consola CRT:** WorldSpace integrado al mundo, texto y lámpara actualizados desde PowerOn/BoardingAuthorized. Estados B-07 / SIN RED / BLOQUEO, B-07 / RED OK / CONTROL y B-07 / ACCESO / ABIERTO. Carcasa usada, pantalla con estructura y teclado físico orientados a cámara resolvieron F2; no se promete lectura nativa de cada glifo.
 
-### Extensión: armario de despliegue
+### Sistema actual 0.7: despliegue unificado
 
-Selección operativa de rectángulos planos, texto hueso y estado persistente por grupo, visible en Title cuando la ayuda está cerrada. `ArsenalExpansion.cs` mantiene tres especialidades sobre el mismo rig: Asalto (dotación base equilibrada), Explorador (+1 pila) y Sanitario (+1 botiquín). El encabezado declara explícitamente «MISMO SOLDADO, DISTINTA ESPECIALIDAD».
+Cuatro grupos de rectángulos planos conservan la paleta del armario. `[X]`/`[ ]` y los tintes `deployment-selected`/`deployment-option` identifican una elección persistente por grupo; Outline `deployment-focus`, effectDistance (2, 2), identifica foco independientemente. Unity ColorBlock mantiene el tinte de interacción.
 
-El grupo de arma inicial presenta Arma corta, Fusil de asalto, Escopeta, Precision, Subfusil y Arma pesada. Elegir determina el arma equipada al comenzar: el jugador lleva las seis y cambia con 1–6; la munición y los recursos de armas se comparten en el runtime. Las tres armas añadidas derivan de la geometría del fusil original mediante proporciones distintas; no son seis modelos premium independientes.
+Los personajes comparten rig y base de soldado; `SurvivorRoster` cambia materiales y accesorios procedurales. Kael «Vanguardia» / Asalto Tactico incorpora montaje NVG y antena, recarga de 1.15 s y +15% daño balístico; Viktor «Sombra» / Explorador usa capucha, ópticas rojas y vainas, con movilidad, menor ruido y recuperación al matar en melee; Dra. Vance «Bio-Control» / Sanitario usa capucha/visor bio y depósitos, con menor degradación de suero y curación mejorada; Elena «Bastion» / Ingeniera usa pantalla de soldadura, hombreras y mochila, con blindaje y capacidad mayores. Son apariencias del mismo esqueleto, no cuatro rigs originales independientes. Las pasivas cuantitativas se leen del perfil activo y no se convierten en tokens de estilo.
 
-Los kits son suministros de una sola aplicación por salida nueva: Placa reforzada (+1 placa de repuesto), Suministros medicos (+2 vendas), Reserva de municion (+24 cartuchos). Los beneficios respetan topes de inventario. Al recuperar checkpoint se conservan recursos y arma guardados; el kit no se reaplica. El resumen comunica beneficio de especialidad, arma/munición compartida, beneficio del kit. Los controles de combate se documentan por separado en la ayuda. La elección base usa `deployment-selected`; las restantes, `deployment-option`. Cada opción antepone `[X]` si está elegida y `[ ]` si no; el color persistente refuerza esa señal textual. El foco usa Outline claro independiente, con effectDistance (2, 2), derivado de EventSystem.currentSelectedGameObject. ColorBlock de Unity conserva el tinte de interacción para hover/foco/pulsado; no define la elección persistente.
+La dotación de salida distingue pasiva de suministro: Kael conserva base; Viktor +1 pila y +1 placa; Vance +1 botiquín y +1 suero; Elena +2 vendas. Los kits añaden una sola vez por salida nueva +1 placa de repuesto, +2 vendas o +24 cartuchos compartidos, en mochila y sujetos a límites. Continuar checkpoint conserva recursos, superviviente, arma, tipo de munición y usos/restantes temporales de sectores; no vuelve a conceder el kit.
 
-Alcance artístico: el perro procedural y las siluetas humanoides alteradas son variantes construidas con recursos del proyecto; esta extensión no los presenta como modelos premium finales. Se mantienen la dirección, fuentes, mundo PS1 y revisión industrial anteriores.
+El arma elegida es la equipada inicialmente: se llevan las seis, con reserva compartida y cambio 1–6 en partida. `ModelUpgradeBuilder` construye geometría procedural diferenciada para Pistola DP-9, Carabina C3, Escopeta S12, Fusil de precision, Subfusil y Ametralladora pesada; reemplaza las simples variantes escaladas del fusil de 0.6. Cuatro modelos melee: Cuchillo KM-9, Hacha de abordaje, Machete sierra y Mazo neumatico. La geometría y sus accesorios no constituyen arte premium final aprobado. El perro procedural y humanoides alterados mantienen esa misma limitación.
 
-Evidencia de esta extensión: el [veredicto del arsenal](docs/UI_VERDICT_ARSENAL.md) cierra F1 (identificación persistente) y F2 (beneficios previos al despliegue) como resolved, con ship exclusivo para ambos hallazgos de la revisión original. Registra la recaptura Unity 1280 × 720 con Explorador, Arma pesada y Reserva de municion elegidos, y foco separado sobre Arma corta sin elegir. La recaptura válida sobre la escena actual confirma texto, marcadores `[X]`/`[ ]`, beneficios y foco separado; su [captura canónica](docs/Validation/Arsenal/arsenal-menu.png) conserva esa evidencia. La imagen transitoria sin texto queda descartada. Esta evidencia no acredita un recorrido manual completo por teclado ni otras resoluciones. El lote funcional final de la escena actual aprobó 27 PlayMode y 18 EditMode; [tests.json](docs/Validation/Arsenal/tests.json) registra sus resultados. La navegación reconstruida permite completar la ruta hasta extracción. Son evidencias separadas del veredicto visual. El preview del sidecar es ilustrativo; no hay nueva auditoría integral del juego, certificación FPS/accesibilidad ni aceptación estética humana.
+Los encabezados separan atajos en partida de la elección de menú: F3/F4 personaje, 1–6 arma, T munición FMJ/HP/AP-I, C melee, Espacio combo, G golpe pesado y clic derecho bloqueo/parry; Alt/X esquiva. La ayuda/HUD conserva controles y estados de combate. El resumen corregido muestra identidad, pasiva, dotación, arma/melee con reserva compartida y cantidad/destino del kit.
+
+### Nivel integrado y evidencia actual
+
+`PortMapExpander` agrega Sector 07 Helipuerto Sur y Laberinto de Contenedores, Sector 08 Ala Oeste de Bio-Cuarentena y Sector 09 Subestacion Electrica Norte. Reutiliza materia industrial, luces prácticas y señalética WorldSpace. Los prompts E comunican usos restantes de armería/bio/suministros y estado de recarga del pilón; sus recursos y temporizadores persisten. La construcción abre pasos y reconstruye NavMesh en runtime. La comprobación funcional reportada conecta siete puntos muestreados; no certifica todas las trayectorias o calidad de encuadre. HordeDirector integra presión/oleadas y reservas en sectores ampliados, con límite activo de 14.
+
+La [revisión unificada](docs/UI_REVIEW_UNIFIED.md) identificó U1 (cantidades/dotación) y U2 (arma inicial, seis disponibles, reserva compartida y teclas en partida). El [veredicto unificado](docs/UI_VERDICT_UNIFIED.md) cierra ambos como resolved, ship exclusivo para U1/U2. La recaptura nativa 1280 × 720 muestra Viktor, Arma pesada, Cuchillo KM-9 y Reserva de municion elegidos, con foco separado en Arma corta. Se verificaron visualmente marcadores, dotación +1 pila/+1 placa, kit +24 cartuchos compartidos, pasiva y footer; las demás descripciones se contrastaron con código. La [captura canónica](docs/Validation/Unified/arsenal-menu.png) es la entrega visual de este estado.
+
+El equipo reporta 27 PlayMode completas aprobadas sobre gameplay unificado y una prueba de integración filtrada aprobada después del ajuste de copy/recaptura, que incluye save/load de personaje, AP-I, usos de estación y conexión de siete puntos de sectores. También aprobaron 18 EditMode; resultados en [tests.json](docs/Validation/Unified/tests.json). Build 0.7 de fuente `76379d3` en curso al documentar. Pruebas y veredicto visual son evidencias separadas: no se emite aprobación integral del juego ni certificación de modelos, combate, audio, animación, FPS, accesibilidad, recorrido manual completo por teclado u otras resoluciones; aceptación estética humana pendiente.
+
+Historial 0.6: [veredicto del arsenal](docs/UI_VERDICT_ARSENAL.md), [captura](docs/Validation/Arsenal/arsenal-menu.png), [tests](docs/Validation/Arsenal/tests.json) y build Windows documentan aquella entrega de tres especialidades, seis armas y tres kits: F1/F2 resueltos con ship solo para su lista; 27 PlayMode y 18 EditMode aprobadas. La imagen transitoria sin texto por LFS se excluyó. Esta evidencia no verifica las regresiones U1/U2 del menú integrado.
 
 Evidencia final del lote industrial anterior: doce capturas principales en `docs/Validation/IndustrialPort/` —industrial-arrival, industrial-soldier, industrial-warehouse, industrial-control, industrial-ragdoll, industrial-ragdoll-1080, first-level-menu, first-level-help, night-inventory, night-inventory-1080, night-inventory-feedback y night-infected— más industrial-fall-00..04 y [CSV](docs/Validation/IndustrialPort/industrial-fall-sequence.csv). Archivos finales de 13:03 UTC. El CSV actual registra 13 cuerpos dinámicos, pelvis 0.9056→0.1754 m entre 0.167 y 2.797 s; no reutilizar las cifras de capturas previas. Acredita una caída, no todas las variantes/superficies/colisiones.
 
@@ -290,7 +300,7 @@ Los cuatro albedos originales —AgedEnamel_v1, InfectedFace_v1, WornCloth_v1 y 
 
 ### Do:
 
-- **Do** conservar 3D isométrico, escala adulta, soldado negro con tanque y PS1 marcado confirmado por el usuario.
+- **Do** conservar 3D isométrico, escala adulta, base de soldado con tanque y PS1 marcado; distinguir los cuatro perfiles integrados mediante tintes/accesorios legibles.
 - **Do** mantener el HUD fuera del pass retro y mostrar teclas junto a acciones y estados.
 - **Do** conservar lectura local de muslo, rodilla y bota, equipo volumétrico y cuartos organizados contra mamparos.
 - **Do** alimentar la pantalla CRT desde PowerOn y BoardingAuthorized, con superficie de operación y teclado visibles.

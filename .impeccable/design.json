@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-12T08:12:30.353112+00:00",
-  "title": "Design System: ABISAL — puerto industrial 0.5",
+  "generatedAt": "2026-11-12T08:36:47.934570+00:00",
+  "title": "Design System: ABISAL — puerto unificado 0.7",
   "extensions": {
     "colorMeta": {
       "ink": {
@@ -596,7 +596,14 @@
         "Assets/_Project/Runtime/Gameplay/InteriorCutaway.cs",
         "Assets/_Project/Editor/InteriorRebuild.cs",
         "Assets/_Project/Editor/ControlConsoleBuilder.cs",
-        "Assets/_Project/Runtime/Gameplay/ArsenalExpansion.cs"
+        "Assets/_Project/Runtime/Gameplay/ArsenalExpansion.cs",
+        "Assets/_Project/Runtime/Gameplay/SurvivorRoster.cs",
+        "Assets/_Project/Runtime/Gameplay/ModelUpgradeBuilder.cs",
+        "Assets/_Project/Runtime/Gameplay/PortMapExpander.cs",
+        "Assets/_Project/Runtime/Gameplay/HordeDirector.cs",
+        "Assets/_Project/Runtime/Gameplay/MeleeSwing.cs",
+        "Assets/_Project/Runtime/Gameplay/WeaponLoadout.cs",
+        "Assets/_Project/Runtime/Gameplay/CheckpointStore.cs"
       ],
       "units": "px in frontmatter = Canvas reference units; world uses meters. Color percentages preserve numeric Unity Color channels, not a measured final screenshot color.",
       "canvas": {
@@ -1234,59 +1241,75 @@
         "panel": "{components.deployment-panel}",
         "anchor": "right-center",
         "position": [
-          -35,
+          -30,
           0
         ],
-        "inset": 24,
-        "roles": {
-          "count": 3,
+        "inset": 22,
+        "characters": {
+          "count": 4,
+          "columns": 2,
           "size": [
-            194,
+            302,
+            38
+          ],
+          "step": [
+            312,
             42
           ],
-          "xStep": 202,
-          "y": 106
+          "y": 76
         },
         "weapons": {
           "count": 6,
           "columns": 2,
           "size": [
-            290,
-            44
+            302,
+            38
           ],
           "step": [
-            302,
-            52
+            312,
+            42
           ],
-          "y": 210
+          "y": 194
+        },
+        "melee": {
+          "count": 4,
+          "columns": 2,
+          "size": [
+            302,
+            36
+          ],
+          "step": [
+            312,
+            40
+          ],
+          "y": 352
         },
         "kits": {
           "count": 3,
           "size": [
-            194,
-            46
+            198,
+            40
           ],
-          "xStep": 202,
-          "y": 424
+          "xStep": 208,
+          "y": 464
         },
         "summary": {
           "position": [
-            24,
-            490
+            22,
+            514
           ],
           "size": [
-            600,
-            90
+            620,
+            112
           ]
         },
-        "helperY": 592
+        "helperY": 634
       },
       "typography": {
         "family": "Barlow Condensed",
-        "title": 28,
-        "sectionAndSummary": 20,
-        "option": 19,
-        "helper": 17,
+        "title": 24,
+        "sectionAndSummary": 16,
+        "option": 17,
         "units": "Canvas reference units"
       },
       "selection": {
@@ -1306,20 +1329,6 @@
           "independentOfChoice": true
         }
       },
-      "specialties": [
-        {
-          "label": "Asalto",
-          "benefit": "Dotacion base equilibrada"
-        },
-        {
-          "label": "Explorador",
-          "benefit": "+1 pila de linterna"
-        },
-        {
-          "label": "Sanitario",
-          "benefit": "+1 botiquin"
-        }
-      ],
       "sameSoldierRig": true,
       "weaponOptions": [
         "Arma corta",
@@ -1344,41 +1353,255 @@
           "benefit": "+24 cartuchos de reserva"
         }
       ],
-      "application": "Once per new sortie, inventory caps apply; loaded checkpoint retains saved weapon/resources and skips kit application.",
+      "application": "Starting character supplies and selected kit apply once to new sortie within inventory limits; checkpoint persists survivor, firearm, ammo grade, resources and sector remaining uses/timers, without repeating grants.",
       "artLimitations": [
-        "Added weapons derive from original rifle geometry with altered proportions.",
-        "Procedural dog and altered humanoid silhouettes are project variants, not final premium models."
+        "Six firearm and four melee silhouettes now procedurally built by ModelUpgradeBuilder; replaces 0.6 scaled-rifle derivatives.",
+        "Shared rig appearances, procedural dog and altered humanoids are not approved final premium art."
       ],
       "evidence": {
-        "status": "finding-list-closed-capture-verified",
-        "sourceCapture": "Library/ZombtoyValidationClean/TestResults/arsenal-menu.png",
-        "canonicalCapture": "docs/Validation/Arsenal/arsenal-menu.png",
-        "review": "docs/UI_REVIEW_ARSENAL.md",
-        "verdict": "docs/UI_VERDICT_ARSENAL.md",
-        "visualVerdict": "F1 resolved; F2 resolved; ship for original F1/F2 list only.",
+        "status": "unified-U1-U2-closed-capture-verified",
+        "review": "docs/UI_REVIEW_UNIFIED.md",
+        "verdict": "docs/UI_VERDICT_UNIFIED.md",
+        "visualVerdict": "U1 resolved; U2 resolved; ship only original U1/U2 findings.",
+        "canonicalCapture": "docs/Validation/Unified/arsenal-menu.png",
         "reviewedResolution": [
           1280,
           720
         ],
         "reviewedState": {
           "selected": [
-            "Explorador",
+            "Viktor Explorador",
             "Arma pesada",
+            "Cuchillo KM-9",
             "Reserva de municion"
           ],
           "focusedUnselected": "Arma corta"
         },
+        "captureStatus": "Native text, markers, passive, initial supplies, shared reserve, kit quantities and footer inspected; other profile/kit branches checked in source, not every permutation captured.",
         "functionalEvidence": {
           "PlayMode": 27,
+          "filteredIntegrationAfterCopy": 1,
           "EditMode": 18,
-          "status": "passed",
-          "manifest": "docs/Validation/Arsenal/tests.json",
-          "scope": "Final current-scene suite passed, as reported by parent; rebuilt navigation completes route to extraction. Functional evidence remains separate from bounded visual verdict."
+          "status": "passed as reported by parent",
+          "manifest": "docs/Validation/Unified/tests.json",
+          "integrationScope": [
+            "save/load survivor",
+            "AP-I ammo grade",
+            "station remaining uses",
+            "all seven sampled sector paths"
+          ]
         },
-        "scope": "No full-game review, full manual keyboard traversal, alternate-resolution certification, FPS/accessibility certification or human aesthetic acceptance.",
-        "captureStatus": "Valid current-scene Unity capture visually inspected: text, [X]/[ ] markers, selected Explorer/Heavy/Ammo and independent focus on unselected Shortarm visible. Canonical delivery: docs/Validation/Arsenal/arsenal-menu.png. Transient textless capture excluded.",
-        "buildStatus": "Windows0.6 build succeeded with0errors/1vendor warning; see docs/Validation/Arsenal/build-summary.txt. No performance, audio-quality or final-premium-model certification."
+        "buildStatus": "0.7 build from source 76379d3 in progress at documentation update.",
+        "scope": "No whole-game/model/combat/audio/animation/FPS/accessibility approval, full manual keyboard traversal, alternate-resolution certification or human aesthetic acceptance."
+      },
+      "version": "0.7",
+      "characters": [
+        {
+          "name": "Kael Vanguardia",
+          "role": "Asalto Tactico",
+          "startingSupplies": "base"
+        },
+        {
+          "name": "Viktor Sombra",
+          "role": "Explorador de Abordaje",
+          "startingSupplies": "+1 pila, +1 placa"
+        },
+        {
+          "name": "Dra. Vance Bio-Control",
+          "role": "Sanitario de Cuarentena",
+          "startingSupplies": "+1 botiquin, +1 suero"
+        },
+        {
+          "name": "Elena Bastion",
+          "role": "Ingeniera Pesada",
+          "startingSupplies": "+2 vendas"
+        }
+      ],
+      "meleeOptions": [
+        "Cuchillo KM-9",
+        "Hacha de abordaje",
+        "Machete sierra",
+        "Mazo neumatico"
+      ],
+      "appearance": "Shared soldier skeleton/skin with per-profile tints and procedural bone attachments; no unique-rig certification."
+    },
+    "history": {
+      "arsenal06": {
+        "source": "Assets/_Project/Runtime/Gameplay/ArsenalExpansion.cs",
+        "extensionDate": "2026-11-12",
+        "authority": "Extensión del sistema industrial vigente; preserva dirección, tokens e historial anteriores.",
+        "canvas": {
+          "renderMode": "ScreenSpaceOverlay",
+          "sortingOrder": 101,
+          "referenceResolution": [
+            1280,
+            720
+          ],
+          "matchWidthOrHeight": 0.5
+        },
+        "geometry": {
+          "panel": "{components.deployment-panel}",
+          "anchor": "right-center",
+          "position": [
+            -35,
+            0
+          ],
+          "inset": 24,
+          "roles": {
+            "count": 3,
+            "size": [
+              194,
+              42
+            ],
+            "xStep": 202,
+            "y": 106
+          },
+          "weapons": {
+            "count": 6,
+            "columns": 2,
+            "size": [
+              290,
+              44
+            ],
+            "step": [
+              302,
+              52
+            ],
+            "y": 210
+          },
+          "kits": {
+            "count": 3,
+            "size": [
+              194,
+              46
+            ],
+            "xStep": 202,
+            "y": 424
+          },
+          "summary": {
+            "position": [
+              24,
+              490
+            ],
+            "size": [
+              600,
+              90
+            ]
+          },
+          "helperY": 592
+        },
+        "typography": {
+          "family": "Barlow Condensed",
+          "title": 28,
+          "sectionAndSummary": 20,
+          "option": 19,
+          "helper": 17,
+          "units": "Canvas reference units"
+        },
+        "selection": {
+          "base": "{colors.deployment-option}",
+          "chosen": "{colors.deployment-selected}",
+          "scope": "One persistent choice per group, marked by text and background; Outline independently identifies navigation focus. Unity default ColorBlock handles interaction tint.",
+          "chosenMarker": "[X]",
+          "unchosenMarker": "[ ]",
+          "focus": {
+            "source": "EventSystem.current.currentSelectedGameObject",
+            "component": "UnityEngine.UI.Outline",
+            "color": "{colors.deployment-focus}",
+            "effectDistance": [
+              2,
+              2
+            ],
+            "independentOfChoice": true
+          }
+        },
+        "specialties": [
+          {
+            "label": "Asalto",
+            "benefit": "Dotacion base equilibrada"
+          },
+          {
+            "label": "Explorador",
+            "benefit": "+1 pila de linterna"
+          },
+          {
+            "label": "Sanitario",
+            "benefit": "+1 botiquin"
+          }
+        ],
+        "sameSoldierRig": true,
+        "weaponOptions": [
+          "Arma corta",
+          "Fusil de asalto",
+          "Escopeta",
+          "Precision",
+          "Subfusil",
+          "Arma pesada"
+        ],
+        "weaponContract": "Selection equips the starting weapon; all six are carried, 1–6 switches them, runtime weapon ammunition/resources are shared.",
+        "kits": [
+          {
+            "label": "Placa reforzada",
+            "benefit": "+1 placa de repuesto"
+          },
+          {
+            "label": "Suministros medicos",
+            "benefit": "+2 vendas"
+          },
+          {
+            "label": "Reserva de municion",
+            "benefit": "+24 cartuchos de reserva"
+          }
+        ],
+        "application": "Once per new sortie, inventory caps apply; loaded checkpoint retains saved weapon/resources and skips kit application.",
+        "artLimitations": [
+          "Added weapons derive from original rifle geometry with altered proportions.",
+          "Procedural dog and altered humanoid silhouettes are project variants, not final premium models."
+        ],
+        "evidence": {
+          "status": "finding-list-closed-capture-verified",
+          "sourceCapture": "Library/ZombtoyValidationClean/TestResults/arsenal-menu.png",
+          "canonicalCapture": "docs/Validation/Arsenal/arsenal-menu.png",
+          "review": "docs/UI_REVIEW_ARSENAL.md",
+          "verdict": "docs/UI_VERDICT_ARSENAL.md",
+          "visualVerdict": "F1 resolved; F2 resolved; ship for original F1/F2 list only.",
+          "reviewedResolution": [
+            1280,
+            720
+          ],
+          "reviewedState": {
+            "selected": [
+              "Explorador",
+              "Arma pesada",
+              "Reserva de municion"
+            ],
+            "focusedUnselected": "Arma corta"
+          },
+          "functionalEvidence": {
+            "PlayMode": 27,
+            "EditMode": 18,
+            "status": "passed",
+            "manifest": "docs/Validation/Arsenal/tests.json",
+            "scope": "Final current-scene suite passed, as reported by parent; rebuilt navigation completes route to extraction. Functional evidence remains separate from bounded visual verdict."
+          },
+          "scope": "No full-game review, full manual keyboard traversal, alternate-resolution certification, FPS/accessibility certification or human aesthetic acceptance.",
+          "captureStatus": "Valid current-scene Unity capture visually inspected: text, [X]/[ ] markers, selected Explorer/Heavy/Ammo and independent focus on unselected Shortarm visible. Canonical delivery: docs/Validation/Arsenal/arsenal-menu.png. Transient textless capture excluded.",
+          "buildStatus": "Windows0.6 build succeeded with0errors/1vendor warning; see docs/Validation/Arsenal/build-summary.txt. No performance, audio-quality or final-premium-model certification."
+        }
       }
+    },
+    "unifiedLevel": {
+      "version": "0.7",
+      "sectors": [
+        "07 Helipuerto Sur / Laberinto de Contenedores",
+        "08 Ala Oeste de Bio-Cuarentena",
+        "09 Subestacion Electrica Norte"
+      ],
+      "source": "Assets/_Project/Runtime/Gameplay/PortMapExpander.cs",
+      "navigation": "Runtime NavMesh rebuild after opening passages; seven sampled sector points reported connected, not all paths certified.",
+      "checkpoint": "Sector supply charges, armory/bio uses and turret remaining active/cooldown timers persist.",
+      "hordeSource": "Assets/_Project/Runtime/Gameplay/HordeDirector.cs",
+      "hordeActiveLimit": 14
     }
   },
   "components": [
@@ -1458,21 +1681,21 @@
       "name": "Elección de despliegue",
       "kind": "custom",
       "refersTo": "deployment-option",
-      "description": "Preview ilustrativo de elección con marcador textual y fondo persistente; foco separado por contorno claro. Tres especialidades del mismo rig, sin lógica de juego. CSS aproxima uGUI; evidencia nativa en el veredicto acotado.",
-      "html": "<section class=\"ds-deployment\"><h3>PERSONAL / MISMO SOLDADO, DISTINTA ESPECIALIDAD</h3><div class=\"ds-deployment-row\"><button aria-pressed=\"true\">[X] Asalto</button><button aria-pressed=\"false\">[ ] Explorador</button><button aria-pressed=\"false\">[ ] Sanitario</button></div><p>Asalto: Dotacion base equilibrada<br>Arma corta / municion compartida<br>Placa reforzada: +1 placa de repuesto<br>1-6 cambian arma. Espacio corta / V empuja.</p></section>",
-      "css": ".ds-deployment{width:650px;padding:24px;background:rgb(2.5% 2.3% 1.9% / 98%);color:rgb(88% 82% 64%);font:500 20px \"Barlow Condensed\",Arial,sans-serif}.ds-deployment h3{font-size:17px;font-weight:500;margin:0 0 20px}.ds-deployment-row{display:flex;gap:8px}.ds-deployment button{width:194px;height:42px;border:0;border-radius:0;background:rgb(12% 11.5% 9%);color:rgb(88% 82% 64%);font:500 19px \"Barlow Condensed\",Arial,sans-serif}.ds-deployment button[aria-pressed=\"true\"]{background:rgb(38% 32% 18%)}.ds-deployment button:hover{filter:brightness(.96)}.ds-deployment button:focus-visible{filter:brightness(.96);outline:2px solid rgb(95% 90% 73%);outline-offset:0}.ds-deployment button:active{filter:brightness(.7843)}.ds-deployment p{font-size:20px;margin:24px 0 0}"
+      "description": "Preview ilustrativo de cuatro personajes con rig compartido; marcador persistente y foco separado. Beneficios/kit representativos del código 0.7, verificados de forma acotada en U1/U2; preview sin lógica de juego.",
+      "html": "<section class=\"ds-deployment\"><h3>ESPECIALISTA / F3-F4 EN PARTIDA</h3><div class=\"ds-deployment-row\"><button aria-pressed=\"true\">[X] Kael / Asalto</button><button aria-pressed=\"false\">[ ] Viktor / Explorador</button><button aria-pressed=\"false\">[ ] Vance / Sanitario</button><button aria-pressed=\"false\">[ ] Elena / Ingeniera</button></div><p>Kael (Asalto Tactico)<br>Pasiva: recarga 1.15s y +15% dano balistico<br>Salida: dotacion base en mochila, sujeto al limite.<br>Arsenal: Pistola DP-9 + Cuchillo KM-9; reserva compartida<br>Kit: +1 placa de repuesto en mochila; una vez por salida.</p></section>",
+      "css": ".ds-deployment{width:665px;padding:22px;background:rgb(2.5% 2.3% 1.9% / 98%);color:rgb(88% 82% 64%);font:500 16px \"Barlow Condensed\",Arial,sans-serif}.ds-deployment h3{font-size:17px;font-weight:500;margin:0 0 20px}.ds-deployment-row{display:grid;grid-template-columns:repeat(2,302px);gap:4px 10px}.ds-deployment button{width:302px;height:38px;border:0;border-radius:0;background:rgb(12% 11.5% 9%);color:rgb(88% 82% 64%);font:500 17px \"Barlow Condensed\",Arial,sans-serif}.ds-deployment button[aria-pressed=\"true\"]{background:rgb(38% 32% 18%)}.ds-deployment button:hover{filter:brightness(.96)}.ds-deployment button:focus-visible{filter:brightness(.96);outline:2px solid rgb(95% 90% 73%);outline-offset:0}.ds-deployment button:active{filter:brightness(.7843)}.ds-deployment p{font-size:16px;margin:24px 0 0}"
     }
   ],
   "narrative": {
     "northStar": "Desembarco de cuarentena abandonado",
-    "overview": "ABISAL conserva el survival horror 3D isométrico y al soldado negro con tanque de oxígeno. La dirección humana toma Mouthwashing como referencia: escala adulta, industria gastada, superficies mate y luz práctica. El usuario confirmó PS1 marcado —baja resolución, dithering y textura inestable— y construcción directa en Unity con capturas reales. Después de dos revisiones rebuild eligió expresamente «Reconstruir interiores y soldado con más detalle»; este registro sustituye la documentación intermedia bajo esa autorización.\n\nLa reconstrucción final organiza mamparos, bancos y equipo como interiores contenidos; diferencia textil, rodilleras y botas; y presenta consolas CRT con teclado físico y estado de misión. [La revisión completa](docs/UI_REVIEW_INDUSTRIAL.md) emitió fix y [el veredicto posterior](docs/UI_VERDICT_INDUSTRIAL.md) cerró F1 y F2 como resolved, con disposition: ship exclusivamente para esa lista. No hubo una nueva auditoría integral ni aceptación estética humana. Las diecisiete capturas del 19 de octubre de 2026, 13:03 UTC, y el CSV de caída documentan el estado revisado; pruebas funcionales y capturas no cierran los KPI externos.",
+    "overview": "ABISAL conserva el survival horror 3D isométrico y al soldado negro con tanque de oxígeno. La dirección humana toma Mouthwashing como referencia: escala adulta, industria gastada, superficies mate y luz práctica. El usuario confirmó PS1 marcado —baja resolución, dithering y textura inestable— y construcción directa en Unity con capturas reales. Después de dos revisiones rebuild eligió expresamente «Reconstruir interiores y soldado con más detalle»; este registro sustituye la documentación intermedia bajo esa autorización.\n\nLa reconstrucción final organiza mamparos, bancos y equipo como interiores contenidos; diferencia textil, rodilleras y botas; y presenta consolas CRT con teclado físico y estado de misión. [La revisión completa](docs/UI_REVIEW_INDUSTRIAL.md) emitió fix y [el veredicto posterior](docs/UI_VERDICT_INDUSTRIAL.md) cerró F1 y F2 como resolved, con disposition: ship exclusivamente para esa lista. No hubo una nueva auditoría integral ni aceptación estética humana. Las diecisiete capturas del 19 de octubre de 2026, 13:03 UTC, y el CSV de caída documentan el estado revisado; pruebas funcionales y capturas no cierran los KPI externos.\n\nCurrent 0.7 integrates four shared-rig survivor appearances, six procedural firearms, four melee models and three dynamic sectors. Unified menu U1/U2 resolved with ship limited to those findings; final capture inspected, 27 PlayMode + 1 filtered integration + 18 EditMode passed as reported by parent. Build from 76379d3 remains in progress. Prior 0.5/0.6 evidence is historical.",
     "keyCharacteristics": [
       "Mundo 3D de escala adulta, interiores industriales contenidos y cadáveres con caída física.",
-      "Uniforme negro con atlas por zonas, equipo volumétrico, costuras y respuesta local diferenciada.",
+      "Rig de soldado compartido, atlas por zonas y equipo volumétrico; cuatro perfiles integrados cambian tintes y accesorios.",
       "Render PS1 marcado en el mundo; HUD operativo uGUI a resolución nativa.",
       "Crimson Text para ABISAL y Barlow Condensed para información operativa.",
       "Iluminación práctica cálida/fría y consolas diegéticas que muestran estado real.",
-      "Extensión de despliegue: tres especialidades del mismo soldado, seis armas disponibles y un kit inicial por salida; F1/F2 del arsenal resueltos con ship limitado a esa lista."
+      "Sistema 0.7: cuatro perfiles con rig compartido, seis armas de fuego, cuatro melee, tres kits y tres sectores integrados; U1/U2 resueltos con ship acotado."
     ],
     "rules": [
       {
@@ -1492,7 +1715,7 @@
       }
     ],
     "dos": [
-      "**Do** conservar 3D isométrico, escala adulta, soldado negro con tanque y PS1 marcado confirmado por el usuario.",
+      "**Do** conservar 3D isométrico, escala adulta, base de soldado con tanque y PS1 marcado; distinguir cuatro perfiles mediante tintes/accesorios legibles.",
       "**Do** mantener el HUD fuera del pass retro y mostrar teclas junto a acciones y estados.",
       "**Do** conservar lectura local de muslo, rodilla y bota, equipo volumétrico y cuartos organizados contra mamparos.",
       "**Do** alimentar la pantalla CRT desde PowerOn y BoardingAuthorized, con superficie de operación y teclado visibles.",
