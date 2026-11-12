@@ -16,7 +16,10 @@ namespace Zombtoy.Gameplay
         private float nextStep;
         private AudioSource audioSource;
         private CharacterMotion motion;
-        private float nextMelee;
+        private float nextMelee, strikeAt;
+        private bool strikePending, strikeAxe;
+        private int combo;
+        private float comboUntil;
         private Light flashlight;
         private WeaponLoadout loadout;
         private Vector3 aimPoint;
@@ -34,7 +37,9 @@ namespace Zombtoy.Gameplay
 
         private void Update()
         {
-            if (session == null || !session.Running || Keyboard.current == null) return;
+            if (session == null || !session.Running) { strikePending = false; return; }
+            if (strikePending && Time.time >= strikeAt) { strikePending = false; ResolveMelee(strikeAxe); }
+            if (Keyboard.current == null) return;
             var kb = Keyboard.current;
             Vector2 input = new Vector2((kb.dKey.isPressed ? 1 : 0) - (kb.aKey.isPressed ? 1 : 0),
                 (kb.wKey.isPressed ? 1 : 0) - (kb.sKey.isPressed ? 1 : 0));
@@ -52,7 +57,7 @@ namespace Zombtoy.Gameplay
             {
                 nextStep = Time.time + (sprint ? 0.28f : 0.48f);
                 session.EmitNoise(transform.position, sprint ? 10f : 3f);
-                if (stepSound != null) audioSource.PlayOneShot(stepSound, 0.15f);
+                if (stepSound != null) audioSource.PlayOneShot(stepSound, sprint ? .22f : .12f);
             }
             if (Mouse.current != null)
             {
@@ -66,7 +71,7 @@ namespace Zombtoy.Gameplay
                 {
                     Vector3 aim = (preciseAim ? aimPoint : ray.GetPoint(distance)) - transform.position;
                     aim.y = 0;
-                    if (aim.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(aim);
+                    if (aim.sqrMagnitude > 0.01f && GetComponent<MeleeSwing>()?.Active != true) transform.rotation = Quaternion.LookRotation(aim);
                 }
                 if (Mouse.current.leftButton.isPressed && Time.time >= nextShot && !session.Busy && !session.Hud.BlocksCombat)
                     Shoot();
@@ -77,6 +82,9 @@ namespace Zombtoy.Gameplay
                 if (kb.digit1Key.wasPressedThisFrame) loadout.Equip(0);
                 if (kb.digit2Key.wasPressedThisFrame) loadout.Equip(1);
                 if (kb.digit3Key.wasPressedThisFrame) loadout.Equip(2);
+                if (kb.digit4Key.wasPressedThisFrame) loadout.Equip(3);
+                if (kb.digit5Key.wasPressedThisFrame) loadout.Equip(4);
+                if (kb.digit6Key.wasPressedThisFrame) loadout.Equip(5);
             }
             if (kb.qKey.wasPressedThisFrame) session.BeginInjection();
             if (kb.eKey.wasPressedThisFrame) session.Interact();
@@ -84,6 +92,7 @@ namespace Zombtoy.Gameplay
             if (kb.bKey.wasPressedThisFrame) session.BeginBandage();
             if (kb.fKey.wasPressedThisFrame) { if (session.Night != null) session.Night.ToggleLamp(); else if (flashlight != null) flashlight.enabled = !flashlight.enabled; }
             if (kb.spaceKey.wasPressedThisFrame) TryMelee();
+            if (kb.vKey.wasPressedThisFrame) Shove();
         }
 
         public bool TryMelee()
@@ -96,6 +105,14 @@ namespace Zombtoy.Gameplay
             if (meleeSound != null) audioSource.PlayOneShot(meleeSound, .35f);
             CombatEffects.Swing(transform, session.tracerMaterial);
             (GetComponent<MeleeSwing>() ?? gameObject.AddComponent<MeleeSwing>()).Play(axe, session.tracerMaterial, session.combatArt != null ? axe ? session.combatArt.axe : session.combatArt.knife : null);
+            strikeAxe = axe; strikePending = true; strikeAt = Time.time + (axe ? .18f : .10f);
+            return true;
+        }
+
+        private void ResolveMelee(bool axe)
+        {
+            if (!session.Running || session.Busy || session.Hud.BlocksCombat) return;
+            combo = Time.time < comboUntil ? (combo + 1) % 3 : 0; comboUntil = Time.time + 1.5f;
             int hits = 0;
             foreach (var enemy in session.Enemies)
             {
@@ -104,10 +121,25 @@ namespace Zombtoy.Gameplay
                 if (delta.magnitude > (axe ? 1.8f : 1.55f) || Vector3.Angle(transform.forward, delta) > 55) continue;
                 Vector3 from = transform.position + Vector3.up * .95f, to = enemy.transform.position + Vector3.up * .95f;
                 if (Physics.Linecast(from, to, out var hit, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && hit.collider.GetComponentInParent<SandboxEnemy>() != enemy) continue;
-                enemy.Hit(axe ? 65 : 40, to + transform.right * .25f, true); session.RegisterHit();
+                enemy.Hit((axe ? 65 : 40) * (combo == 2 ? 1.25f : 1), to + transform.right * .25f, true); session.RegisterHit();
                 if (++hits >= (axe ? 3 : 1)) break;
             }
-            return true;
+            if (hits > 0) TacticalAudio.Play(transform.position, TacticalCue.Impact);
+        }
+
+        private void Shove()
+        {
+            if (session.Busy || session.Hud.BlocksCombat || Time.time < nextMelee || (session.Night != null && !session.Night.SpendStamina(22))) return;
+            nextMelee = Time.time + .8f;
+            foreach (var enemy in session.Enemies)
+            {
+                if (enemy == null || enemy.IsDead || !enemy.gameObject.activeInHierarchy) continue;
+                var d = enemy.transform.position - transform.position; d.y = 0;
+                if (d.magnitude > 1.9f || Vector3.Angle(transform.forward, d) > 65) continue;
+                if (Physics.Linecast(transform.position + Vector3.up, enemy.transform.position + Vector3.up, out var h) && h.collider.GetComponentInParent<SandboxEnemy>() != enemy) continue;
+                enemy.Damage(8); enemy.Stagger(.9f);
+            }
+            TacticalAudio.Play(transform.position, TacticalCue.Swing);
         }
 
         private void Shoot()
@@ -119,6 +151,7 @@ namespace Zombtoy.Gameplay
             session.EmitNoise(transform.position, (weapon != null ? weapon.noiseRadius : 18) * (session.State.IsManic ? 1.35f : 1));
             var clip = weapon != null && weapon.shotClip != null ? weapon.shotClip : shotSound;
             if (clip != null) audioSource.PlayOneShot(clip, 0.35f);
+            TacticalAudio.Play(transform.position, TacticalCue.Gunshot, weapon != null ? weapon.fireInterval : .22f);
             if (loadout != null) loadout.Recoil();
             Vector3 origin = loadout != null && loadout.Muzzle != null ? loadout.Muzzle.position : transform.position + Vector3.up * 0.85f + transform.forward * 0.5f;
             // A long visible barrel may touch a wall; it must not shoot through it.
@@ -131,8 +164,9 @@ namespace Zombtoy.Gameplay
                 if (weapon != null && weapon.spread > 0) aim = Quaternion.AngleAxis(Random.Range(-weapon.spread, weapon.spread), Vector3.up) * aim;
                 if (session.State.elapsed < session.State.tremorUntil || session.State.IsManic)
                     aim = Quaternion.AngleAxis(Random.Range(-7f, 7f), Vector3.up) * aim;
-                Vector3 end = origin + aim * 25f;
-                if (Physics.Raycast(origin, aim, out RaycastHit hit, 25f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                float range = weapon != null ? weapon.range : 25f;
+                Vector3 end = origin + aim * range;
+                if (Physics.Raycast(origin, aim, out RaycastHit hit, range, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
                 {
                     end = hit.point;
                     var enemy = hit.collider.GetComponentInParent<SandboxEnemy>();

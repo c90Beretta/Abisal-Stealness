@@ -163,7 +163,7 @@ namespace Zombtoy.Gameplay
             if (IsDead || amount <= 0) return;
             lastImpact = point; lastImpulse = (transform.position - session.player.transform.position).normalized * Mathf.Clamp(amount * .045f, .5f, 5) + Vector3.up * .35f;
             CombatEffects.Blood(point, session.tracerMaterial);
-            if (gore != null) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
+            if (gore != null && GetComponent<SpecialInfected>()?.Species != SpecialSpecies.Hound) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
             if (variant != null && variant.kind == InfectedKind.Brute && !cutting && point.y - transform.position.y < 1.45f) amount *= .6f;
             Damage(amount);
         }
@@ -182,6 +182,8 @@ namespace Zombtoy.Gameplay
             session.Kills++;
             if (ragdoll != null) ragdoll.Activate(lastImpulse.sqrMagnitude > 0 ? lastImpulse : transform.forward * -2, lastImpact.sqrMagnitude > 0 ? lastImpact : transform.position + Vector3.up, gore != null ? gore.Lost : Severed.None);
         }
+
+        public void Stagger(float seconds) { if (!IsDead) { Mode = EnemyMode.Stagger; stateUntil = Time.time + seconds; } }
 
         public void Restore(float value, Vector3 position)
         {

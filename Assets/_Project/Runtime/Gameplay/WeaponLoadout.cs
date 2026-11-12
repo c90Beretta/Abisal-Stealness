@@ -22,6 +22,7 @@ namespace Zombtoy.Gameplay
             if (model != null) { model.SetActive(false); Destroy(model); }
             model = Instantiate(weapons[index].visualPrefab, socket, false);
             model.name = weapons[index].displayName;
+            model.SetActive(true);
             Muzzle = model.transform.Find("Muzzle");
             if (!restoring) player.session.SetMessage("Arma: " + weapons[index].displayName + ". Municion compartida.");
             return true;

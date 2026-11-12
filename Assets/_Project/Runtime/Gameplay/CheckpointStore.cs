@@ -81,7 +81,7 @@ namespace Zombtoy.Gameplay
                     !float.IsFinite(s.state.inventoryLockedUntil) || !float.IsFinite(s.state.tremorUntil) ||
                     (s.power && !s.fuse) || (s.boarding && !s.power) || s.pickups.Any(p => p == null || string.IsNullOrEmpty(p.id)) ||
                     s.rounds < 0 || s.rounds > 12 || s.reserve < 0 || s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
-                    s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 2 ||
+                    s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 5 ||
                     s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 1000))) return false;
                 if (s.version >= 2 && (s.inventory == null || !s.inventory.Valid || s.loot == null || s.released == null || s.released.Length > 64 || s.waves < 0 || !Bounded(s.pressure, 0, 100) ||
                     s.loot.Any(l => l == null || string.IsNullOrEmpty(l.id) || l.stock == null || !l.stock.Valid) || s.loot.Select(l => l.id).Distinct().Count() != s.loot.Length ||

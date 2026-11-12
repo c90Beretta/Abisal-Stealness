@@ -62,6 +62,7 @@ namespace Zombtoy.Gameplay
             Hud.Setup(this);
             Mode = portMission == null ? SessionMode.Playing : SessionMode.Title;
             ApplyTime();
+            if (portMission != null) gameObject.AddComponent<ArsenalExpansion>().Initialize(this);
         }
 
         private void Update()
@@ -226,6 +227,7 @@ namespace Zombtoy.Gameplay
         {
             if (portMission == null || !CheckpointStore.TryRead(SavePath, out var save))
             { SetMessage("No hay un checkpoint valido para este puerto."); return false; }
+            GetComponent<ArsenalExpansion>()?.UseCheckpoint();
             CheckpointStore.Restore(this, save);
             actionLeft = reloadLeft = 0; immuneUntil = Time.time + 1;
             Mode = SessionMode.Playing; Hud.ClosePanels(); ApplyTime(); SetMessage("Checkpoint recuperado."); return true;

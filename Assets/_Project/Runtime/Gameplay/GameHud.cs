@@ -24,6 +24,7 @@ namespace Zombtoy.Gameplay
         private static readonly Color Green = new Color(.88f, .82f, .64f);
         private static readonly Color Muted = new Color(.76f, .74f, .66f);
         private Sprite whiteSprite;
+        public bool ShowingHelp => showingHelp;
         public bool BlocksCombat => showingHelp || showingEquipment || session.Mode != SessionMode.Playing;
 
         public void Setup(SandboxSession value)
@@ -90,7 +91,7 @@ namespace Zombtoy.Gameplay
             var helpCard = Panel("Controls card", help, Ink, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
             helpCard.rectTransform.sizeDelta = new Vector2(860, 580); helpCard.rectTransform.pivot = Vector2.one * 0.5f;
             Label(helpCard.transform, "CONTROLES / SUPERVIVENCIA", 26, Green, 30, -24, 800, 45);
-            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr (produce mas ruido)\nRATON  Apuntar     CLIC IZQUIERDO  Disparar\n1 / 2 / 3  Cambiar arma     RUEDA  Zoom\nESPACIO  Cuchillo / hacha (consume resistencia)     R  Recargar\nE  Interactuar / abrir botin     TAB  Mochila y equipo\nH  Botiquin (+40 vida)     B  Venda (detiene hemorragia)\nQ  Suero     F  Linterna (pilas y oxigeno en TAB)\nESC  Pausa     F1  Esta ayuda     F2  Reducir efectos\nF5  Guardar lejos de enemigos     F9  Recuperar checkpoint\n\nLos infectados oyen disparos y pasos. Su ataque tiene una\npreparacion: alejate antes del golpe. Curarte lleva tiempo\ny recibir un golpe interrumpe el tratamiento.\nMascara + O2 protegen de la fuga toxica del generador.\n\nRuta: ALMACEN 03 > GENERADOR > CONTROL > SUBMARINO.\nEl generador guarda automaticamente tu progreso.", 20, Color.white, 30, -88, 800, 414);
+            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr (produce mas ruido)\nRATON  Apuntar     CLIC IZQUIERDO  Disparar\n1-6  Cambiar arma     RUEDA  Zoom\nESPACIO  Corte / combo     V  Empujon     R  Recargar\nE  Interactuar / abrir botin     TAB  Mochila y equipo\nH  Botiquin (+40 vida)     B  Venda (detiene hemorragia)\nQ  Suero     F  Linterna (pilas y oxigeno en TAB)\nESC  Pausa     F1  Esta ayuda     F2  Reducir efectos\nF5  Guardar lejos de enemigos     F9  Recuperar checkpoint\n\nLos infectados oyen disparos y pasos. Su ataque tiene una\npreparacion: alejate antes del golpe. Curarte lleva tiempo\ny recibir un golpe interrumpe el tratamiento.\nMascara + O2 protegen de la fuga toxica del generador.\n\nRuta: ALMACEN 03 > GENERADOR > CONTROL > SUBMARINO.\nEl generador guarda automaticamente tu progreso.", 20, Color.white, 30, -88, 800, 414);
             Button(helpCard.transform, "Cerrar ayuda / F1", 30, -510, ToggleHelp, out _);
             help.gameObject.SetActive(false);
             equipment = Node("Equipment", root); Stretch(equipment);
