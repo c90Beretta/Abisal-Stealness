@@ -70,7 +70,7 @@ namespace Zombtoy.Tests
         [UnityTest] public IEnumerator SeveredLegsSlowEnemiesAndHeadKillsOnlyOnce()
         {
             yield return Load(); session.Night.hordes.enabled = false;
-            var enemy = session.Enemies.First(e => e.GetComponent<InfectedVariant>().kind == InfectedKind.Walker);
+            var enemy = session.Enemies.First(e => e.GetComponent<InfectedVariant>().kind == InfectedKind.Walker && e.GetComponent<SpecialInfected>() == null);
             enemy.gameObject.SetActive(true); Move(enemy.transform, session.player.transform.position + Vector3.forward * 3);
             var gore = enemy.GetComponent<Dismemberment>(); var skin = enemy.GetComponentInChildren<SkinnedMeshRenderer>(); int triangles = skin.sharedMesh.triangles.Length;
             Assert.That(gore.Sever(Severed.LeftLeg), Is.True); Assert.That(gore.Sever(Severed.LeftLeg), Is.False);
