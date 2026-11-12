@@ -25,6 +25,9 @@ namespace Zombtoy.Gameplay
         private Vector3 home, destination;
         private Quaternion initialRotation;
         private float alertedUntil, stateUntil, nextPath, patrolUntil, flashUntil;
+        private float bleedUntil, burnUntil, nextDotTick;
+        private Vector3 knockbackVelocity;
+        private bool lastHitMelee;
         private int patrolIndex;
         private NavMeshPath path;
         private Renderer[] renderers;
@@ -86,9 +89,28 @@ namespace Zombtoy.Gameplay
                 if (ragdoll == null && visual != null) visual.localRotation = Quaternion.Slerp(visual.localRotation, Quaternion.Euler(-88, 0, 0), Time.deltaTime * 7);
                 return;
             }
+            if ((Time.time < bleedUntil || Time.time < burnUntil) && Time.time >= nextDotTick)
+            {
+                nextDotTick = Time.time + 0.5f;
+                float dot = (Time.time < bleedUntil ? 4.5f : 0f) + (Time.time < burnUntil ? 6.5f : 0f);
+                if (session.player != null && session.player.Roster != null && session.player.Roster.Current.Id == SurvivorId.VanceMedic)
+                    dot *= 1.3f;
+                CombatEffects.Blood(transform.position + Vector3.up * 1.1f, session.tracerMaterial, 2);
+                Damage(dot);
+                if (IsDead) return;
+            }
+            if (knockbackVelocity.sqrMagnitude > 0.02f)
+            {
+                if (controller != null && controller.enabled)
+                    controller.Move((knockbackVelocity + Vector3.down * 8f) * Time.deltaTime);
+                knockbackVelocity = Vector3.MoveTowards(knockbackVelocity, Vector3.zero, Time.deltaTime * 14f);
+            }
             foreach (var r in renderers)
             {
-                block.Clear(); block.SetColor("_EmissionColor", Time.time < flashUntil ? Color.red * 1.8f : Color.black);
+                if (r == null) continue;
+                block.Clear();
+                Color emission = Time.time < flashUntil ? Color.red * 1.8f : Time.time < burnUntil ? new Color(1.6f, .55f, .1f) : Color.black;
+                block.SetColor("_EmissionColor", emission);
                 if (Time.time < flashUntil) block.SetColor("_BaseColor", new Color(1, 0.15f, 0.1f));
                 r.SetPropertyBlock(block);
             }
@@ -101,7 +123,16 @@ namespace Zombtoy.Gameplay
                 Face(session.player.transform.position - transform.position);
                 if (Time.time >= stateUntil)
                 {
-                    if (distance < 1.8f && SeesPlayer(false)) session.TakeDamage((definition == null ? 12 : definition.damage) * (variant != null ? variant.DamageMultiplier : 1));
+                    if (distance < 1.8f && SeesPlayer(false))
+                    {
+                        float dmg = (definition == null ? 12 : definition.damage) * (variant != null ? variant.DamageMultiplier : 1);
+                        if (session.player != null && session.player.TryInterceptEnemyAttack(this, ref dmg, out bool wound))
+                        {
+                            if (dmg > 0) session.TakeDamage(dmg, wound);
+                            return;
+                        }
+                        session.TakeDamage(dmg);
+                    }
                     Mode = EnemyMode.Recover; stateUntil = Time.time + (definition == null ? 1.2f : definition.attackRecovery);
                 }
                 return;
@@ -134,9 +165,20 @@ namespace Zombtoy.Gameplay
             }
             if (useNavigation)
             {
-                if (Time.time >= nextPath) { nextPath = Time.time + 0.3f; NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path); }
-                if (path.status != NavMeshPathStatus.PathComplete || path.corners.Length < 2) return;
-                delta = path.corners[1] - transform.position; delta.y = 0;
+                if (Time.time >= nextPath)
+                {
+                    nextPath = Time.time + 0.3f;
+                    Vector3 navTarget = destination;
+                    if (NavMesh.SamplePosition(destination, out var destSample, 6f, NavMesh.AllAreas))
+                        navTarget = destSample.position;
+                    NavMesh.CalculatePath(transform.position, navTarget, NavMesh.AllAreas, path);
+                }
+                if (path.corners != null && path.corners.Length >= 2)
+                {
+                    delta = path.corners[1] - transform.position;
+                    delta.y = 0;
+                }
+                else if (Mode == EnemyMode.Patrol) return;
             }
             if (delta.sqrMagnitude < 0.01f) return;
             Face(delta);
@@ -158,13 +200,25 @@ namespace Zombtoy.Gameplay
             if (delta.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(delta), Time.deltaTime * 9);
         }
 
-        public void Hit(float amount, Vector3 point, bool cutting)
+        public void InflictBleed(float seconds) { if (!IsDead) bleedUntil = Mathf.Max(bleedUntil, Time.time + seconds); }
+        public void InflictBurn(float seconds) { if (!IsDead) burnUntil = Mathf.Max(burnUntil, Time.time + seconds); }
+        public void PushBack(Vector3 direction, float force)
+        {
+            if (IsDead) return;
+            direction.y = 0;
+            if (direction.sqrMagnitude > .001f) knockbackVelocity = direction.normalized * Mathf.Clamp(force, .5f, 8f);
+        }
+
+        public void Hit(float amount, Vector3 point, bool cutting) => Hit(amount, point, cutting, false);
+
+        public void Hit(float amount, Vector3 point, bool cutting, bool armorPiercing)
         {
             if (IsDead || amount <= 0) return;
+            lastHitMelee = cutting;
             lastImpact = point; lastImpulse = (transform.position - session.player.transform.position).normalized * Mathf.Clamp(amount * .045f, .5f, 5) + Vector3.up * .35f;
             CombatEffects.Blood(point, session.tracerMaterial);
             if (gore != null && GetComponent<SpecialInfected>()?.Species != SpecialSpecies.Hound) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
-            if (variant != null && variant.kind == InfectedKind.Brute && !cutting && point.y - transform.position.y < 1.45f) amount *= .6f;
+            if (variant != null && variant.kind == InfectedKind.Brute && !cutting && !armorPiercing && point.y - transform.position.y < 1.45f) amount *= .6f;
             Damage(amount);
         }
 
@@ -180,6 +234,7 @@ namespace Zombtoy.Gameplay
             Mode = EnemyMode.Dead; controller.enabled = false;
             if (motion != null) motion.Stop();
             session.Kills++;
+            if (lastHitMelee) session.player?.Roster?.OnMeleeKill();
             if (ragdoll != null) ragdoll.Activate(lastImpulse.sqrMagnitude > 0 ? lastImpulse : transform.forward * -2, lastImpact.sqrMagnitude > 0 ? lastImpact : transform.position + Vector3.up, gore != null ? gore.Lost : Severed.None);
         }
 
@@ -193,7 +248,8 @@ namespace Zombtoy.Gameplay
             transform.position = position; health = Mathf.Clamp(value, 0, MaxHealth);
             controller.enabled = !IsDead;
             Mode = IsDead ? EnemyMode.Dead : EnemyMode.Patrol;
-            destination = position; alertedUntil = stateUntil = nextPath = 0;
+            destination = position; alertedUntil = stateUntil = nextPath = bleedUntil = burnUntil = 0;
+            knockbackVelocity = Vector3.zero;
             if (visual != null) visual.localRotation = IsDead && ragdoll == null ? Quaternion.Euler(-88, 0, 0) : Quaternion.identity;
             if (motion != null) { if (IsDead) motion.Stop(); else motion.SetMoving(false, 0); }
         }

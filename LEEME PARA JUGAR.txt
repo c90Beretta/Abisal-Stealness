@@ -1,4 +1,4 @@
-ABISAL 0.6 — PUERTO INDUSTRIAL 3D / ACABADO PS1
+ABISAL 0.7 / PRUEBA UNIFICADA — PUERTO INDUSTRIAL 3D / ACABADO PS1
 
 1. Haz doble clic en JUGAR ABISAL.cmd, en esta misma carpeta.
 2. Elige especialidad, arma y kit en el armario; pulsa Comenzar nivel o ENTER.
@@ -31,3 +31,8 @@ Los infectados caen con ragdoll fisico; los checkpoints conservan su pose.
 El inventario NO pausa: usa ESC si necesitas detener la partida.
 
 Primera integracion para pruebas; los otros niveles y el balance final siguen pendientes.
+
+INTEGRACION UNICA: cuatro personajes, seis armas de fuego, cuatro melee, enemigos especiales y tres sectores nuevos en Level01_Port.
+G golpe pesado, clic derecho bloqueo/parry, Alt/X esquiva, C cambia melee, T cambia municion.
+F3/F4 cambia personaje; F6/F7/F8 trasladan a los sectores sur/oeste/norte para probarlos.
+La reserva de municion sigue compartida. Personaje, municion y recursos de estaciones se guardan.

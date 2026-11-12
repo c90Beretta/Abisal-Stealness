@@ -87,7 +87,13 @@ namespace Zombtoy.Gameplay
                 ApplyTime();
             }
             if (!Running) return;
+            float serumBeforeTick = State.serum;
             State.Tick(Time.deltaTime, config);
+            if (player != null && player.Roster != null && player.Roster.Current.SerumDrainMultiplier < 1f && State.serum < serumBeforeTick)
+            {
+                float drained = serumBeforeTick - State.serum;
+                State.serum = Mathf.Min(100f, State.serum + drained * (1f - player.Roster.Current.SerumDrainMultiplier));
+            }
             if (actionLeft > 0)
             {
                 actionLeft -= Time.deltaTime;
@@ -95,8 +101,14 @@ namespace Zombtoy.Gameplay
                 {
                     float serumBefore = State.serum;
                     bool applied = action == "suero" ? State.Inject(config) : action == "botiquin" ? State.Heal() : State.Bandage();
+                    if (applied && action == "botiquin" && player != null && player.Roster != null && player.Roster.Current.HealBonus > 0)
+                    {
+                        State.health = Mathf.Min(100f, State.health + player.Roster.Current.HealBonus);
+                        if (player.Roster.Current.Id == SurvivorId.VanceMedic) State.bleeding = 0f;
+                    }
                     if (applied && action == "suero") Telemetry.Injection(serumBefore);
-                    if (applied) SetMessage(action == "suero" ? "Suero administrado." : action == "botiquin" ? "Vida recuperada: +40." : "Hemorragia detenida.");
+                    int healAmount = 40 + Mathf.RoundToInt(player != null && player.Roster != null ? player.Roster.Current.HealBonus : 0);
+                    if (applied) SetMessage(action == "suero" ? "Suero administrado." : action == "botiquin" ? $"Vida recuperada: +{healAmount}." : "Hemorragia detenida.");
                 }
             }
             if (reloadLeft > 0)
@@ -149,7 +161,12 @@ namespace Zombtoy.Gameplay
         public void Reload()
         {
             if (!Running || rounds >= 12 || reserve <= 0 || Busy) return;
-            reloadLeft = 1.5f; EmitNoise(player.transform.position, 4);
+            reloadLeft = player != null && player.Roster != null ? player.Roster.Current.ReloadSeconds : 1.5f;
+            EmitNoise(player.transform.position, 4);
+        }
+        public void GrantImmunity(float duration)
+        {
+            immuneUntil = Mathf.Max(immuneUntil, Time.time + duration);
         }
         public void BeginInjection() => BeginUse("suero", config.injectionSeconds);
         public void BeginHeal() => BeginUse("botiquin", 1.6f);
@@ -160,7 +177,8 @@ namespace Zombtoy.Gameplay
             if (State.InventoryLocked) { SetMessage("Mania: equipo bloqueado temporalmente."); return; }
             bool usable = item == "suero" ? State.doses > 0 : item == "botiquin" ? State.medkits > 0 && State.health < 100 : State.bandages > 0 && State.bleeding > 0;
             if (!usable) { SetMessage("No puedes usar " + item + " ahora."); return; }
-            action = item; actionDuration = actionLeft = duration;
+            float speedMult = player != null && player.Roster != null ? player.Roster.Current.ActionSpeedMultiplier : 1f;
+            action = item; actionDuration = actionLeft = duration / Mathf.Max(0.5f, speedMult);
             EmitNoise(player.transform.position, item == "suero" ? 7 : 3);
         }
         public void TakeDamage(float amount, bool wound = true)

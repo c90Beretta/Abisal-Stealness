@@ -13,10 +13,11 @@ namespace Zombtoy.Gameplay
     public sealed class PortSave
     {
         public int version = 3;
+        public SectorSnapshot expansion;
         public string level = "Level01_Port";
         public SurvivalState state;
         public Vector3 position;
-        public int rounds, reserve, kills, shots, hits, weapon;
+        public int rounds, reserve, kills, shots, hits, weapon, survivor, ammoGrade;
         public bool fuse, power, boarding, supplies;
         public EnemySave[] enemies;
         public PickupSave[] pickups;
@@ -37,6 +38,7 @@ namespace Zombtoy.Gameplay
                 var m = session.portMission;
                 var save = new PortSave
                 {
+                    expansion=session.GetComponent<PortMapExpander>()?.Capture(),
                     state = session.State,
                     position = session.player.transform.position,
                     rounds = session.rounds,
@@ -46,6 +48,8 @@ namespace Zombtoy.Gameplay
                     hits = session.Hits,
                     metrics = session.Telemetry?.Data,
                     weapon = session.player.GetComponent<WeaponLoadout>()?.Index ?? 0,
+                    ammoGrade=(int)(session.player.GetComponent<WeaponLoadout>()?.AmmoType ?? AmmoGrade.StandardFMJ),
+                    survivor = session.player.GetComponent<SurvivorRoster>()?.CurrentIndex ?? 0,
                     fuse = m.HasFuse,
                     power = m.PowerOn,
                     boarding = m.BoardingAuthorized,
@@ -81,7 +85,7 @@ namespace Zombtoy.Gameplay
                     !float.IsFinite(s.state.inventoryLockedUntil) || !float.IsFinite(s.state.tremorUntil) ||
                     (s.power && !s.fuse) || (s.boarding && !s.power) || s.pickups.Any(p => p == null || string.IsNullOrEmpty(p.id)) ||
                     s.rounds < 0 || s.rounds > 12 || s.reserve < 0 || s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
-                    s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 5 ||
+                    s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 5 || (s.expansion != null && !s.expansion.Valid) || s.survivor < 0 || s.survivor > 3 || s.ammoGrade < 0 || s.ammoGrade > 2 ||
                     s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 1000))) return false;
                 if (s.version >= 2 && (s.inventory == null || !s.inventory.Valid || s.loot == null || s.released == null || s.released.Length > 64 || s.waves < 0 || !Bounded(s.pressure, 0, 100) ||
                     s.loot.Any(l => l == null || string.IsNullOrEmpty(l.id) || l.stock == null || !l.stock.Valid) || s.loot.Select(l => l.id).Distinct().Count() != s.loot.Length ||
@@ -102,6 +106,9 @@ namespace Zombtoy.Gameplay
             if (loadout != null) loadout.Equip(save.weapon, true);
             var cc = session.player.GetComponent<CharacterController>();
             cc.enabled = false; session.player.transform.position = save.position; cc.enabled = true;
+            session.player.GetComponent<WeaponLoadout>()?.RestoreAmmo(save.ammoGrade);
+            session.player.GetComponent<SurvivorRoster>()?.ApplyCharacter(save.survivor, true);
+            session.GetComponent<PortMapExpander>()?.Restore(save.expansion);
             session.portMission.Restore(save.fuse, save.power, save.boarding, save.supplies);
             if (session.Night != null && save.inventory != null)
             {
