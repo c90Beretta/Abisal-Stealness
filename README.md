@@ -1,9 +1,13 @@
+Version actual: **[prueba unificada0.7](docs/UNIFIED_PLAYTEST.md)**.
+
 # Zombtoy — survival horror isométrico
 
 Proyecto Unity 6 / URP con **mundo 3D y cámara isométrica, acabado PS1 marcado**.
 Meta de producción: 4 niveles, economía de suero y munición e IA por percepción.
 Incluye una **primera versión jugable del puerto**
 y el sandbox técnico. El juego completo y sus KPI de producción siguen en desarrollo.
+
+Ampliacion0.6: [armeria, especialidades y enemigos especiales](docs/ARSENAL.md).
 
 ## Jugar sin abrir Unity
 
@@ -12,7 +16,7 @@ En esta copia de trabajo, haz doble clic en **JUGAR ABISAL.cmd** y pulsa
 El paquete Windows debe conservarse completo, incluida su carpeta Data.
 Consulta `LEEME PARA JUGAR.txt` para controles y recorrido. [Pruebas, capturas e identidad del ejecutable 0.5](docs/Validation/IndustrialPort/README.md).
 
-Para el equipo: [descarga Windows 0.5 industrial](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.5.0-industrial-playtest).
+Para el equipo: [descarga Windows 0.7 unificada](https://github.com/c90Beretta/Abisal-Stealness/releases/tag/v0.7.0-unified-playtest).
 Extrae el ZIP completo y abre `AbisalStealness.exe`; no requiere Unity instalado.
 
 ## Desarrollar en Unity

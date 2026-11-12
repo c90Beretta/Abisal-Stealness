@@ -40,7 +40,7 @@ namespace Zombtoy.Tests
             Assert.That(skin.sharedMaterials.Length, Is.EqualTo(6)); Assert.That(skin.sharedMaterials[5].GetTexture("_BaseMap"), Is.Not.Null);
             Assert.That(rag.bodies.All(b => b.body.isKinematic && !b.collider.enabled), Is.True);
             Assert.That(rag.bodies.Count(b => b.bone.GetComponent<ConfigurableJoint>() != null), Is.EqualTo(12));
-            Assert.That(session.Enemies.Select(v => v.definition).Distinct().Count(), Is.EqualTo(8), "Two data variants per archetype must occur in the level");
+            Assert.That(session.Enemies.Select(v => v.definition).Distinct().Count(), Is.EqualTo(11), "Eight baseline definitions plus three special encounter definitions");
             Assert.That(session.hudFont, Is.Not.Null); Assert.That(session.displayFont, Is.Not.Null);
         }
         [UnityTest]

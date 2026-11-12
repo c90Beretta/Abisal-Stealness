@@ -98,3 +98,7 @@ Preflight oculto rechazado por cero muestrasGPU; GTX1060 y cinco personas siguen
 pendientes. Fuentes/licencias/evidencia versionadas; prefab del usuario preservado.
 La interrupción por cuota impidió completar la ventana original de cinco horas;
 no se presenta tiempo inactivo como trabajo realizado.
+
+## 2026-11-12 / Arsenal y enemigos especiales
+
+Primera ampliacion0.6: especialidades del mismo soldado, armeria de seis clases con recursos compartidos y kits iniciales de una sola concesion. Perro procedural, hinchado y coloso sustituyen tres encuentros de forma determinista. Corte con impacto retrasado, combo y empujon de aturdimiento; capa de brazos y audio sintetizado espacial/ventilacion. Ver ARSENAL.md para limites concretos de modelos, equipo y habilidades. La revision de interfaz pidio seleccion persistente y beneficios explicitos; el primer lote cerro beneficios y el segundo añade marcador textual y foco separado. Pruebas y compilacion finales se registran en Validation/Arsenal. No certifica balance, audio final ni GTX1060.

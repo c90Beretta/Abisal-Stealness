@@ -12,7 +12,7 @@ namespace Zombtoy.Gameplay
         private SandboxSession session;
         private Font font;
         private RectTransform root, gameplay, menu, help, equipment;
-        private Text health, serum, ammo, weaponTitle, inventory, objective, prompt, message, action, heading, subtitle, stats, objectiveMarker;
+        private Text health, serum, ammo, weaponTitle, inventory, objective, prompt, message, action, heading, subtitle, stats, objectiveMarker, hordeBanner;
         private Image healthFill, serumFill, actionFill, damage;
         private Button primary, secondary, controls, exit;
         private Text primaryLabel, secondaryLabel;
@@ -24,6 +24,7 @@ namespace Zombtoy.Gameplay
         private static readonly Color Green = new Color(.88f, .82f, .64f);
         private static readonly Color Muted = new Color(.76f, .74f, .66f);
         private Sprite whiteSprite;
+        public bool ShowingHelp => showingHelp;
         public bool BlocksCombat => showingHelp || showingEquipment || session.Mode != SessionMode.Playing;
 
         public void Setup(SandboxSession value)
@@ -47,26 +48,27 @@ namespace Zombtoy.Gameplay
             if (session.damageVignetteMaterial != null) damage.material = session.damageVignetteMaterial;
             gameplay = Node("Mission HUD", root); Stretch(gameplay);
             var top = Panel("Mission strip", gameplay, new Color(.02f, .018f, .015f, .65f), new Vector2(0, 1), new Vector2(0, 1));
-            Place(top.rectTransform, 26, -22, 510, 52);
-            objective = Label(top.transform, "", 22, Green, 14, -9, 480, 40);
-            Label(gameplay, "ESC  PAUSA / F1  AYUDA / F2  EFECTOS", 16, Muted, -310, -25, 285, 25, true);
+            Place(top.rectTransform, 26, -22, 540, 68);
+            objective = Label(top.transform, "", 20, Green, 14, -7, 515, 30);
+            hordeBanner = Label(top.transform, "", 15, Muted, 14, -39, 515, 24);
+            Label(gameplay, "ESC PAUSA / F1 AYUDA / F3-F4 PERSONAJE / N HORDA", 15, Muted, -390, -25, 365, 25, true);
             var vital = Panel("Vital signs", gameplay, new Color(.025f, .023f, .019f, .78f), Vector2.zero, Vector2.zero);
-            Place(vital.rectTransform, 26, 150, 276, 122, false);
-            health = Label(vital.transform, "VIDA", 20, Color.white, 14, -9, 250, 24);
-            healthFill = Bar(vital.transform, 14, -37, 246, 4, Green);
-            serum = Label(vital.transform, "SUERO", 17, Muted, 14, -47, 250, 22);
-            serumFill = Bar(vital.transform, 14, -72, 246, 3, Green);
-            nightStatus = Label(vital.transform, "", 16, Muted, 14, -84, 250, 34);
+            Place(vital.rectTransform, 26, 150, 290, 126, false);
+            health = Label(vital.transform, "VIDA", 20, Color.white, 14, -9, 264, 24);
+            healthFill = Bar(vital.transform, 14, -37, 256, 4, Green);
+            serum = Label(vital.transform, "SUERO", 17, Muted, 14, -47, 264, 22);
+            serumFill = Bar(vital.transform, 14, -72, 256, 3, Green);
+            nightStatus = Label(vital.transform, "", 15, Muted, 14, -82, 264, 38);
             var weapon = Panel("Weapon and equipment", gameplay, new Color(.025f, .023f, .019f, .78f), new Vector2(1, 0), new Vector2(1, 0));
-            Place(weapon.rectTransform, -224, 150, 198, 122, false);
-            weaponTitle = Label(weapon.transform, "", 18, Green, 16, -9, 170, 24);
-            ammo = Label(weapon.transform, "", 42, Color.white, 16, -32, 175, 52);
-            inventory = Label(weapon.transform, "", 15, Muted, 16, -91, 170, 23);
+            Place(weapon.rectTransform, -256, 150, 230, 126, false);
+            weaponTitle = Label(weapon.transform, "", 17, Green, 14, -8, 204, 24);
+            ammo = Label(weapon.transform, "", 40, Color.white, 14, -30, 204, 50);
+            inventory = Label(weapon.transform, "", 14, Muted, 14, -84, 204, 36);
             prompt = Label(gameplay, "", 23, Green, 0, 119, 650, 32, false, true);
-            message = Label(gameplay, "", 19, Color.white, 0, 72, 560, 45, false, true);
+            message = Label(gameplay, "", 19, Color.white, 0, 72, 620, 45, false, true);
             action = Label(gameplay, "", 20, Green, 0, 211, 430, 30, false, true);
             actionFill = Bar(gameplay, 0, 202, 290, 4, Green, true);
-            Label(gameplay, "E  INTERACTUAR     TAB  MOCHILA     F  LINTERNA", 15, Muted, 0, 25, 600, 24, false, true);
+            Label(gameplay, "E INTERACTUAR · TAB MOCHILA · ESPACIO COMBO · G PESADO · CLIC DER PARRY · ALT ESQUIVA", 14, Muted, 0, 25, 760, 24, false, true);
             var markerBack = Panel("Objective marker", gameplay, Ink, Vector2.one * .5f, Vector2.one * .5f);
             markerBack.rectTransform.sizeDelta = new Vector2(164, 27);
             objectiveMarker = Label(markerBack.transform, "", 17, Green, 8, -3, 150, 24);
@@ -90,7 +92,7 @@ namespace Zombtoy.Gameplay
             var helpCard = Panel("Controls card", help, Ink, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
             helpCard.rectTransform.sizeDelta = new Vector2(860, 580); helpCard.rectTransform.pivot = Vector2.one * 0.5f;
             Label(helpCard.transform, "CONTROLES / SUPERVIVENCIA", 26, Green, 30, -24, 800, 45);
-            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr (produce mas ruido)\nRATON  Apuntar     CLIC IZQUIERDO  Disparar\n1 / 2 / 3  Cambiar arma     RUEDA  Zoom\nESPACIO  Cuchillo / hacha (consume resistencia)     R  Recargar\nE  Interactuar / abrir botin     TAB  Mochila y equipo\nH  Botiquin (+40 vida)     B  Venda (detiene hemorragia)\nQ  Suero     F  Linterna (pilas y oxigeno en TAB)\nESC  Pausa     F1  Esta ayuda     F2  Reducir efectos\nF5  Guardar lejos de enemigos     F9  Recuperar checkpoint\n\nLos infectados oyen disparos y pasos. Su ataque tiene una\npreparacion: alejate antes del golpe. Curarte lleva tiempo\ny recibir un golpe interrumpe el tratamiento.\nMascara + O2 protegen de la fuga toxica del generador.\n\nRuta: ALMACEN 03 > GENERADOR > CONTROL > SUBMARINO.\nEl generador guarda automaticamente tu progreso.", 20, Color.white, 30, -88, 800, 414);
+            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr     ALT / X  Esquiva tactica\nRATON  Apuntar     CLIC IZQ  Disparar     CLIC DER  Bloqueo / Parry\n1-6  Armas de fuego     T  Tipo de municion (FMJ / HP+ / AP-I)\nESPACIO  Combo cuerpo a cuerpo     G  Golpe pesado     C  Cambiar arma blanca\nV  Empujon     F3 / F4  Cambiar entre los 4 especialistas     N  Llamar horda\nE  Interactuar / estaciones / botin     TAB  Mochila y arsenal\nH  Botiquin     B  Venda     Q  Suero     F  Linterna\nF5  Guardar checkpoint     F9  Cargar checkpoint\n\nSectores expandidos: Helipuerto Sur (Suministros de Horda y Armeria),\nAla Oeste de Bio-Cuarentena (Bio-Sintesis) y Subestacion Norte (Pilono Tesla).", 19, Color.white, 30, -84, 800, 418);
             Button(helpCard.transform, "Cerrar ayuda / F1", 30, -510, ToggleHelp, out _);
             help.gameObject.SetActive(false);
             equipment = Node("Equipment", root); Stretch(equipment);
@@ -137,15 +139,20 @@ namespace Zombtoy.Gameplay
             serumFill.fillAmount = state.serum / 100;
             var loadout = session.player.GetComponent<WeaponLoadout>();
             string weaponName = loadout != null && loadout.Current != null ? loadout.Current.displayName : "Pistola";
-            weaponTitle.text = weaponName;
+            string ammoTag = loadout != null ? loadout.AmmoLabel : "FMJ";
+            weaponTitle.text = $"{weaponName} [{ammoTag}]";
             ammo.text = $"{session.rounds:00} <size=23>/ {session.reserve:000}</size>";
-            inventory.text = "R RECARGAR / 1 2 3 ARMAS";
+            inventory.text = $"[C] {session.player.CurrentMeleeName}\n[T] Municion · [1-6] Armas";
             equipmentText.text = $"Botiquines: {state.medkits}    Vendas: {state.bandages}    Suero: {state.doses}\nMunicion: {session.rounds} en arma / {session.reserve} en reserva\nRepuesto: {(session.portMission != null && session.portMission.HasFuse ? "recogido" : "pendiente")}\nEste panel no pausa la partida.";
             if (session.Night != null)
             {
                 var n = session.Night; var b = n.Inventory;
-                nightStatus.text = $"O2 {b.air:0}% / LUZ {(n.LampLit ? b.battery.ToString("0") + "%" : "OFF")} / RES {b.stamina:0}%\n{(n.InGas ? "FUGA TOXICA / MASCARA" : n.NoiseRadius > 7 ? "RUIDO ALTO / " + n.NoiseRadius.ToString("0") + " m" : "")}";
+                string charName = session.player.Roster != null ? session.player.Roster.Current.CodeName : "Operador";
+                nightStatus.text = $"{charName}\nO2 {b.air:0}% · LUZ {(n.LampLit ? b.battery.ToString("0") + "%" : "OFF")} · RES {b.stamina:0}%{(n.InGas ? " · FUGA" : "")}";
+                if (hordeBanner != null && n.hordes != null)
+                    hordeBanner.text = n.hordes.StatusHudText;
             }
+            else if (hordeBanner != null) hordeBanner.text = "";
             objective.text = session.portMission != null ? session.portMission.Objective : "Activa la terminal y alcanza la extraccion.";
             var pickup = session.NearestPickup();
             var loot = session.Night != null ? session.Night.NearestLoot() : null;

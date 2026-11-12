@@ -52,9 +52,11 @@ namespace Zombtoy.Gameplay
             if (breath != null) breath.mute = !session.Running || !Inventory.maskOn || Inventory.air <= 0;
             if (!session.Running) return;
             var bag = Inventory;
-            if (LampLit) bag.battery = Mathf.Max(0, bag.battery - Time.deltaTime * .065f);
-            if (bag.maskOn && bag.air > 0) bag.air = Mathf.Max(0, bag.air - Time.deltaTime * (InGas ? .4f : .025f));
-            bag.stamina = Mathf.Min(100, bag.stamina + Time.deltaTime * 13);
+            float drainMult = session.player != null && session.player.Roster != null ? session.player.Roster.Current.UtilityDrainMultiplier : 1f;
+            float staminaMult = session.player != null && session.player.Roster != null ? session.player.Roster.Current.StaminaRegenMultiplier : 1f;
+            if (LampLit) bag.battery = Mathf.Max(0, bag.battery - Time.deltaTime * .065f * drainMult);
+            if (bag.maskOn && bag.air > 0) bag.air = Mathf.Max(0, bag.air - Time.deltaTime * (InGas ? .4f : .025f) * drainMult);
+            bag.stamina = Mathf.Min(100, bag.stamina + Time.deltaTime * 13 * staminaMult);
             if (InGas && (!bag.maskOn || bag.air <= 0) && Time.time >= nextGasDamage)
             { nextGasDamage = Time.time + 2; session.TakeDamage(6, false); session.SetMessage("Fuga toxica: activa la mascara o abandona el generador."); }
             if (Time.time >= noiseUntil) NoiseRadius = Mathf.MoveTowards(NoiseRadius, 0, Time.deltaTime * 7);
@@ -112,7 +114,8 @@ namespace Zombtoy.Gameplay
         public float Absorb(float damage)
         {
             if (!Inventory.armorOn || Inventory.armor <= 0) return damage;
-            float absorbed = Mathf.Min(Inventory.armor, damage * .35f); Inventory.armor -= absorbed; return damage - absorbed;
+            float ratio = session.player != null && session.player.Roster != null ? session.player.Roster.Current.ArmorAbsorption : .35f;
+            float absorbed = Mathf.Min(Inventory.armor, damage * ratio); Inventory.armor -= absorbed; return damage - absorbed;
         }
         private void OnDestroy() { if (ring != null) Destroy(ring.gameObject); if (pulse != null) Destroy(pulse.gameObject); }
     }

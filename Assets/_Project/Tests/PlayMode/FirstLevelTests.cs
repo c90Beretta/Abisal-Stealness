@@ -124,7 +124,7 @@ namespace Zombtoy.Tests
             session.Hud.ClosePanels();
             var hudCanvas = session.Hud.GetComponentInChildren<Canvas>(); hudCanvas.gameObject.SetActive(false);
             float size = session.player.view.orthographicSize; session.player.view.orthographicSize = 2.4f;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {
                 session.player.GetComponent<WeaponLoadout>().Equip(i); yield return null;
                 yield return Capture(session, "weapon-" + i + ".png");
@@ -138,9 +138,9 @@ namespace Zombtoy.Tests
             Assert.That(session.player.view.targetTexture, Is.Null);
             Assert.That(Object.FindObjectsByType<RawImage>().Length, Is.Zero, "No low-res world presentation layer");
             var loadout = session.player.GetComponent<WeaponLoadout>();
-            Assert.That(loadout.weapons.Length, Is.EqualTo(3));
+            Assert.That(loadout.weapons.Length, Is.EqualTo(6));
             int total = session.rounds + session.reserve;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {
                 Assert.That(loadout.Equip(i), Is.True); yield return null;
                 Assert.That(loadout.Current.visualPrefab, Is.Not.Null); Assert.That(loadout.Muzzle, Is.Not.Null);
@@ -161,7 +161,7 @@ namespace Zombtoy.Tests
             Move(session.player.transform, position);
             var debris = GameObject.CreatePrimitive(PrimitiveType.Sphere); debris.name = "Cosmetic fragment"; debris.layer = 2;
             debris.transform.position = position + Vector3.up * 1.1f + Vector3.forward; debris.transform.localScale = Vector3.one * .5f; Physics.SyncTransforms();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {
                 loadout.Equip(i); session.player.transform.forward = Vector3.forward;
                 enemy.Restore(enemy.MaxHealth, position + Vector3.forward * 1.6f); Physics.SyncTransforms();
