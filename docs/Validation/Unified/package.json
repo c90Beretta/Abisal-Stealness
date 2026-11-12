@@ -1,0 +1,10 @@
+{
+  "file": "Abisal-Stealness-Windows-0.7.0-unified-playtest.zip",
+  "bytes": 118089374,
+  "sha256": "509d68a6ba3789231aba7dcc8a2f5ea75947233e16124f4494dec07c6045dddd",
+  "sourceCommit": "76379d38f07c9be47f6874d8789b668d9fdf62d0",
+  "parallelChangesIncluded": true,
+  "primaryExecutableUpdated": true,
+  "priorSharedSourcesBackedUp": true,
+  "unreferencedLocalHelperPreserved": "IndustrialPropFactory.cs"
+}

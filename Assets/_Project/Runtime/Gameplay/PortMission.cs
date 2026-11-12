@@ -35,7 +35,8 @@ namespace Zombtoy.Gameplay
         {
             if (!session.Running) return;
             Transform nearby = NearestReachable();
-            Prompt = nearby == null ? string.Empty : "[E] " + Action(nearby);
+            string expandedPrompt = nearby == null ? session.GetComponent<PortMapExpander>()?.GetNearbyPrompt() : string.Empty;
+            Prompt = nearby != null ? "[E] " + Action(nearby) : !string.IsNullOrEmpty(expandedPrompt) ? expandedPrompt : string.Empty;
             if (session.player.transform.position.y < -3f)
             {
                 var controller = session.player.GetComponent<CharacterController>();
@@ -50,16 +51,21 @@ namespace Zombtoy.Gameplay
         public void Interact()
         {
             Transform target = NearestReachable();
-            if (target == null) return;
+            if (target == null)
+            {
+                session.GetComponent<PortMapExpander>()?.TryInteract();
+                return;
+            }
             if (target == fuse)
             {
                 HasFuse = true;
                 fuse.gameObject.SetActive(false);
                 session.SetMessage("Repuesto recogido. Llevalo al generador del patio norte.");
+                session.Night?.hordes?.TriggerAlarmHorde("¡Alarma en Almacen 03! Repuesto recogido: horda en movimiento.", fuse.position, false);
             }
             else if (target == supplies)
             {
-                if (session.Night != null && (session.Night.Inventory.Weight(session) + .416f > FieldInventory.Capacity || session.reserve + 12 > 240 || session.State.doses >= 8))
+                if (session.Night != null && (session.Night.Inventory.Weight(session) + .416f > session.Night.Inventory.MaxCapacity(session) || session.reserve + 12 > 240 || session.State.doses >= 8))
                 { session.SetMessage("Mochila llena. Usa suministros para recoger esta caja."); return; }
                 SuppliesTaken = true;
                 session.Telemetry?.Loot(12, 1);
@@ -78,6 +84,7 @@ namespace Zombtoy.Gameplay
                     session.EmitNoise(generator.position, 20);
                     session.SetMessage("Energia restablecida. La sala de control esta abierta.");
                     session.SaveCheckpoint(true);
+                    session.Night?.hordes?.TriggerAlarmHorde("¡Turbina del generador activa! Oleada atraida por el arranque.", generator.position, false);
                 }
             }
             else if (target == session.terminal)
@@ -89,6 +96,7 @@ namespace Zombtoy.Gameplay
                     boardingGate.SetActive(false);
                     session.EmitNoise(session.terminal.position, 14);
                     session.SetMessage("Embarque autorizado. Ve al muelle este, junto al submarino.");
+                    session.Night?.hordes?.TriggerAlarmHorde("¡ALARMA DE EMBARQUE! Oleada final y Coloso Abisal en el muelle.", session.terminal.position, true);
                 }
             }
             else if (target == session.extraction)

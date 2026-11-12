@@ -70,7 +70,7 @@ namespace Zombtoy.Tests
         [UnityTest] public IEnumerator SeveredLegsSlowEnemiesAndHeadKillsOnlyOnce()
         {
             yield return Load(); session.Night.hordes.enabled = false;
-            var enemy = session.Enemies.First(e => e.GetComponent<InfectedVariant>().kind == InfectedKind.Walker);
+            var enemy = session.Enemies.First(e => e.GetComponent<InfectedVariant>().kind == InfectedKind.Walker && e.GetComponent<SpecialInfected>() == null);
             enemy.gameObject.SetActive(true); Move(enemy.transform, session.player.transform.position + Vector3.forward * 3);
             var gore = enemy.GetComponent<Dismemberment>(); var skin = enemy.GetComponentInChildren<SkinnedMeshRenderer>(); int triangles = skin.sharedMesh.triangles.Length;
             Assert.That(gore.Sever(Severed.LeftLeg), Is.True); Assert.That(gore.Sever(Severed.LeftLeg), Is.False);
@@ -106,8 +106,10 @@ namespace Zombtoy.Tests
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube); wall.transform.position = player.transform.position + Vector3.forward * .65f + Vector3.up;
             wall.transform.localScale = new Vector3(2, 3, .1f); Physics.SyncTransforms();
             Assert.That(player.TryMelee(), Is.True); Assert.That(enemy.health, Is.EqualTo(health)); Assert.That(session.Night.Inventory.stamina, Is.EqualTo(84).Within(.1f));
+            yield return new WaitForSeconds(.2f); Assert.That(enemy.health, Is.EqualTo(health), "Wall blocks impact, including delayed damage");
             Object.Destroy(wall); yield return new WaitForSeconds(.7f); player.transform.forward = Vector3.forward;
-            Move(enemy.transform, player.transform.position + Vector3.forward * 1.3f); Assert.That(player.TryMelee(), Is.True); Assert.That(enemy.health, Is.LessThan(health));
+            Move(enemy.transform, player.transform.position + Vector3.forward * 1.3f); Assert.That(player.TryMelee(), Is.True); Assert.That(enemy.health, Is.EqualTo(health), "Windup cannot deal instant damage");
+            yield return new WaitForSeconds(.2f); Assert.That(enemy.health, Is.LessThan(health));
             Assert.That(player.TryMelee(), Is.False, "Cannot bypass swing cooldown");
         }
         [UnityTest] public IEnumerator ArmorAndOxygenHaveGameplayConsequences()

@@ -21,8 +21,9 @@ namespace Zombtoy.Gameplay
         public float battery = 100, air = 100, armor = 100, stamina = 100;
         public bool lampOn = true, maskOn = true, armorOn = true;
         public const float Capacity = 24;
+        public float MaxCapacity(SandboxSession s) => Capacity + (s != null && s.player != null && s.player.Roster != null ? s.player.Roster.Current.ExtraCapacityKg : 0f);
         public float Weight(SandboxSession s) => s.reserve * .018f + s.State.medkits * .8f + s.State.bandages * .15f + s.State.doses * .2f + cells * .25f + oxygen * 1.2f + plates * 1.5f + 7;
-        public bool Valid => cells >= 0 && cells <= 20 && oxygen >= 0 && oxygen <= 20 && plates >= 0 && plates <= 20 && melee >= 0 && melee <= 1 &&
+        public bool Valid => cells >= 0 && cells <= 20 && oxygen >= 0 && oxygen <= 20 && plates >= 0 && plates <= 20 && melee >= 0 && melee <= 3 &&
             Bounded(battery) && Bounded(air) && Bounded(armor) && Bounded(stamina);
         private static bool Bounded(float f) => float.IsFinite(f) && f >= 0 && f <= 100;
         // Transfer each stack only up to weight and stack limits. Leftovers stay in the container.
@@ -42,7 +43,8 @@ namespace Zombtoy.Gameplay
         }
         private int Move(SandboxSession s, ref int source, ref int target, float weight, int limit)
         {
-            int n = Mathf.Max(0, Mathf.Min(source, limit - target, Mathf.FloorToInt((Capacity - Weight(s) + .0001f) / weight)));
+            float maxCap = MaxCapacity(s);
+            int n = Mathf.Max(0, Mathf.Min(source, limit - target, Mathf.FloorToInt((maxCap - Weight(s) + .0001f) / weight)));
             source -= n; target += n; return n;
         }
     }

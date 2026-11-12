@@ -52,6 +52,21 @@ namespace Zombtoy.Gameplay
             line.startColor = line.endColor = new Color(.8f, .75f, .61f, .35f); line.positionCount = 13;
             for (int i = 0; i < 13; i++) line.SetPosition(i, player.position + Vector3.up * .95f + Quaternion.AngleAxis(-55 + i * 9, Vector3.up) * player.forward * 1.4f);
         }
+        public static void HeavySwing(Transform player, Material material, float radius = 2.0f)
+        {
+            var line = Track(new GameObject("Heavy melee shockwave"), .24f).AddComponent<LineRenderer>(); line.sharedMaterial = material; line.startWidth = .09f; line.endWidth = .02f;
+            line.startColor = line.endColor = new Color(.98f, .62f, .22f, .65f); line.positionCount = 19;
+            for (int i = 0; i < 19; i++) line.SetPosition(i, player.position + Vector3.up * .92f + Quaternion.AngleAxis(-90 + i * 10, Vector3.up) * player.forward * radius);
+            Burst("Heavy sparks", player.position + Vector3.up * .9f + player.forward * 1.3f, player.forward, new Color(3.2f, 1.8f, .45f, .9f), 8, .04f, 3.4f, .25f, .1f);
+            player.GetComponent<SandboxPlayer>()?.view?.GetComponent<CameraTrauma>()?.Add(.11f);
+        }
+        public static void ParryBurst(Vector3 point, Material material)
+        {
+            Burst("Parry sparks", point, Vector3.up, new Color(3.5f, 2.8f, .8f, .95f), 10, .045f, 3.6f, .24f, .15f);
+            var ring = Track(new GameObject("Parry shock ring"), .18f).AddComponent<LineRenderer>(); ring.sharedMaterial = material; ring.startWidth = ring.endWidth = .05f;
+            ring.startColor = ring.endColor = new Color(.95f, .88f, .45f, .7f); ring.positionCount = 17;
+            for (int i = 0; i < 17; i++) { float a = i * Mathf.PI * 2 / 16; ring.SetPosition(i, point + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 1.15f); }
+        }
         private static void Burst(string label, Vector3 point, Vector3 direction, Color color, int count, float size, float speed, float lifetime, float gravity)
         {
             if (art == null || art.particles == null) return;
