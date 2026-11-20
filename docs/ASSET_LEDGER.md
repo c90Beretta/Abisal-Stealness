@@ -74,3 +74,7 @@ procedencia adyacente. Se integran como texturas3D, no como mockup del juego.
 **FONT-05:** Barlow Condensed Medium / Crimson Text SemiBold, archivos oficiales
 de Google Fonts bajo SIL OFL1.1; cuatro archivos fuente/licencia con SHA256 y
 URL exactos en `font-install-manifest.json`. Los OFL acompañan el binario.
+
+## Integracion unificada0.7
+
+ModelUpgradeBuilder y SurvivorRoster aportan geometria procedural original para seis armas de fuego, cuatro melee, accesorios/aspectos de cuatro perfiles y detalles de infectados. PortMapExpander crea cubiertas, mobiliario y estaciones de tres sectores. Son fuentes C# propias, sin importar modelos/audio de Left4Dead ni nuevos paquetes externos. Comparten el rig de base y requieren valoracion artistica humana. Se conservan las licencias y procedencias anteriores.
