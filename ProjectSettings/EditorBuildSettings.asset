@@ -12,4 +12,5 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/MVP_Sandbox.unity
     guid: d2ccc6fd2b04df047852f2a32f36975e
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: eef6c213e900450408b35bd5e39c83fd, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
