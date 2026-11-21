@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace Zombtoy.Gameplay
 {
@@ -43,13 +46,19 @@ namespace Zombtoy.Gameplay
             new Vector3(4f, 0.1f, 36f)
         };
 
+        public const string MapRootName = "Port_Expanded_Sectors";
+
         public GameMapId CurrentMap { get; private set; } = GameMapId.PortCargo;
 
         private SandboxSession session;
         private Transform root;
+        private GameObject basePortEnv;
+        private NavMeshSurface basePortNavSurface;
+        private NavMeshSurface dynamicMapNavSurface;
         private Material concreteMat, darkMat, tealMat, rustMat, yellowMat, whiteMat, greenMat, redMat, waterMat;
         private readonly Dictionary<string, GameObject> propTemplates = new Dictionary<string, GameObject>();
-        private readonly List<Renderer> basePortOutdoorRenderers = new List<Renderer>();
+        private readonly List<(GameObject go, bool initialActive)> basePortChildren = new List<(GameObject, bool)>();
+        private readonly List<GameObject> perimeterWalls = new List<GameObject>();
 
         private Transform supplyDropPod;
         private Light supplyDropBeacon;
@@ -72,34 +81,39 @@ namespace Zombtoy.Gameplay
 
         public void Initialize(SandboxSession value, GameMapId mapId = GameMapId.PortCargo)
         {
-            session = value;
+            session = value != null ? value : (GetComponent<SandboxSession>() ?? FindAnyObjectByType<SandboxSession>());
             if (session == null || session.portMission == null) return;
-            CacheSceneMaterialsAndTemplates();
+            EnsureCached();
             BuildMap(mapId, false);
         }
 
         public void BuildMap(GameMapId mapId, bool announceAndResetPlayer = false)
         {
+            if (session == null) session = GetComponent<SandboxSession>() ?? FindAnyObjectByType<SandboxSession>();
             if (session == null || session.portMission == null) return;
+
+            EnsureCached();
             CurrentMap = mapId;
             animatedWaterRipples.Clear();
+            supplyDropPod = null;
+            supplyDropBeacon = null;
+            southArmoryStation = null;
+            westBioStation = null;
+            northTurretStation = null;
+            turretLight = null;
 
-            var existing = GameObject.Find("Port_Expanded_Sectors");
-            if (existing != null)
-            {
-                if (Application.isPlaying) Destroy(existing);
-                else DestroyImmediate(existing);
-            }
+            DestroyAllExistingMapRoots();
 
-            var env = GameObject.Find("Port_Environment");
-            root = new GameObject("Port_Expanded_Sectors").transform;
-            if (env != null) root.SetParent(env.transform, false);
+            // Toggle ALL base Port_Environment_3D children + stray root port bulkheads cleanly
+            SetBasePortActive(mapId == GameMapId.PortCargo);
+            Physics.SyncTransforms();
 
-            OpenPerimeterPassages();
-            SetBasePortOutdoorVisible(mapId == GameMapId.PortCargo);
+            // Keep Port_Expanded_Sectors at scene root so it is never entangled with Port_Environment_3D
+            root = new GameObject(MapRootName).transform;
 
             if (mapId == GameMapId.PortCargo)
             {
+                OpenPerimeterPassages();
                 session.missionTitle = "ABISAL / 01 - PUERTO CARGUERO";
                 PopulateMainPortDeckWithDenseProps();
                 BuildSouthHelipadAndContainerMaze();
@@ -118,9 +132,72 @@ namespace Zombtoy.Gameplay
                 BuildAbyssalWaterCaveMap();
             }
 
+            Physics.SyncTransforms();
+            UpdateNavigationForActiveMap(mapId);
+
             if (announceAndResetPlayer && session.player != null)
             {
                 TeleportPlayer(session.portMission.arrival.position, MapTitles[(int)mapId]);
+            }
+        }
+
+        private void UpdateNavigationForActiveMap(GameMapId mapId)
+        {
+            if (basePortNavSurface == null && basePortEnv != null)
+                basePortNavSurface = basePortEnv.GetComponent<NavMeshSurface>();
+
+            if (mapId == GameMapId.PortCargo)
+            {
+                if (dynamicMapNavSurface != null)
+                {
+                    dynamicMapNavSurface.RemoveData();
+                    dynamicMapNavSurface = null;
+                }
+                if (basePortNavSurface != null && !basePortNavSurface.enabled)
+                    basePortNavSurface.enabled = true;
+                return;
+            }
+
+            if (basePortNavSurface != null)
+                basePortNavSurface.enabled = false;
+
+            if (root != null)
+            {
+                dynamicMapNavSurface = root.gameObject.AddComponent<NavMeshSurface>();
+                dynamicMapNavSurface.collectObjects = CollectObjects.Children;
+                dynamicMapNavSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+                dynamicMapNavSurface.BuildNavMesh();
+            }
+        }
+
+        private void DestroyAllExistingMapRoots()
+        {
+            if (dynamicMapNavSurface != null)
+            {
+                dynamicMapNavSurface.RemoveData();
+                dynamicMapNavSurface = null;
+            }
+
+            var toDestroy = new List<GameObject>();
+            if (root != null) toDestroy.Add(root.gameObject);
+            foreach (var t in FindObjectsByType<Transform>(FindObjectsInactive.Include))
+            {
+                if (t != null && (t.name == MapRootName || t.name == "__Disposed_Map_Root") && !toDestroy.Contains(t.gameObject))
+                    toDestroy.Add(t.gameObject);
+            }
+            root = null;
+            foreach (var go in toDestroy)
+            {
+                if (go == null) continue;
+                var nav = go.GetComponent<NavMeshSurface>();
+                if (nav != null) nav.RemoveData();
+                // Immediately disable every collider AND deactivate BEFORE Destroy so zero ghost colliders remain
+                foreach (var col in go.GetComponentsInChildren<Collider>(true))
+                    if (col != null) col.enabled = false;
+                go.SetActive(false);
+                go.name = "__Disposed_Map_Root";
+                if (Application.isPlaying) Destroy(go);
+                else DestroyImmediate(go);
             }
         }
 
@@ -763,24 +840,85 @@ namespace Zombtoy.Gameplay
             WorldLabel(title, pos + Vector3.up * 3.7f, greenMat, false);
         }
 
-        private void SetBasePortOutdoorVisible(bool visible)
+        private void EnsureCached()
         {
-            if (basePortOutdoorRenderers.Count == 0)
+            if (basePortEnv == null)
+                basePortEnv = GameObject.Find("Port_Environment_3D") ?? GameObject.Find("Port_Environment");
+
+            if (basePortChildren.Count == 0)
             {
-                var env = GameObject.Find("Port_Environment");
-                if (env != null)
+                if (basePortEnv != null)
                 {
-                    foreach (var r in env.GetComponentsInChildren<Renderer>(true))
+                    for (int i = 0; i < basePortEnv.transform.childCount; i++)
                     {
-                        if (r == null || r.transform.IsChildOf(root)) continue;
-                        string n = r.gameObject.name;
-                        if (n.StartsWith("Crane") || n.StartsWith("Container") || n.StartsWith("Corrugation") || n.StartsWith("Mooring"))
-                            basePortOutdoorRenderers.Add(r);
+                        var child = basePortEnv.transform.GetChild(i).gameObject;
+                        if (child.name == MapRootName || child.name == "__Disposed_Map_Root") continue;
+                        basePortChildren.Add((child, child.activeSelf));
+                    }
+                }
+
+                // Also catch stray port-only static structures saved at scene root (e.g. BulkHead(Clone), Industrial / BulkHead)
+                var scene = SceneManager.GetActiveScene();
+                if (scene.IsValid())
+                {
+                    foreach (var rootGo in scene.GetRootGameObjects())
+                    {
+                        if (rootGo == null || rootGo == basePortEnv) continue;
+                        string n = rootGo.name;
+                        if (n.StartsWith("BulkHead") || n.StartsWith("Industrial /"))
+                            basePortChildren.Add((rootGo, rootGo.activeSelf));
                     }
                 }
             }
-            foreach (var r in basePortOutdoorRenderers)
-                if (r != null) r.enabled = visible;
+
+            if (perimeterWalls.Count == 0)
+            {
+                foreach (var t in FindObjectsByType<Transform>(FindObjectsInactive.Include))
+                {
+                    if (t == null) continue;
+                    string n = t.name;
+                    if (n == "South perimeter rebuilt" || n == "South perimeter" ||
+                        n == "West perimeter rebuilt" || n == "West perimeter" ||
+                        n == "North perimeter rebuilt" || n == "North perimeter")
+                    {
+                        perimeterWalls.Add(t.gameObject);
+                    }
+                }
+            }
+
+            if (concreteMat == null)
+                CacheSceneMaterialsAndTemplates();
+        }
+
+        private void SetBasePortActive(bool active)
+        {
+            bool anyInitiallyActive = false;
+            for (int i = 0; i < basePortChildren.Count; i++)
+                if (basePortChildren[i].initialActive) { anyInitiallyActive = true; break; }
+
+            if (basePortEnv != null)
+            {
+                foreach (var c in basePortEnv.GetComponents<Collider>())
+                    if (c != null) c.enabled = active;
+            }
+
+            for (int i = 0; i < basePortChildren.Count; i++)
+            {
+                var (go, initialActive) = basePortChildren[i];
+                if (go == null) continue;
+                bool shouldBeActive = active && (anyInitiallyActive ? initialActive : true);
+                if (!shouldBeActive)
+                {
+                    foreach (var c in go.GetComponentsInChildren<Collider>(true))
+                        if (c != null) c.enabled = false;
+                }
+                go.SetActive(shouldBeActive);
+                if (shouldBeActive)
+                {
+                    foreach (var c in go.GetComponentsInChildren<Collider>(true))
+                        if (c != null) c.enabled = true;
+                }
+            }
         }
 
         private void CacheSceneMaterialsAndTemplates()
@@ -797,7 +935,8 @@ namespace Zombtoy.Gameplay
 
             foreach (var t in FindObjectsByType<Transform>(FindObjectsInactive.Include))
             {
-                if (t == null) continue;
+                if (t == null || t.name == MapRootName) continue;
+                if (basePortEnv != null && !t.IsChildOf(basePortEnv.transform)) continue;
                 if (t.name == "Cargo container" && !propTemplates.ContainsKey("Container")) propTemplates["Container"] = t.gameObject;
                 else if (t.name.StartsWith("Industrial / Shelf") && !propTemplates.ContainsKey("Shelf")) propTemplates["Shelf"] = t.gameObject;
                 else if (t.name.StartsWith("Industrial / Electroboxes") && !propTemplates.ContainsKey("Electrobox")) propTemplates["Electrobox"] = t.gameObject;
@@ -806,40 +945,51 @@ namespace Zombtoy.Gameplay
                 else if (t.name.StartsWith("Industrial / Cart") && !propTemplates.ContainsKey("Cart")) propTemplates["Cart"] = t.gameObject;
             }
 
-            var water = GameObject.Find("Water");
+            var water = FindObjectByNameIncludeInactive("Water");
             if (water != null) water.transform.localScale = new Vector3(220f, 0.15f, 200f);
+        }
+
+        private GameObject FindObjectByNameIncludeInactive(string objectName)
+        {
+            foreach (var t in FindObjectsByType<Transform>(FindObjectsInactive.Include))
+            {
+                if (t != null && t.name == objectName) return t.gameObject;
+            }
+            return null;
         }
 
         private Material FindMat(string objectName)
         {
-            var go = GameObject.Find(objectName);
-            var r = go != null ? go.GetComponentInChildren<Renderer>() : null;
+            var go = GameObject.Find(objectName) ?? FindObjectByNameIncludeInactive(objectName);
+            var r = go != null ? go.GetComponentInChildren<Renderer>(true) : null;
             return r != null ? r.sharedMaterial : null;
         }
 
         private void OpenPerimeterPassages()
         {
-            var south = GameObject.Find("South perimeter rebuilt") ?? GameObject.Find("South perimeter");
-            if (south != null)
+            bool openedSouth = false, openedWest = false, openedNorth = false;
+            foreach (var wall in perimeterWalls)
             {
-                south.SetActive(false);
+                if (wall == null) continue;
+                wall.SetActive(false);
+                if (wall.name.StartsWith("South")) openedSouth = true;
+                else if (wall.name.StartsWith("West")) openedWest = true;
+                else if (wall.name.StartsWith("North")) openedNorth = true;
+            }
+
+            if (openedSouth)
+            {
                 Rail("South rail W", new Vector3(-14.5f, 0.45f, -20f), new Vector3(7f, 0.9f, 0.3f));
                 Rail("South rail Mid", new Vector3(2f, 0.45f, -20f), new Vector3(12f, 0.9f, 0.3f));
                 Rail("South rail E", new Vector3(21.5f, 0.45f, -20f), new Vector3(13f, 0.9f, 0.3f));
             }
-
-            var west = GameObject.Find("West perimeter rebuilt") ?? GameObject.Find("West perimeter");
-            if (west != null)
+            if (openedWest)
             {
-                west.SetActive(false);
                 Rail("West rail S", new Vector3(-28f, 0.45f, -5.5f), new Vector3(0.3f, 0.9f, 5f));
                 Rail("West rail N", new Vector3(-28f, 0.45f, 5.5f), new Vector3(0.3f, 0.9f, 5f));
             }
-
-            var north = GameObject.Find("North perimeter rebuilt") ?? GameObject.Find("North perimeter");
-            if (north != null)
+            if (openedNorth)
             {
-                north.SetActive(false);
                 Rail("North rail W", new Vector3(-8.5f, 0.45f, 24f), new Vector3(9f, 0.9f, 0.3f));
                 Rail("North rail E", new Vector3(6.5f, 0.45f, 24f), new Vector3(9f, 0.9f, 0.3f));
             }
@@ -850,6 +1000,7 @@ namespace Zombtoy.Gameplay
             if (propTemplates.TryGetValue("Container", out var tpl) && tpl != null)
             {
                 var inst = Instantiate(tpl, root);
+                inst.SetActive(true);
                 inst.transform.position = pos;
                 inst.transform.rotation = Quaternion.Euler(0, yaw, 0);
                 var body = inst.transform.Find("Container body");
@@ -864,6 +1015,7 @@ namespace Zombtoy.Gameplay
         {
             if (!propTemplates.TryGetValue(key, out var tpl) || tpl == null) return;
             var clone = Instantiate(tpl, root);
+            clone.SetActive(true);
             clone.transform.position = pos;
             clone.transform.rotation = Quaternion.Euler(0, yaw, 0);
         }

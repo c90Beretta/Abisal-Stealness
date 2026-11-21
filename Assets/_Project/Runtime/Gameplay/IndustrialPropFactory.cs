@@ -18,11 +18,16 @@ namespace Zombtoy.Gameplay
             if (source != null)
             {
                 var wrapper = new GameObject("Prop / " + source.name);
-                wrapper.transform.SetParent(parent, false);
+                wrapper.transform.position = Vector3.zero;
+                wrapper.transform.rotation = Quaternion.identity;
+                wrapper.transform.localScale = Vector3.one;
+
                 var model = Object.Instantiate(source, wrapper.transform, false);
-                model.transform.localRotation = Quaternion.Euler(0, yaw, 0);
-                foreach (var c in model.GetComponentsInChildren<Collider>())
+                model.transform.localPosition = Vector3.zero;
+                model.transform.localRotation = Quaternion.identity;
+                foreach (var c in model.GetComponentsInChildren<Collider>(true))
                 {
+                    c.enabled = false;
                     if (Application.isPlaying) Object.Destroy(c);
                     else Object.DestroyImmediate(c);
                 }
@@ -37,21 +42,14 @@ namespace Zombtoy.Gameplay
                         targetSize.y / Mathf.Max(.05f, b.size.y),
                         targetSize.z / Mathf.Max(.05f, b.size.z));
                 }
+                wrapper.transform.SetParent(parent, false);
                 wrapper.transform.position = position;
-                Shader retro = Shader.Find("Abisal/Retro Surface");
-                if (retro != null)
-                {
-                    foreach (var r in renderers)
-                    {
-                        var block = new MaterialPropertyBlock();
-                        r.GetPropertyBlock(block);
-                        r.SetPropertyBlock(block);
-                    }
-                }
+                wrapper.transform.rotation = Quaternion.Euler(0, yaw, 0);
                 if (solid)
                 {
                     var box = wrapper.AddComponent<BoxCollider>();
-                    Vector3 s = wrapper.transform.lossyScale;
+                    Vector3 s = wrapper.transform.localScale;
+                    box.center = Vector3.zero;
                     box.size = new Vector3(
                         targetSize.x / Mathf.Max(.01f, Mathf.Abs(s.x)),
                         targetSize.y / Mathf.Max(.01f, Mathf.Abs(s.y)),
@@ -243,10 +241,13 @@ namespace Zombtoy.Gameplay
 
         public static void RemoveCollider(GameObject go)
         {
-            var col = go.GetComponent<Collider>();
-            if (col == null) return;
-            if (Application.isPlaying) Object.Destroy(col);
-            else Object.DestroyImmediate(col);
+            foreach (var col in go.GetComponents<Collider>())
+            {
+                if (col == null) continue;
+                col.enabled = false;
+                if (Application.isPlaying) Object.Destroy(col);
+                else Object.DestroyImmediate(col);
+            }
         }
     }
 }

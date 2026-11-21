@@ -47,7 +47,12 @@ namespace Zombtoy.Gameplay
             session.player.AttachRoster(roster);
 
             mapExpander = session.GetComponent<PortMapExpander>() ?? session.gameObject.AddComponent<PortMapExpander>();
-            mapExpander.Initialize(session, GameMapId.PortCargo);
+            string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            GameMapId initialMap = sceneName.Contains("Level02_Submarine") ? GameMapId.MassiveSubmarine
+                : sceneName.Contains("Level03_AbyssalCave") ? GameMapId.AbyssalWaterCave
+                : GameMapId.PortCargo;
+            selectedMap = (int)initialMap;
+            mapExpander.Initialize(session, initialMap);
 
             int special = 0;
             var encounters = (SandboxEnemy[])session.Enemies.Clone();

@@ -27,7 +27,7 @@ namespace Zombtoy.Gameplay
         private void Reveal(Vector3 end)
         {
             if(occluders==null)return;Vector3 delta=end-transform.position;var ray=new Ray(transform.position,delta.normalized);
-            foreach(var part in occluders)if(part!=null&&part.Intersects(ray,delta.magnitude)&&hidden.Add(part))part.SetHidden(true);
+            foreach(var part in occluders)if(part!=null&&part.gameObject.activeInHierarchy&&part.Intersects(ray,delta.magnitude)&&hidden.Add(part))part.SetHidden(true);
         }
 
         private void Restore()
