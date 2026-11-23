@@ -78,7 +78,7 @@ namespace Zombtoy.Gameplay
             weapon.pellets = pellets;
             weapon.range = range;
             weapon.noiseRadius = noise;
-            weapon.visualPrefab = ModelUpgradeBuilder.CreateFirearmTemplate(index, title, transform, mat);
+            weapon.visualPrefab = ResolveWeaponVisual(index, title, mat);
             loadout.weapons[index] = weapon;
         }
 
@@ -92,8 +92,16 @@ namespace Zombtoy.Gameplay
             weapon.spread = spread;
             weapon.pellets = pellets;
             weapon.noiseRadius = noise;
-            weapon.visualPrefab = ModelUpgradeBuilder.CreateFirearmTemplate(index, title, transform, mat);
+            weapon.visualPrefab = ResolveWeaponVisual(index, title, mat);
             loadout.weapons[index] = weapon;
+        }
+
+        private GameObject ResolveWeaponVisual(int index, string title, Material fallbackMat)
+        {
+            var catalog = Resources.Load<SurvivorVisualCatalog>(SurvivorVisualCatalog.ResourcePath);
+            var integrated = catalog != null ? catalog.GetWeaponPrefab(index) : null;
+            if (integrated != null) return integrated;
+            return ModelUpgradeBuilder.CreateFirearmTemplate(index, title, transform, fallbackMat);
         }
 
         private void BuildMenu()
@@ -137,7 +145,7 @@ namespace Zombtoy.Gameplay
                 Button(names[i], names[i], 22 + (i % 2) * 312, 169 + (i / 2) * 38, 302, 34, () => selected = n);
             }
 
-            Label("CUERPO A CUERPO [C / ESPACIO / G / CLIC DER EN PARTIDA]", 15, 22, 288, 620, 22);
+            Label("CUERPO A CUERPO [C / ESPACIO / G / Z PARRY · CLIC DER APUNTAR · CTRL AGACHARSE]", 14, 22, 288, 620, 22);
             for (int i = 0; i < 4; i++)
             {
                 int n = i;
@@ -222,9 +230,10 @@ namespace Zombtoy.Gameplay
                 string gun = session.player.GetComponent<WeaponLoadout>().weapons[selected].displayName;
                 string melee = MeleeSwing.WeaponNames[Mathf.Clamp(selectedMelee, 0, 3)];
                 string mapName = PortMapExpander.MapTitles[Mathf.Clamp(selectedMap, 0, 2)];
-                var supplies = new[] { "+1 placa de repuesto", "+2 vendas", "+24 cartuchos compartidos" };
+                var supplies = new[] { "+1 placa de repuesto", "+2 vendas", "+24 municion del calibre elegido" };
                 var starting = new[] { "dotacion base", "+1 pila y +1 placa", "+1 botiquin y +1 suero", "+2 vendas" };
-                summary.text = $"Mapa: {mapName} · {p.CodeName} ({p.RoleTitle})\nPasiva: {p.PassiveSummary}\nSalida: {starting[role]} en mochila, sujeto al limite.\nArsenal: {gun} + {melee}; reserva compartida\nKit: {supplies[upgrade]} en mochila, sujeto al limite.";
+                string calName = WeaponAmmoPool.GetCaliberName(selected);
+                summary.text = $"Mapa: {mapName} · {p.CodeName} ({p.RoleTitle})\nPasiva: {p.PassiveSummary}\nSalida: {starting[role]} en mochila, sujeto al limite.\nArsenal: {gun} ({calName}) + {melee}; calibres independientes\nKit: {supplies[upgrade]} en mochila, sujeto al limite.";
             }
             if (!applied && session.Running)
             {
@@ -248,10 +257,10 @@ namespace Zombtoy.Gameplay
                 if (role == 3)
                     session.State.bandages = Mathf.Min(12, session.State.bandages + 2);
                 if (upgrade == 1) session.State.bandages = Mathf.Min(12, session.State.bandages + 2);
-                if (upgrade == 2) session.reserve = Mathf.Min(240, session.reserve + 24);
+                if (upgrade == 2) session.AddAmmoForWeapon(selected, 24);
                 if (upgrade == 0 && session.Night != null) session.Night.Inventory.plates = Mathf.Min(4, session.Night.Inventory.plates + 1);
                 var profile = SurvivorRoster.Profiles[Mathf.Clamp(role, 0, 3)];
-                session.SetMessage($"{profile.CodeName} desplegado. Espacio: combo / G: pesado / Clic Der: parry / C: melee.");
+                session.SetMessage($"{profile.CodeName} desplegado. Clic Der: apuntar / Ctrl: agacharse / Z: parry / Espacio: melee.");
             }
         }
     }

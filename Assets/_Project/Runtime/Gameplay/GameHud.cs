@@ -68,7 +68,7 @@ namespace Zombtoy.Gameplay
             message = Label(gameplay, "", 19, Color.white, 0, 72, 620, 45, false, true);
             action = Label(gameplay, "", 20, Green, 0, 211, 430, 30, false, true);
             actionFill = Bar(gameplay, 0, 202, 290, 4, Green, true);
-            Label(gameplay, "E INTERACTUAR · TAB MOCHILA · ESPACIO COMBO · G PESADO · CLIC DER PARRY · ALT ESQUIVA", 14, Muted, 0, 25, 760, 24, false, true);
+            Label(gameplay, "E INTERACTUAR · TAB MOCHILA · CLIC DER APUNTAR · CTRL AGACHARSE · Z PARRY · ESPACIO MELEE", 14, Muted, 0, 25, 860, 24, false, true);
             var markerBack = Panel("Objective marker", gameplay, Ink, Vector2.one * .5f, Vector2.one * .5f);
             markerBack.rectTransform.sizeDelta = new Vector2(164, 27);
             objectiveMarker = Label(markerBack.transform, "", 17, Green, 8, -3, 150, 24);
@@ -92,7 +92,7 @@ namespace Zombtoy.Gameplay
             var helpCard = Panel("Controls card", help, Ink, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
             helpCard.rectTransform.sizeDelta = new Vector2(860, 580); helpCard.rectTransform.pivot = Vector2.one * 0.5f;
             Label(helpCard.transform, "CONTROLES / SUPERVIVENCIA", 26, Green, 30, -24, 800, 45);
-            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr     ALT / X  Esquiva tactica\nRATON  Apuntar     CLIC IZQ  Disparar     CLIC DER  Bloqueo / Parry\n1-6  Armas de fuego     T  Tipo de municion (FMJ / HP+ / AP-I)\nESPACIO  Combo cuerpo a cuerpo     G  Golpe pesado     C  Cambiar arma blanca\nV  Empujon     F3 / F4  Cambiar entre los 4 especialistas     N  Llamar horda\nE  Interactuar / estaciones / botin     TAB  Mochila y arsenal\nH  Botiquin     B  Venda     Q  Suero     F  Linterna\nF5  Guardar checkpoint     F9  Cargar checkpoint\n\nSectores expandidos: Helipuerto Sur (Suministros de Horda y Armeria),\nAla Oeste de Bio-Cuarentena (Bio-Sintesis) y Subestacion Norte (Pilono Tesla).", 19, Color.white, 30, -84, 800, 418);
+            Label(helpCard.transform, "WASD  Moverte     SHIFT  Correr     CTRL  Agacharse (sigilo + precision)\nRATON  Orientar     CLIC IZQ  Disparar     CLIC DER  Apuntar (ADS)\n1-6  Armas (calibre propio por arma)     T  Tipo de punta (FMJ / HP+ / AP-I)\nESPACIO  Combo cuerpo a cuerpo     G  Golpe pesado     Z  Bloqueo / Parry\nC  Cambiar arma blanca     V  Empujon     ALT / X  Esquiva tactica\nF3 / F4  Cambiar entre los 4 especialistas     N  Llamar horda\nE  Interactuar / estaciones / botin     TAB  Mochila y calibres\nH  Botiquin     B  Venda     Q  Suero     F  Linterna     F5/F9  Checkpoint\n\nSectores expandidos: Helipuerto Sur (Suministros de Horda y Armeria),\nAla Oeste de Bio-Cuarentena (Bio-Sintesis) y Subestacion Norte (Pilono Tesla).", 19, Color.white, 30, -84, 800, 418);
             Button(helpCard.transform, "Cerrar ayuda / F1", 30, -510, ToggleHelp, out _);
             help.gameObject.SetActive(false);
             equipment = Node("Equipment", root); Stretch(equipment);
@@ -105,10 +105,15 @@ namespace Zombtoy.Gameplay
             equipmentText.gameObject.SetActive(session.GetComponent<NightSurvival>() == null);
             if (session.GetComponent<NightSurvival>() != null) { fieldHud = gameObject.AddComponent<NightHud>(); fieldHud.Setup(session, gear.transform); }
             equipment.gameObject.SetActive(false);
+
+            reticle = gameObject.AddComponent<AccuracyReticle>();
+            reticle.Setup(session, root, font);
         }
         
         private Text equipmentText, nightStatus;
         private NightHud fieldHud;
+        private AccuracyReticle reticle;
+        public AccuracyReticle Reticle => reticle;
         public void OpenLoot(LootContainer box) { session.ClearMessage();showingEquipment = true; equipment.gameObject.SetActive(true); fieldHud?.Select(box); }
 
         public void ToggleHelp() { showingHelp = !showingHelp; if (showingHelp) { showingEquipment = false; equipment.gameObject.SetActive(false); } help.gameObject.SetActive(showingHelp); }
@@ -140,10 +145,12 @@ namespace Zombtoy.Gameplay
             var loadout = session.player.GetComponent<WeaponLoadout>();
             string weaponName = loadout != null && loadout.Current != null ? loadout.Current.displayName : "Pistola";
             string ammoTag = loadout != null ? loadout.AmmoLabel : "FMJ";
-            weaponTitle.text = $"{weaponName} [{ammoTag}]";
+            string caliberShort = session.CurrentCaliberShort;
+            weaponTitle.text = $"{weaponName} [{caliberShort}·{ammoTag}]";
             ammo.text = $"{session.rounds:00} <size=23>/ {session.reserve:000}</size>";
-            inventory.text = $"[C] {session.player.CurrentMeleeName}\n[T] Municion · [1-6] Armas";
-            equipmentText.text = $"Botiquines: {state.medkits}    Vendas: {state.bandages}    Suero: {state.doses}\nMunicion: {session.rounds} en arma / {session.reserve} en reserva\nRepuesto: {(session.portMission != null && session.portMission.HasFuse ? "recogido" : "pendiente")}\nEste panel no pausa la partida.";
+            string stanceTag = session.player.IsCrouching ? (session.player.IsAiming ? "SIGILO + ADS" : "AGACHADO") : (session.player.IsAiming ? "APUNTANDO" : session.player.CurrentMeleeName);
+            inventory.text = $"[C] {stanceTag}\n{session.CurrentCaliberName} · [1-6]";
+            equipmentText.text = $"Botiquines: {state.medkits}    Vendas: {state.bandages}    Suero: {state.doses}\nMunicion ({session.CurrentCaliberName}): {session.rounds} / {session.reserve}\n{session.AmmoPool.BuildCompactSummary()}\nRepuesto: {(session.portMission != null && session.portMission.HasFuse ? "recogido" : "pendiente")}";
             if (session.Night != null)
             {
                 var n = session.Night; var b = n.Inventory;

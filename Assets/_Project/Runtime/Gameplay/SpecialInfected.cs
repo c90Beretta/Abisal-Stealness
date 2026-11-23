@@ -35,13 +35,18 @@ namespace Zombtoy.Gameplay
             enemy.health = definition.health;
             enemy.speed = definition.speed;
 
-            if (species == SpecialSpecies.Hound) BuildDog();
+            if (species == SpecialSpecies.Hound)
+            {
+                enemy.VisualAdapter?.SuppressForHound();
+                BuildDog();
+            }
             else
             {
                 var visual = transform.Find("Character visual");
                 if (visual != null)
                     visual.localScale = boss ? new Vector3(1.75f, 1.55f, 1.7f) :
                         species == SpecialSpecies.Colossus ? new Vector3(1.55f, 1.35f, 1.5f) : new Vector3(1.5f, 1, 1.45f);
+                enemy.VisualAdapter?.ApplySpecialScale(species, boss);
                 ModelUpgradeBuilder.EnhanceSpecialInfected(this, session);
             }
             nextAbility = Time.time + 5;

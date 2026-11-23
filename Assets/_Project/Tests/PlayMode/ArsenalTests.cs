@@ -21,13 +21,13 @@ namespace Zombtoy.Tests
             buttons.Single(b=>b.name=="Reserva de municion").onClick.Invoke();
             UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(buttons.Single(b=>b.name=="1  Arma corta").gameObject);
             yield return null;
-            int reserve=session.reserve;
+            int heavyReserve=session.AmmoPool.GetReserve(5);
             yield return FirstLevelTests.Capture(session,"arsenal-menu.png");
             session.BeginMission();yield return null;
             Assert.That(session.player.GetComponent<WeaponLoadout>().Index,Is.EqualTo(5));
-            Assert.That(session.reserve,Is.EqualTo(reserve+24));
+            Assert.That(session.reserve,Is.EqualTo(heavyReserve+24));
             session.TogglePause();session.Resume();yield return null;
-            Assert.That(session.reserve,Is.EqualTo(reserve+24),"Pause cannot duplicate the deployment grant");
+            Assert.That(session.reserve,Is.EqualTo(heavyReserve+24),"Pause cannot duplicate the deployment grant");
             var specials=session.Enemies.Select(e=>e.GetComponent<SpecialInfected>()).Where(e=>e!=null).ToArray();
             Assert.That(specials.Select(e=>e.Species).Distinct().Count(),Is.EqualTo(3));
             Assert.That(session.player.GetComponent<WeaponLoadout>().weapons[3].range,Is.GreaterThan(50));

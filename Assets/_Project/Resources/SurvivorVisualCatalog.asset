@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87bcf197f8bdca4ea090decf6c370e4, type: 3}
+  m_Name: SurvivorVisualCatalog
+  m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SurvivorVisualCatalog
+  version: 4
+  animatorController: {fileID: 9100000, guid: f274dc764b047ea43848171fbce363e4, type: 2}
+  entries:
+  - id: 0
+    label: Kael_Vanguardia
+    modelPrefab: {fileID: 983677268616476432, guid: bd88dd6b6d3b34d438feb11a15f34091, type: 3}
+    avatar: {fileID: 9000000, guid: ce0b2aef204f09140b38826eb5bbf7d6, type: 3}
+    targetHeight: 1.82
+    weaponHandOffset: {x: 0.01, y: 0.02, z: 0.06}
+    weaponEulerOffset: {x: 0, y: 0, z: 0}
+    rightHandBoneName: mixamorig:RightHand
+    leftHandBoneName: mixamorig:LeftHand
+    hiddenChildNames: []
+  - id: 1
+    label: Viktor_Sombra
+    modelPrefab: {fileID: 3883389920122855420, guid: f5bd4a791e94a7f429b4c764bd791960, type: 3}
+    avatar: {fileID: 9000000, guid: 842b12ec7dfb0b44da511da1fbafde36, type: 3}
+    targetHeight: 1.8
+    weaponHandOffset: {x: 0.01, y: 0.02, z: 0.06}
+    weaponEulerOffset: {x: 0, y: 0, z: 0}
+    rightHandBoneName: mixamorig:RightHand
+    leftHandBoneName: mixamorig:LeftHand
+    hiddenChildNames: []
+  - id: 2
+    label: Vance_BioControl
+    modelPrefab: {fileID: 7432403003352545148, guid: 9b7bab8a85f947846b433b7a4d33f229, type: 3}
+    avatar: {fileID: 9000000, guid: cf16b84acc453444cb38d2f46dcc8859, type: 2}
+    targetHeight: 1.8
+    weaponHandOffset: {x: 0.01, y: 0.02, z: 0.05}
+    weaponEulerOffset: {x: 0, y: 0, z: 0}
+    rightHandBoneName: NPCMedium_R_Hand
+    leftHandBoneName: NPCMedium_L_Hand
+    hiddenChildNames:
+    - SwatM4
+  - id: 3
+    label: Elena_Bastion
+    modelPrefab: {fileID: 2091636836351518607, guid: 1995b73eec763e246bb4202fc660fb50, type: 3}
+    avatar: {fileID: 9000000, guid: cd17219eb9d4a274a931d3f3aea12109, type: 2}
+    targetHeight: 1.88
+    weaponHandOffset: {x: 0.02, y: 0.02, z: 0.06}
+    weaponEulerOffset: {x: 0, y: 0, z: 0}
+    rightHandBoneName: b_MF_Hand_R
+    leftHandBoneName: b_MF_Hand_L
+    hiddenChildNames: []
+  weaponPrefabs:
+  - {fileID: 6095385896920009226, guid: 45a13b328d5555649bbd713f82257c81, type: 3}
+  - {fileID: 527110337603262100, guid: 9d4347c101c80064899546ac0140bbe0, type: 3}
+  - {fileID: 7919887621007686939, guid: 420b1a97ab8a7804485b667176534d4b, type: 3}
+  - {fileID: 6467536934155569195, guid: 0198732418078184cae33fbb7cf11a34, type: 3}
+  - {fileID: 9128681397989463707, guid: d8419c5af3fd9f340b376ac44fc8b720, type: 3}
+  - {fileID: 6554784947733262909, guid: bcc8e4739c45d0d448ac61034432c28c, type: 3}
+  enemyAnimatorController: {fileID: 9100000, guid: 5c68bce4a93e55548a1468ba81316049, type: 2}
+  enemyEntries:
+  - kind: 0
+    label: Walker_Burnt
+    modelPrefab: {fileID: 5651057435832747718, guid: 088331e1ec6a9ce4b8f15673c135d733, type: 3}
+    avatar: {fileID: 9000000, guid: 288d362a4718bcb4b99c92ea52b299a3, type: 3}
+    targetHeight: 1.8
+  - kind: 1
+    label: Runner_Feral
+    modelPrefab: {fileID: 4491657554045996607, guid: 69504dc4a47a68243ba9f3f0f39db47a, type: 3}
+    avatar: {fileID: 9000000, guid: a7fb42248d925e641bc89e86fb375ce7, type: 3}
+    targetHeight: 1.74
+  - kind: 2
+    label: Brute_BurntHeavy
+    modelPrefab: {fileID: 5586939813507766417, guid: cca868792e4124a4f87ce872fb01a03e, type: 3}
+    avatar: {fileID: 9000000, guid: 288d362a4718bcb4b99c92ea52b299a3, type: 3}
+    targetHeight: 2.04
+  - kind: 3
+    label: Screamer_Bio
+    modelPrefab: {fileID: 4048099474575206705, guid: 385874de35bfeda49b6a4f75a7186e88, type: 3}
+    avatar: {fileID: 9000000, guid: a7fb42248d925e641bc89e86fb375ce7, type: 3}
+    targetHeight: 1.84

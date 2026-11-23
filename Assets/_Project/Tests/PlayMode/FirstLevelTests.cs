@@ -139,13 +139,13 @@ namespace Zombtoy.Tests
             Assert.That(Object.FindObjectsByType<RawImage>().Length, Is.Zero, "No low-res world presentation layer");
             var loadout = session.player.GetComponent<WeaponLoadout>();
             Assert.That(loadout.weapons.Length, Is.EqualTo(6));
-            int total = session.rounds + session.reserve;
+            int total = session.AmmoPool.TotalAllRounds();
             for (int i = 0; i < 6; i++)
             {
                 Assert.That(loadout.Equip(i), Is.True); yield return null;
                 Assert.That(loadout.Current.visualPrefab, Is.Not.Null); Assert.That(loadout.Muzzle, Is.Not.Null);
                 Assert.That(loadout.socket.GetComponentsInChildren<MeshRenderer>().Length, Is.GreaterThan(0));
-                Assert.That(session.rounds + session.reserve, Is.EqualTo(total));
+                Assert.That(session.AmmoPool.TotalAllRounds(), Is.EqualTo(total));
             }
             session.State.health = 50; session.BeginHeal();
             Assert.That(loadout.Equip(0), Is.False, "Switching must not bypass treatment");

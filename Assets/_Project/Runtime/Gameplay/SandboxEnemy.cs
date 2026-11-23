@@ -37,6 +37,7 @@ namespace Zombtoy.Gameplay
         private Dismemberment gore;
         private RagdollController ragdoll;
         private Vector3 lastImpact, lastImpulse;
+        public EnemyVisualAdapter VisualAdapter { get; private set; }
         public Vector3 CorpseAnchor => ragdoll != null && ragdoll.Active ? ragdoll.Anchor : transform.position;
         private bool initialized;
 
@@ -53,6 +54,8 @@ namespace Zombtoy.Gameplay
             block = new MaterialPropertyBlock();
             motion = GetComponent<CharacterMotion>();
             visual = transform.Find("Character visual") ?? transform.Find("CC0 visual");
+            VisualAdapter = GetComponent<EnemyVisualAdapter>() ?? gameObject.AddComponent<EnemyVisualAdapter>();
+            VisualAdapter.Initialize(this);
             if (definition != null) { health = definition.health; speed = definition.speed; sightRange = definition.sightRange; }
             maxHealth = health;
             patrolUntil = Time.time + 2;
@@ -72,9 +75,10 @@ namespace Zombtoy.Gameplay
         {
             Vector3 delta = session.player.transform.position - transform.position;
             delta.y = 0;
-            if (delta.magnitude > sightRange) return false;
+            float effectiveSight = session.player.IsCrouching ? sightRange * 0.72f : sightRange;
+            if (delta.magnitude > effectiveSight) return false;
             float fov = definition == null ? 140 : definition.fieldOfView;
-            if (session.Night != null && !session.Night.LampLit && delta.magnitude > sightRange * .55f) return false;
+            if (session.Night != null && !session.Night.LampLit && delta.magnitude > effectiveSight * .55f) return false;
             if (fieldOfView && delta.magnitude > 2 && Vector3.Angle(transform.forward, delta) > fov * 0.5f) return false;
             Vector3 eye = transform.position + Vector3.up * 0.9f;
             Vector3 end = session.player.transform.position + Vector3.up * 0.9f;
@@ -105,16 +109,20 @@ namespace Zombtoy.Gameplay
                     controller.Move((knockbackVelocity + Vector3.down * 8f) * Time.deltaTime);
                 knockbackVelocity = Vector3.MoveTowards(knockbackVelocity, Vector3.zero, Time.deltaTime * 14f);
             }
+            bool isFlashing = Time.time < flashUntil;
+            bool isBurning = Time.time < burnUntil;
             foreach (var r in renderers)
             {
                 if (r == null) continue;
                 block.Clear();
-                Color emission = Time.time < flashUntil ? Color.red * 1.8f : Time.time < burnUntil ? new Color(1.6f, .55f, .1f) : Color.black;
+                Color emission = isFlashing ? Color.red * 1.8f : isBurning ? new Color(1.6f, .55f, .1f) : Color.black;
                 block.SetColor("_EmissionColor", emission);
-                if (Time.time < flashUntil) block.SetColor("_BaseColor", new Color(1, 0.15f, 0.1f));
+                if (isFlashing) block.SetColor("_BaseColor", new Color(1, 0.15f, 0.1f));
                 r.SetPropertyBlock(block);
             }
+            VisualAdapter?.ApplyVisualFeedback(isFlashing, isBurning);
             if (motion != null) motion.SetMoving(false, 0);
+            VisualAdapter?.UpdateMovement(0f, Mode);
             bool sees = SeesPlayer(Mode == EnemyMode.Patrol);
             float distance = Vector3.Distance(session.player.transform.position, transform.position);
             if (Mode == EnemyMode.Windup)
@@ -192,6 +200,7 @@ namespace Zombtoy.Gameplay
                 }
             controller.Move(((delta.normalized + separation * .8f).normalized * moveSpeed + Vector3.down * 8) * Time.deltaTime);
             if (motion != null) motion.SetMoving(true, moveSpeed);
+            VisualAdapter?.UpdateMovement(moveSpeed, Mode);
         }
 
         private void Face(Vector3 delta)
@@ -233,12 +242,14 @@ namespace Zombtoy.Gameplay
             if (health > 0) { Mode = EnemyMode.Stagger; stateUntil = Time.time + 0.22f; return; }
             Mode = EnemyMode.Dead; controller.enabled = false;
             if (motion != null) motion.Stop();
+            bool isHeadshot = (gore != null && (gore.Lost & Severed.Head) != 0) || (lastImpact.y - transform.position.y >= 1.45f);
+            VisualAdapter?.OnDeath(isHeadshot);
             session.Kills++;
             if (lastHitMelee) session.player?.Roster?.OnMeleeKill();
             if (ragdoll != null) ragdoll.Activate(lastImpulse.sqrMagnitude > 0 ? lastImpulse : transform.forward * -2, lastImpact.sqrMagnitude > 0 ? lastImpact : transform.position + Vector3.up, gore != null ? gore.Lost : Severed.None);
         }
 
-        public void Stagger(float seconds) { if (!IsDead) { Mode = EnemyMode.Stagger; stateUntil = Time.time + seconds; } }
+        public void Stagger(float seconds) { if (!IsDead) { Mode = EnemyMode.Stagger; stateUntil = Time.time + seconds; VisualAdapter?.UpdateMovement(0f, Mode); } }
 
         public void Restore(float value, Vector3 position)
         {
@@ -252,6 +263,7 @@ namespace Zombtoy.Gameplay
             knockbackVelocity = Vector3.zero;
             if (visual != null) visual.localRotation = IsDead && ragdoll == null ? Quaternion.Euler(-88, 0, 0) : Quaternion.identity;
             if (motion != null) { if (IsDead) motion.Stop(); else motion.SetMoving(false, 0); }
+            VisualAdapter?.OnRestore(IsDead);
         }
     }
 }

@@ -256,7 +256,7 @@ namespace Zombtoy.Gameplay
             if (supplyDropPod != null && supplyDropCharges > 0 && FlatDistance(p, supplyDropPod.position) < 2.6f)
             {
                 supplyDropCharges--;
-                session.reserve = Mathf.Min(240, session.reserve + 24);
+                int added = session.ResupplyAllCalibers(0.35f);
                 session.State.bandages = Mathf.Min(12, session.State.bandages + 2);
                 session.State.medkits = Mathf.Min(8, session.State.medkits + 1);
                 if (session.Night != null)
@@ -265,7 +265,7 @@ namespace Zombtoy.Gameplay
                     session.Night.Inventory.stamina = 100f;
                 }
                 TacticalAudio.Play(supplyDropPod.position, TacticalCue.Impact, 1.2f);
-                session.SetMessage("Suministros recogidos: +24 municion, +1 botiquin, +2 vendas y +1 pila.");
+                session.SetMessage($"Suministros recogidos: +{added} municion multi-calibre, +1 botiquin, +2 vendas y +1 pila.");
                 if (supplyDropBeacon != null && supplyDropCharges == 0)
                     supplyDropBeacon.color = new Color(.9f, .55f, .15f);
                 return true;
@@ -274,14 +274,14 @@ namespace Zombtoy.Gameplay
             if (southArmoryStation != null && armoryUses > 0 && FlatDistance(p, southArmoryStation.position) < 2.5f)
             {
                 armoryUses--;
-                session.reserve = Mathf.Min(240, session.reserve + 18);
+                int added = session.ResupplyAllCalibers(0.28f);
                 if (session.Night != null)
                 {
                     session.Night.Inventory.plates = Mathf.Min(4, session.Night.Inventory.plates + 1);
                     session.Night.Inventory.armor = 100f;
                 }
                 TacticalAudio.Play(southArmoryStation.position, TacticalCue.Swing, 0.9f);
-                session.SetMessage($"Armeria utilizada: +18 municion y blindaje al 100% ({armoryUses} restantes).");
+                session.SetMessage($"Armeria utilizada: +{added} municion de todos los calibres y blindaje al 100% ({armoryUses} restantes).");
                 return true;
             }
 

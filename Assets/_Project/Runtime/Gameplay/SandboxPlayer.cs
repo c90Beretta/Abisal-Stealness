@@ -23,22 +23,42 @@ namespace Zombtoy.Gameplay
         private float comboUntil;
         private float parryWindowUntil;
         private bool isBlocking;
+        private bool isAiming;
+        private bool isCrouching;
+        private float standingHeight = 1.82f;
         private float dodgeUntil, nextDodge;
         private Vector3 dodgeDirection;
         private int fallbackMelee;
         private Light flashlight;
         private WeaponLoadout loadout;
         private Vector3 aimPoint;
+        private Vector3 aimWorldPoint;
         private bool preciseAim;
+        private float currentBloom;
+        private float lastMoveSpeed;
+        private bool isSprinting;
+        private bool isMoving;
+        private float lastShotTime = -10f;
 
         public SurvivorRoster Roster { get; private set; }
         public int CurrentMeleeIndex => session != null && session.Night != null ? Mathf.Clamp(session.Night.Inventory.melee, 0, 3) : fallbackMelee;
         public string CurrentMeleeName => MeleeSwing.WeaponNames[CurrentMeleeIndex];
         public bool IsBlocking => isBlocking;
+        public bool IsAiming => isAiming;
+        public bool IsCrouching => isCrouching;
+        public bool PreciseAim => preciseAim;
+        public Vector3 AimWorldPoint => aimWorldPoint;
+        public float CurrentBloomDegrees => currentBloom;
+        public bool IsMoving => isMoving;
+        public bool IsSprinting => isSprinting;
+        public float LastShotTime => lastShotTime;
+        public float CurrentEffectiveSpreadDegrees => ComputeEffectiveSpreadDegrees();
+        public float CurrentAccuracyNormalized => Mathf.Clamp01(1f - (CurrentEffectiveSpreadDegrees / 14f));
 
         private void Awake()
         {
             controller = GetComponent<CharacterController>();
+            if (controller != null && controller.height > 0.5f) standingHeight = controller.height;
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.spatialBlend = 0f;
             motion = GetComponent<CharacterMotion>();
@@ -49,14 +69,45 @@ namespace Zombtoy.Gameplay
 
         public void AttachRoster(SurvivorRoster roster) => Roster = roster;
 
+        public void SetCrouching(bool value)
+        {
+            isCrouching = value;
+            UpdateControllerStance(instant: true);
+        }
+
+        private void UpdateControllerStance(bool instant = false)
+        {
+            if (controller == null) return;
+            float targetHeight = isCrouching ? standingHeight * 0.70f : standingHeight;
+            float h = instant ? targetHeight : Mathf.MoveTowards(controller.height, targetHeight, Time.deltaTime * 4.5f);
+            controller.height = h;
+            controller.center = new Vector3(0f, h * 0.5f, 0f);
+        }
+
         private void Update()
         {
             if (session == null || !session.Running)
             {
                 strikePending = false;
+                isAiming = false;
                 SetBlockState(false);
+                isMoving = false;
+                isSprinting = false;
+                lastMoveSpeed = 0f;
+                if (motion != null)
+                {
+                    bool dead = session != null && session.State.health <= 0f;
+                    motion.SetLocomotion(Vector3.zero, 3f, false, isCrouching && !dead, dead);
+                }
                 return;
             }
+
+            // Smoothly recover firing bloom over time (faster while aiming or crouched)
+            float bloomRecovery = (Roster != null && Roster.Current.Id == SurvivorId.KaelAssault ? 13.5f : 10f);
+            if (isAiming) bloomRecovery *= 1.30f;
+            if (isCrouching) bloomRecovery *= 1.20f;
+            currentBloom = Mathf.MoveTowards(currentBloom, 0f, Time.deltaTime * bloomRecovery);
+
             if (strikePending && Time.time >= strikeAt)
             {
                 strikePending = false;
@@ -70,40 +121,75 @@ namespace Zombtoy.Gameplay
             Vector3 right = Vector3.ProjectOnPlane(view.transform.right, Vector3.up).normalized;
             Vector3 direction = Vector3.ClampMagnitude(right * input.x + forward * input.y, 1f);
 
-            bool rightMouseHeld = Mouse.current != null && Mouse.current.rightButton.isPressed && !session.Busy && !session.Hud.BlocksCombat;
-            if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && !session.Busy && !session.Hud.BlocksCombat)
+            bool combatAllowed = !session.Busy && !session.Hud.BlocksCombat;
+
+            // Left Ctrl toggles crouch stealth stance (better accuracy + much lower noise)
+            if (kb.leftCtrlKey.wasPressedThisFrame && combatAllowed)
+            {
+                isCrouching = !isCrouching;
+                if (isCrouching)
+                    session.SetMessage("Agachado: mayor precision (-30% dispersion) y sigilo (-60% ruido).");
+            }
+
+            // Z key holds melee Guard / Parry (Right Click is now dedicated to Aiming / ADS)
+            bool guardHeld = kb.zKey.isPressed && combatAllowed;
+            if (kb.zKey.wasPressedThisFrame && combatAllowed)
             {
                 parryWindowUntil = Time.time + 0.38f;
                 TacticalAudio.Play(transform.position, TacticalCue.Swing, 1.4f);
             }
-            SetBlockState(rightMouseHeld);
+            SetBlockState(guardHeld);
 
-            if ((kb.leftAltKey.wasPressedThisFrame || kb.xKey.wasPressedThisFrame) && !session.Busy && !session.Hud.BlocksCombat)
+            // Right Click holds Aim Down Sights (ADS) for precision fire
+            isAiming = Mouse.current != null && Mouse.current.rightButton.isPressed && combatAllowed && !isBlocking && GetComponent<MeleeSwing>()?.Active != true;
+
+            if ((kb.leftAltKey.wasPressedThisFrame || kb.xKey.wasPressedThisFrame) && combatAllowed)
+            {
+                isCrouching = false;
                 TryDodge(direction.sqrMagnitude > .01f ? direction : -transform.forward);
+            }
+
+            UpdateControllerStance();
 
             float charMoveMult = Roster != null ? Roster.Current.MoveMultiplier : 1f;
             float charNoiseMult = Roster != null ? Roster.Current.NoiseMultiplier : 1f;
 
+            Vector3 worldMoveVelocity;
             if (Time.time < dodgeUntil)
             {
-                controller.Move((dodgeDirection * 9.5f + Vector3.down * 8f) * Time.deltaTime);
-                if (motion != null) motion.SetMoving(true, 6f);
+                worldMoveVelocity = dodgeDirection * 9.5f;
+                isMoving = true;
+                isSprinting = true;
+                lastMoveSpeed = 5f;
+                controller.Move((worldMoveVelocity + Vector3.down * 8f) * Time.deltaTime);
+                if (motion != null) motion.SetLocomotion(dodgeDirection * 4.8f, 3f, false, false, false);
             }
             else
             {
-                bool sprint = kb.leftShiftKey.isPressed && direction.sqrMagnitude > .01f && !isBlocking;
+                bool wantsSprint = kb.leftShiftKey.isPressed && direction.sqrMagnitude > .01f && !isBlocking && !isAiming;
+                if (wantsSprint && isCrouching) isCrouching = false;
+                bool sprint = wantsSprint && !isCrouching;
                 if (sprint && session.Night != null) sprint = session.Night.SpendStamina(Time.deltaTime * 30);
                 if (session.Hud.BlocksCombat) { direction = Vector3.zero; sprint = false; }
+
                 float speed = (sprint ? 5f : 3f) * (session.State.IsManic ? 1.3f : 1f) * charMoveMult;
+                if (isCrouching) speed *= 0.58f;
+                if (isAiming) speed *= 0.72f;
                 if (isBlocking) speed *= 0.62f;
                 if (session.Busy) speed *= 0.3f;
-                controller.Move((direction * speed + Vector3.down * 8f) * Time.deltaTime);
-                if (motion != null) motion.SetMoving(direction.sqrMagnitude > 0.01f, speed);
+
+                worldMoveVelocity = direction * speed;
+                isMoving = direction.sqrMagnitude > 0.01f;
+                isSprinting = isMoving && sprint;
+                lastMoveSpeed = isMoving ? speed : 0f;
+                controller.Move((worldMoveVelocity + Vector3.down * 8f) * Time.deltaTime);
+                if (motion != null) motion.SetLocomotion(worldMoveVelocity, 3f, isAiming, isCrouching, false);
                 if (direction.sqrMagnitude > .01f && Time.time >= nextStep)
                 {
-                    nextStep = Time.time + (sprint ? 0.28f : 0.48f);
-                    session.EmitNoise(transform.position, (sprint ? 10f : 3f) * charNoiseMult);
-                    if (stepSound != null) audioSource.PlayOneShot(stepSound, sprint ? .22f : .12f);
+                    nextStep = Time.time + (sprint ? 0.28f : isCrouching ? 0.68f : 0.48f);
+                    float stanceNoise = sprint ? 10f : isCrouching ? 1.2f : 3f;
+                    session.EmitNoise(transform.position, stanceNoise * charNoiseMult);
+                    if (stepSound != null) audioSource.PlayOneShot(stepSound, sprint ? .22f : isCrouching ? .05f : .12f);
                 }
             }
 
@@ -116,7 +202,8 @@ namespace Zombtoy.Gameplay
                 if (preciseAim) aimPoint = cursorHit.point;
                 if (plane.Raycast(ray, out float distance))
                 {
-                    Vector3 aim = (preciseAim ? aimPoint : ray.GetPoint(distance)) - transform.position;
+                    aimWorldPoint = preciseAim ? aimPoint : ray.GetPoint(distance);
+                    Vector3 aim = aimWorldPoint - transform.position;
                     aim.y = 0;
                     if (aim.sqrMagnitude > 0.01f && GetComponent<MeleeSwing>()?.Active != true) transform.rotation = Quaternion.LookRotation(aim);
                 }
@@ -346,6 +433,34 @@ namespace Zombtoy.Gameplay
             TacticalAudio.Play(transform.position, TacticalCue.Swing);
         }
 
+        private float ComputeEffectiveSpreadDegrees()
+        {
+            var weapon = loadout != null ? loadout.Current : null;
+            int weaponIndex = loadout != null ? loadout.Index : 0;
+            float baseSpread = weapon != null ? weapon.spread : 1.1f;
+
+            // Movement penalty scales by weapon class (sniper/LMG penalized more while sprinting)
+            float movePenalty = 0f;
+            if (isMoving)
+            {
+                float classScale = weaponIndex == 3 ? 2.4f : weaponIndex == 5 ? 1.5f : weaponIndex == 0 ? 0.7f : 1.0f;
+                movePenalty = (isSprinting ? 2.1f : 0.75f) * classScale * Mathf.Clamp01(lastMoveSpeed / 3.2f);
+            }
+
+            // Kael "Vanguardia" passive: superior recoil & stability control
+            float stabilityMult = Roster != null && Roster.Current.Id == SurvivorId.KaelAssault ? 0.75f : 1f;
+            float total = baseSpread + (movePenalty + currentBloom) * stabilityMult;
+
+            // Stance & ADS precision bonuses (Right Click ADS: -48%, Crouch: -30%, stackable!)
+            if (isAiming) total *= 0.52f;
+            if (isCrouching) total *= 0.70f;
+
+            if (session != null && (session.State.elapsed < session.State.tremorUntil || session.State.IsManic))
+                total += 7f;
+
+            return Mathf.Clamp(total, 0.05f, 22f);
+        }
+
         private void Shoot()
         {
             if (GetComponent<MeleeSwing>()?.Active == true) return;
@@ -355,6 +470,14 @@ namespace Zombtoy.Gameplay
 
             nextShot = Time.time + (weapon != null ? weapon.fireInterval : 0.22f);
             if (!session.UseRound()) return;
+            lastShotTime = Time.time;
+
+            float effectiveSpread = ComputeEffectiveSpreadDegrees();
+            float bloomStep = weaponIndex == 3 ? 2.6f : weaponIndex == 2 ? 2.4f : weaponIndex == 5 ? 1.05f : weaponIndex == 4 ? 0.75f : weaponIndex == 1 ? 0.85f : 0.9f;
+            if (isAiming) bloomStep *= 0.65f;
+            if (isCrouching) bloomStep *= 0.78f;
+            float maxBloom = weaponIndex == 3 ? 4.5f : weaponIndex == 2 ? 4.0f : weaponIndex == 5 ? 5.5f : 4.2f;
+            currentBloom = Mathf.Min(maxBloom, currentBloom + bloomStep);
 
             float noiseMult = Roster != null ? Roster.Current.NoiseMultiplier : 1f;
             session.EmitNoise(transform.position, (weapon != null ? weapon.noiseRadius : 18) * (session.State.IsManic ? 1.35f : 1) * noiseMult);
@@ -377,9 +500,7 @@ namespace Zombtoy.Gameplay
             for (int pellet = 0; pellet < (weapon != null ? weapon.pellets : 1); pellet++)
             {
                 Vector3 aim = preciseAim ? (aimPoint - origin).normalized : transform.forward;
-                if (weapon != null && weapon.spread > 0) aim = Quaternion.AngleAxis(Random.Range(-weapon.spread, weapon.spread), Vector3.up) * aim;
-                if (session.State.elapsed < session.State.tremorUntil || session.State.IsManic)
-                    aim = Quaternion.AngleAxis(Random.Range(-7f, 7f), Vector3.up) * aim;
+                if (effectiveSpread > 0.01f) aim = Quaternion.AngleAxis(Random.Range(-effectiveSpread, effectiveSpread), Vector3.up) * aim;
                 float range = weapon != null ? weapon.range : 25f;
                 Vector3 end = origin + aim * range;
                 if (Physics.Raycast(origin, aim, out RaycastHit hit, range, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))

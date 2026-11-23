@@ -42,7 +42,7 @@ namespace Zombtoy.Gameplay
             take = Action(parent, "Recoger lo que quepa", 536, -306, () => { if (selected != null) selected.Take(session); });
             ((RectTransform)take.transform).sizeDelta = new Vector2(410, 42);
             feedback = TextAt(parent, "", 17, 536, -354, 410, 44, new Color(1, .72f, .55f));
-            TextAt(parent, "E abre cuerpos, cajas y estaciones a menos de 2.5 m.\nEspacio: combo · G: golpe pesado · Clic Der: parry.\nAlt/X: esquiva · C: cambiar arma blanca · T: municion.\nTAB cierra / El mundo sigue avanzando.", 16, 536, -410, 420, 110, new Color(.76f, .74f, .66f));
+            TextAt(parent, "E abre cuerpos, cajas y estaciones a menos de 2.5 m.\nClic Der: apuntar (ADS) · Ctrl: agacharse (sigilo/precision).\nEspacio: combo · G: pesado · Z: parry · Alt/X: esquiva.\nTAB cierra / El mundo sigue avanzando.", 16, 536, -410, 420, 110, new Color(.76f, .74f, .66f));
         }
 
         public void Select(LootContainer box) { selected = box; }
@@ -65,8 +65,9 @@ namespace Zombtoy.Gameplay
             oxygenButton.interactable = allowed && b.oxygen > 0 && b.air <= 70;
             plateButton.interactable = allowed && b.plates > 0 && b.armor <= 70;
             feedback.text = Time.unscaledTime < session.MessageUntil ? session.Message : "";
+            session.SyncActiveWeaponToPool();
             float maxCap = b.MaxCapacity(session);
-            carried.text = $"Carga {b.Weight(session):0.0} / {maxCap:0} kg\nCartuchos {session.reserve} · Botiquines {s.medkits} · Vendas {s.bandages}\nSuero {s.doses} · Pilas {b.cells} · Botellas O2 {b.oxygen} · Placas {b.plates}";
+            carried.text = $"Carga {b.Weight(session):0.0} / {maxCap:0} kg · Botiquines {s.medkits} · Vendas {s.bandages} · Suero {s.doses}\n{session.AmmoPool.BuildCompactSummary()}\nPilas {b.cells} · Botellas O2 {b.oxygen} · Placas {b.plates}";
             string charLine = session.player.Roster != null ? $"{session.player.Roster.Current.CodeName} ({session.player.Roster.Current.RoleTitle})" : "Operador";
             var loadout = session.player.GetComponent<WeaponLoadout>();
             string ammoName = loadout != null ? WeaponLoadout.AmmoNames[(int)loadout.AmmoType] : "FMJ";

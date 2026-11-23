@@ -37,13 +37,19 @@ namespace Zombtoy.Gameplay
             if (weapons == null || index < 0 || index >= weapons.Length || weapons[index] == null || socket == null) return false;
             if (!restoring && (player.session == null || !player.session.Running || player.session.Busy || player.session.State.InventoryLocked)) return false;
             Index = index;
+            if (player != null && player.session != null)
+                player.session.OnWeaponEquipped(index);
             if (model != null) { model.SetActive(false); Destroy(model); }
             model = Instantiate(weapons[index].visualPrefab, socket, false);
             model.name = weapons[index].displayName;
             model.SetActive(true);
             Muzzle = model.transform.Find("Muzzle");
             climbPitch = 0f;
-            if (!restoring) player.session.SetMessage("Arma: " + weapons[index].displayName + " [" + AmmoNames[(int)AmmoType] + "].");
+            if (!restoring && player != null && player.session != null)
+            {
+                string cal = WeaponAmmoPool.GetCaliberName(index);
+                player.session.SetMessage($"Arma: {weapons[index].displayName} [{cal} · {AmmoShortNames[(int)AmmoType]}] ({player.session.rounds}/{player.session.reserve}).");
+            }
             return true;
         }
 

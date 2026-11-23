@@ -156,8 +156,12 @@ namespace Zombtoy.Gameplay
         public SandboxSession Session { get; private set; }
         public int CurrentIndex { get; private set; }
         public SurvivorProfile Current => Profiles[Mathf.Clamp(CurrentIndex, 0, Profiles.Length - 1)];
+        public GameObject ActiveModelInstance { get; private set; }
+        public Animator ActiveAnimator { get; private set; }
 
         private readonly List<GameObject> customAttachments = new List<GameObject>();
+        private SurvivorVisualCatalog visualCatalog;
+        private GameObject legacyVisualRoot;
         private SkinnedMeshRenderer playerSkin;
         private Transform headBone, chestBone, leftShoulderBone, rightShoulderBone, hipsBone;
         private Material baseMaterial;
@@ -166,7 +170,14 @@ namespace Zombtoy.Gameplay
         {
             Session = session;
             if (session == null || session.player == null) return;
-            playerSkin = session.player.GetComponentInChildren<SkinnedMeshRenderer>();
+
+            visualCatalog = Resources.Load<SurvivorVisualCatalog>(SurvivorVisualCatalog.ResourcePath);
+
+            var legacyTransform = session.player.transform.Find("Character visual") ?? session.player.transform.Find("CC0 visual");
+            if (legacyTransform != null)
+                legacyVisualRoot = legacyTransform.gameObject;
+
+            playerSkin = session.player.GetComponentInChildren<SkinnedMeshRenderer>(true);
             foreach (var bone in session.player.GetComponentsInChildren<Transform>(true))
             {
                 if (bone.name == "Head") headBone = bone;
@@ -175,8 +186,10 @@ namespace Zombtoy.Gameplay
                 else if (bone.name == "RightShoulder") rightShoulderBone = bone;
                 else if (bone.name == "Hips") hipsBone = bone;
             }
+
             var vest = session.player.GetComponentsInChildren<MeshRenderer>(true);
             if (vest.Length > 0) baseMaterial = vest[0].sharedMaterial;
+
             ApplyCharacter(0, true);
         }
 
@@ -218,8 +231,94 @@ namespace Zombtoy.Gameplay
                 if (item != null) Destroy(item);
             customAttachments.Clear();
 
+            if (ActiveModelInstance != null)
+            {
+                Destroy(ActiveModelInstance);
+                ActiveModelInstance = null;
+                ActiveAnimator = null;
+            }
+
             if (Session == null || Session.player == null) return;
 
+            if (TrySpawnIntegratedModel(profile))
+                return;
+
+            // Fallback to legacy procedural visual if integrated prefabs have not been built yet
+            if (legacyVisualRoot != null) legacyVisualRoot.SetActive(true);
+            Session.player.GetComponent<CharacterMotion>()?.BindHumanoidAnimator(null);
+            Session.player.GetComponent<ArmedPose>()?.ClearHumanoidHands();
+            ApplyLegacyProceduralVisuals(profile);
+        }
+
+        private bool TrySpawnIntegratedModel(SurvivorProfile profile)
+        {
+            if (visualCatalog == null)
+                visualCatalog = Resources.Load<SurvivorVisualCatalog>(SurvivorVisualCatalog.ResourcePath);
+            if (visualCatalog == null) return false;
+
+            var entry = visualCatalog.GetEntry(profile.Id);
+            if (entry == null || entry.modelPrefab == null) return false;
+
+            if (legacyVisualRoot != null)
+                legacyVisualRoot.SetActive(false);
+
+            ActiveModelInstance = Instantiate(entry.modelPrefab, Session.player.transform, false);
+            ActiveModelInstance.name = "SurvivorModel_" + profile.Id;
+            ActiveModelInstance.transform.localPosition = Vector3.zero;
+            ActiveModelInstance.transform.localRotation = Quaternion.identity;
+
+            if (entry.hiddenChildNames != null)
+            {
+                foreach (var t in ActiveModelInstance.GetComponentsInChildren<Transform>(true))
+                {
+                    for (int i = 0; i < entry.hiddenChildNames.Length; i++)
+                    {
+                        if (string.Equals(t.name, entry.hiddenChildNames[i], System.StringComparison.OrdinalIgnoreCase))
+                            t.gameObject.SetActive(false);
+                    }
+                }
+            }
+
+            foreach (var smr in ActiveModelInstance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                smr.updateWhenOffscreen = true;
+
+            ActiveAnimator = ActiveModelInstance.GetComponent<Animator>();
+            if (ActiveAnimator == null) ActiveAnimator = ActiveModelInstance.AddComponent<Animator>();
+            if (entry.avatar != null && entry.avatar.isValid) ActiveAnimator.avatar = entry.avatar;
+            if (visualCatalog.animatorController != null) ActiveAnimator.runtimeAnimatorController = visualCatalog.animatorController;
+            ActiveAnimator.applyRootMotion = false;
+            ActiveAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            ActiveAnimator.Rebind();
+            ActiveAnimator.Update(0.02f);
+
+            var motion = Session.player.GetComponent<CharacterMotion>();
+            if (motion != null)
+                motion.BindHumanoidAnimator(ActiveAnimator);
+
+            Transform rightHand = ActiveAnimator.isHuman ? ActiveAnimator.GetBoneTransform(HumanBodyBones.RightHand) : null;
+            Transform leftHand = ActiveAnimator.isHuman ? ActiveAnimator.GetBoneTransform(HumanBodyBones.LeftHand) : null;
+            if (rightHand == null && !string.IsNullOrEmpty(entry.rightHandBoneName))
+                rightHand = FindChildByName(ActiveModelInstance.transform, entry.rightHandBoneName);
+            if (leftHand == null && !string.IsNullOrEmpty(entry.leftHandBoneName))
+                leftHand = FindChildByName(ActiveModelInstance.transform, entry.leftHandBoneName);
+
+            var loadout = Session.player.GetComponent<WeaponLoadout>();
+            var pose = Session.player.GetComponent<ArmedPose>();
+            if (pose != null && loadout != null && loadout.socket != null)
+                pose.ConfigureHumanoidHands(loadout.socket, rightHand, leftHand, entry.weaponHandOffset, entry.weaponEulerOffset);
+
+            return true;
+        }
+
+        private static Transform FindChildByName(Transform root, string targetName)
+        {
+            foreach (var t in root.GetComponentsInChildren<Transform>(true))
+                if (t.name == targetName) return t;
+            return null;
+        }
+
+        private void ApplyLegacyProceduralVisuals(SurvivorProfile profile)
+        {
             if (playerSkin != null && playerSkin.sharedMaterials != null && playerSkin.sharedMaterials.Length >= 4)
             {
                 var block = new MaterialPropertyBlock();

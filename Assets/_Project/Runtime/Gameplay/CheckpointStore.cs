@@ -12,12 +12,13 @@ namespace Zombtoy.Gameplay
     [Serializable]
     public sealed class PortSave
     {
-        public int version = 3;
+        public int version = 4;
         public SectorSnapshot expansion;
         public string level = "Level01_Port";
         public SurvivalState state;
         public Vector3 position;
         public int rounds, reserve, kills, shots, hits, weapon, survivor, ammoGrade;
+        public WeaponAmmoPool ammoPool;
         public bool fuse, power, boarding, supplies;
         public EnemySave[] enemies;
         public PickupSave[] pickups;
@@ -35,6 +36,7 @@ namespace Zombtoy.Gameplay
         {
             try
             {
+                session.SyncActiveWeaponToPool();
                 var m = session.portMission;
                 var save = new PortSave
                 {
@@ -43,6 +45,7 @@ namespace Zombtoy.Gameplay
                     position = session.player.transform.position,
                     rounds = session.rounds,
                     reserve = session.reserve,
+                    ammoPool = session.AmmoPool.Copy(),
                     kills = session.Kills,
                     shots = session.Shots,
                     hits = session.Hits,
@@ -78,13 +81,14 @@ namespace Zombtoy.Gameplay
             {
                 if (!File.Exists(path) || new FileInfo(path).Length > 1024 * 1024) return false;
                 var s = JsonUtility.FromJson<PortSave>(File.ReadAllText(path));
-                if (s == null || (s.version != 1 && s.version != 2 && s.version != 3) || s.level != "Level01_Port" || s.state == null || s.enemies == null || s.pickups == null ||
+                if (s == null || (s.version < 1 || s.version > 4) || s.level != "Level01_Port" || s.state == null || s.enemies == null || s.pickups == null ||
                     !float.IsFinite(s.state.health) || s.state.health <= 0 || s.state.health > 100 || !Finite(s.position) ||
                     !Bounded(s.state.serum, 0, 100) || !Bounded(s.state.infection, 0, 100) || !Bounded(s.state.bleeding, 0, 1) ||
                     !Bounded(s.state.elapsed, 0, 10000000) || !float.IsFinite(s.state.lastInjection) || !float.IsFinite(s.state.maniaUntil) ||
                     !float.IsFinite(s.state.inventoryLockedUntil) || !float.IsFinite(s.state.tremorUntil) ||
                     (s.power && !s.fuse) || (s.boarding && !s.power) || s.pickups.Any(p => p == null || string.IsNullOrEmpty(p.id)) ||
-                    s.rounds < 0 || s.rounds > 12 || s.reserve < 0 || s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
+                    s.rounds < 0 || s.rounds > 100 || s.reserve < 0 || (s.version >= 4 && s.ammoPool != null && !s.ammoPool.Valid()) ||
+                    s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
                     s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 5 || (s.expansion != null && !s.expansion.Valid) || s.survivor < 0 || s.survivor > 3 || s.ammoGrade < 0 || s.ammoGrade > 2 ||
                     s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 1000))) return false;
                 if (s.version >= 2 && (s.inventory == null || !s.inventory.Valid || s.loot == null || s.released == null || s.released.Length > 64 || s.waves < 0 || !Bounded(s.pressure, 0, 100) ||
@@ -100,10 +104,11 @@ namespace Zombtoy.Gameplay
         public static void Restore(SandboxSession session, PortSave save)
         {
             session.State = JsonUtility.FromJson<SurvivalState>(JsonUtility.ToJson(save.state));
-            session.rounds = save.rounds; session.reserve = save.reserve;
+            session.RestoreAmmoPool(save.ammoPool, save.weapon, save.rounds, save.reserve);
             session.RestoreCounters(save.kills, save.shots, save.hits);
             var loadout = session.player.GetComponent<WeaponLoadout>();
             if (loadout != null) loadout.Equip(save.weapon, true);
+            session.RestoreAmmoPool(save.ammoPool, save.weapon, save.rounds, save.reserve);
             var cc = session.player.GetComponent<CharacterController>();
             cc.enabled = false; session.player.transform.position = save.position; cc.enabled = true;
             session.player.GetComponent<WeaponLoadout>()?.RestoreAmmo(save.ammoGrade);

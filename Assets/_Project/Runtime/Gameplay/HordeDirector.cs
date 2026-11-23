@@ -22,6 +22,10 @@ namespace Zombtoy.Gameplay
         public float NextWaveSeconds => Mathf.Max(0f, autoWaveCountdown);
         public int ActiveAlertedCount => session == null || session.Enemies == null ? 0 :
             session.Enemies.Count(e => e != null && e.gameObject.activeInHierarchy && !e.IsDead && e.Alerted);
+        public bool IsHordeActive => waveCombatActive && (ActiveAlertedCount > 0 || (ActiveBoss != null && !ActiveBoss.IsDead && ActiveBoss.gameObject.activeInHierarchy));
+
+        public event System.Action<int, bool> OnHordeStarted;
+        public event System.Action<int> OnHordeCleared;
 
         public string StatusHudText
         {
@@ -59,11 +63,12 @@ namespace Zombtoy.Gameplay
             {
                 waveCombatActive = false;
                 clearedWaves++;
-                session.reserve = Mathf.Min(240, session.reserve + 10);
+                int added = session.AddAmmoToCurrentWeapon(10);
                 session.State.bandages = Mathf.Min(12, session.State.bandages + 1);
                 session.GetComponent<PortMapExpander>()?.DeliverHordeSupplyDrop();
                 TacticalAudio.Play(session.player.transform.position, TacticalCue.Swing, 1.3f);
-                session.SetMessage($"¡Horda #{waves} repelida! +10 municion, +1 venda y Suministros en Helipuerto Sur.");
+                OnHordeCleared?.Invoke(waves);
+                session.SetMessage($"¡Horda #{waves} repelida! +{added} {session.CurrentCaliberShort}, +1 venda y Suministros en Helipuerto Sur.");
             }
         }
 
@@ -84,9 +89,9 @@ namespace Zombtoy.Gameplay
                 spawned = RecycleExpandedWave(session.player.transform.position, false);
             if (spawned > 0)
             {
-                session.reserve = Mathf.Min(240, session.reserve + 12);
+                int bonus = session.AddAmmoToCurrentWeapon(12);
                 if (session.Night != null) session.Night.Inventory.stamina = 100f;
-                session.SetMessage($"¡Oleada #{waves} adelantada! Bonificacion tactica: +12 cartuchos.");
+                session.SetMessage($"¡Oleada #{waves} adelantada! Bonificacion tactica: +{bonus} {session.CurrentCaliberShort}.");
             }
         }
 
@@ -135,6 +140,7 @@ namespace Zombtoy.Gameplay
                 autoWaveCountdown = Mathf.Max(38f, 68f - waves * 4f);
                 if (waves % 3 == 0 && lastAwakened != null)
                     PromoteEnemyToBoss(lastAwakened);
+                OnHordeStarted?.Invoke(waves, waves % 3 == 0);
                 session.SetMessage(waves % 3 == 0
                     ? $"¡HORDA DE ELITE #{waves}! Un Coloso Abisal lidera el asalto."
                     : "Ruido de horda en el puerto. Apaga la linterna y rompe el contacto.");
@@ -174,6 +180,7 @@ namespace Zombtoy.Gameplay
                 pressure = Mathf.Max(0f, pressure - 20f);
                 if ((bossWave || waves % 3 == 0) && lastRecycled != null)
                     PromoteEnemyToBoss(lastRecycled);
+                OnHordeStarted?.Invoke(waves, bossWave || waves % 3 == 0);
             }
             return count;
         }

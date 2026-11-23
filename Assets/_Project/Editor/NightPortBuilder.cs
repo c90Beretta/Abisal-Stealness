@@ -110,6 +110,12 @@ namespace Zombtoy.Editor
             all.Single(c => c.id == "generator-spares").transform.position = new Vector3(0, .45f, 12);
             all.Single(c => c.id == "control-armory").transform.position = new Vector3(14.5f, .45f, 20);
             n.breathing = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/Night/Breathing.wav");
+            var soundtrack = s.GetComponent<SoundtrackDirector>();
+            if (soundtrack == null) soundtrack = s.gameObject.AddComponent<SoundtrackDirector>();
+            soundtrack.ambientClips = SoundtrackDirector.LoadClipsFromPaths(SoundtrackDirector.DefaultAmbientPaths);
+            soundtrack.hordeHighHealthClips = SoundtrackDirector.LoadClipsFromPaths(SoundtrackDirector.DefaultHordeHighHealthPaths);
+            soundtrack.hordeLowHealthClips = SoundtrackDirector.LoadClipsFromPaths(SoundtrackDirector.DefaultHordeLowHealthPaths);
+            EditorUtility.SetDirty(soundtrack);
             s.player.meleeSound = AssetDatabase.LoadAssetAtPath<AudioClip>(Root + "/Audio/Night/Melee.wav");
             foreach (var gore in Object.FindObjectsByType<Dismemberment>(FindObjectsInactive.Include)) gore.woundMaterial = AssetDatabase.LoadAssetAtPath<Material>(Root + "/Art/Night/Infected_wounds.mat");
             foreach (var enemy in Object.FindObjectsByType<InfectedVariant>(FindObjectsInactive.Include))

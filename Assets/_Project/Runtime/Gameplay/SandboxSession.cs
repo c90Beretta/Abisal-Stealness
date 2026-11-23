@@ -21,15 +21,21 @@ namespace Zombtoy.Gameplay
         public PortMission portMission;
         public string missionTitle = "ABISAL / PUERTO CARGUERO";
         public SurvivalState State = new SurvivalState();
-        public int rounds = 12, reserve = 36;
+        public int rounds = 15, reserve = 45;
+        public WeaponAmmoPool AmmoPool = new WeaponAmmoPool();
+        public int ActiveWeaponIndex { get; private set; }
+        public int CurrentMagCapacity => WeaponAmmoPool.GetMagCapacity(ActiveWeaponIndex);
+        public int CurrentMaxReserve => WeaponAmmoPool.GetMaxReserve(ActiveWeaponIndex);
+        public string CurrentCaliberName => WeaponAmmoPool.GetCaliberName(ActiveWeaponIndex);
+        public string CurrentCaliberShort => WeaponAmmoPool.GetCaliberShort(ActiveWeaponIndex);
         public int Kills { get; set; }
         public int Shots { get; private set; }
         public int Hits { get; private set; }
         public bool Injecting => action == "suero" && actionLeft > 0;
         public bool Busy => actionLeft > 0 || reloadLeft > 0;
         public bool Reloading => reloadLeft > 0;
-        public float ActionProgress => actionLeft > 0 ? 1 - actionLeft / actionDuration : reloadLeft > 0 ? 1 - reloadLeft / 1.5f : 0;
-        public string ActionLabel => actionLeft > 0 ? "Aplicando " + action : Reloading ? "Recargando" : string.Empty;
+        public float ActionProgress => actionLeft > 0 ? 1 - actionLeft / actionDuration : reloadLeft > 0 ? 1 - reloadLeft / Mathf.Max(0.1f, reloadDuration) : 0;
+        public string ActionLabel => actionLeft > 0 ? "Aplicando " + action : Reloading ? "Recargando " + CurrentCaliberShort : string.Empty;
         public bool Running => Mode == SessionMode.Playing && State.health > 0;
         public SessionMode Mode { get; private set; } = SessionMode.Playing;
         public string Message { get; private set; } = "";
@@ -38,6 +44,7 @@ namespace Zombtoy.Gameplay
         public float HitFlash { get; private set; }
         public GameHud Hud { get; private set; }
         public NightSurvival Night { get; private set; }
+        public SoundtrackDirector Soundtrack { get; private set; }
         public RunTelemetry Telemetry { get; private set; }
         public SandboxEnemy[] Enemies { get; private set; }
         public WorldPickup[] Pickups { get; private set; }
@@ -46,7 +53,15 @@ namespace Zombtoy.Gameplay
         private string SavePath => string.IsNullOrEmpty(CheckpointPathOverride) ? CheckpointStore.DefaultPath : CheckpointPathOverride;
         private bool terminalActivated;
         private string action;
-        private float actionLeft, actionDuration, reloadLeft, immuneUntil;
+        private float actionLeft, actionDuration, reloadLeft, reloadDuration = 1.5f, immuneUntil;
+
+        private void Awake()
+        {
+            AmmoPool.ResetDefaults();
+            ActiveWeaponIndex = 0;
+            rounds = AmmoPool.GetMag(0);
+            reserve = AmmoPool.GetReserve(0);
+        }
 
         private void Start()
         {
@@ -62,6 +77,9 @@ namespace Zombtoy.Gameplay
             Hud.Setup(this);
             Mode = portMission == null ? SessionMode.Playing : SessionMode.Title;
             ApplyTime();
+            Soundtrack = GetComponent<SoundtrackDirector>();
+            if (Soundtrack == null) Soundtrack = gameObject.AddComponent<SoundtrackDirector>();
+            Soundtrack.Initialize(this, Night != null && Night.hordes != null ? Night.hordes : GetComponent<HordeDirector>());
             if (portMission != null) gameObject.AddComponent<ArsenalExpansion>().Initialize(this);
         }
 
@@ -116,8 +134,10 @@ namespace Zombtoy.Gameplay
                 reloadLeft -= Time.deltaTime;
                 if (reloadLeft <= 0)
                 {
-                    int count = Mathf.Min(12 - rounds, reserve);
-                    rounds += count; reserve -= count;
+                    SyncActiveWeaponToPool();
+                    AmmoPool.Reload(ActiveWeaponIndex);
+                    rounds = AmmoPool.GetMag(ActiveWeaponIndex);
+                    reserve = AmmoPool.GetReserve(ActiveWeaponIndex);
                 }
             }
         }
@@ -152,16 +172,80 @@ namespace Zombtoy.Gameplay
 #endif
         }
         private void ApplyTime() { Time.timeScale = Running ? 1 : 0; AudioListener.pause = !Running; }
+        public void SyncActiveWeaponToPool()
+        {
+            AmmoPool.SetMag(ActiveWeaponIndex, rounds);
+            AmmoPool.SetReserve(ActiveWeaponIndex, reserve);
+        }
+
+        public void OnWeaponEquipped(int newIndex)
+        {
+            int clamped = WeaponAmmoPool.ClampIndex(newIndex);
+            SyncActiveWeaponToPool();
+            ActiveWeaponIndex = clamped;
+            reloadLeft = 0f;
+            rounds = AmmoPool.GetMag(ActiveWeaponIndex);
+            reserve = AmmoPool.GetReserve(ActiveWeaponIndex);
+        }
+
+        public int AddAmmoForWeapon(int weaponIndex, int amount)
+        {
+            if (amount <= 0) return 0;
+            SyncActiveWeaponToPool();
+            int added = AmmoPool.AddReserve(weaponIndex, amount);
+            reserve = AmmoPool.GetReserve(ActiveWeaponIndex);
+            return added;
+        }
+
+        public int AddAmmoToCurrentWeapon(int amount) => AddAmmoForWeapon(ActiveWeaponIndex, amount);
+
+        public int ResupplyAllCalibers(float fraction = 0.35f)
+        {
+            SyncActiveWeaponToPool();
+            int totalAdded = 0;
+            for (int i = 0; i < WeaponAmmoPool.WeaponCount; i++)
+            {
+                int grant = Mathf.Max(WeaponAmmoPool.GetMagCapacity(i), Mathf.RoundToInt(WeaponAmmoPool.GetMaxReserve(i) * fraction));
+                totalAdded += AmmoPool.AddReserve(i, grant);
+            }
+            reserve = AmmoPool.GetReserve(ActiveWeaponIndex);
+            return totalAdded;
+        }
+
+        public void RestoreAmmoPool(WeaponAmmoPool pool, int weaponIndex, int fallbackRounds, int fallbackReserve)
+        {
+            ActiveWeaponIndex = WeaponAmmoPool.ClampIndex(weaponIndex);
+            if (pool != null && pool.Valid())
+            {
+                AmmoPool = pool.Copy();
+                rounds = AmmoPool.GetMag(ActiveWeaponIndex);
+                reserve = AmmoPool.GetReserve(ActiveWeaponIndex);
+            }
+            else
+            {
+                AmmoPool.ResetDefaults();
+                AmmoPool.SetMag(ActiveWeaponIndex, fallbackRounds);
+                AmmoPool.SetReserve(ActiveWeaponIndex, fallbackReserve);
+                rounds = AmmoPool.GetMag(ActiveWeaponIndex);
+                reserve = AmmoPool.GetReserve(ActiveWeaponIndex);
+            }
+        }
+
         public bool UseRound()
         {
             if (!Running || rounds <= 0 || Busy) return false;
-            rounds--; Shots++; return true;
+            rounds--;
+            AmmoPool.SetMag(ActiveWeaponIndex, rounds);
+            Shots++;
+            return true;
         }
         public void RegisterHit() { Hits++; HitFlash = 1; }
         public void Reload()
         {
-            if (!Running || rounds >= 12 || reserve <= 0 || Busy) return;
-            reloadLeft = player != null && player.Roster != null ? player.Roster.Current.ReloadSeconds : 1.5f;
+            SyncActiveWeaponToPool();
+            if (!Running || rounds >= CurrentMagCapacity || reserve <= 0 || Busy) return;
+            reloadDuration = player != null && player.Roster != null ? player.Roster.Current.ReloadSeconds : 1.5f;
+            reloadLeft = reloadDuration;
             EmitNoise(player.transform.position, 4);
         }
         public void GrantImmunity(float duration)
@@ -247,6 +331,7 @@ namespace Zombtoy.Gameplay
             { SetMessage("No hay un checkpoint valido para este puerto."); return false; }
             GetComponent<ArsenalExpansion>()?.UseCheckpoint();
             CheckpointStore.Restore(this, save);
+            Soundtrack?.StopHordeMusic();
             actionLeft = reloadLeft = 0; immuneUntil = Time.time + 1;
             Mode = SessionMode.Playing; Hud.ClosePanels(); ApplyTime(); SetMessage("Checkpoint recuperado."); return true;
         }

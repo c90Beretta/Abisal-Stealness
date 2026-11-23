@@ -28,6 +28,7 @@ namespace Zombtoy.Gameplay
             { nextGroan = Time.time + Random.Range(5f, 9f); voice.PlayOneShot(groan, .3f); }
             if (kind != InfectedKind.Screamer || enemy.Mode != EnemyMode.Chase || Time.time < nextCry) return;
             if (scream != null) voice.PlayOneShot(scream, .65f);
+            enemy.VisualAdapter?.TriggerScream();
             nextCry = Time.time + 18; enemy.session.EmitNoise(transform.position, 32);
             CombatEffects.Cry(transform.position + Vector3.up, enemy.session.tracerMaterial);
             enemy.session.SetMessage("Aullador: su grito atrae a otros infectados.");

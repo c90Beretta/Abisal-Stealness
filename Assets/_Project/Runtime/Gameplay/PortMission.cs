@@ -65,14 +65,14 @@ namespace Zombtoy.Gameplay
             }
             else if (target == supplies)
             {
-                if (session.Night != null && (session.Night.Inventory.Weight(session) + .416f > session.Night.Inventory.MaxCapacity(session) || session.reserve + 12 > 240 || session.State.doses >= 8))
-                { session.SetMessage("Mochila llena. Usa suministros para recoger esta caja."); return; }
+                if (session.Night != null && (session.Night.Inventory.Weight(session) + .416f > session.Night.Inventory.MaxCapacity(session) || session.reserve + 12 > session.CurrentMaxReserve || session.State.doses >= 8))
+                { session.SetMessage("Mochila o reserva de calibre llena. Usa suministros para recoger esta caja."); return; }
                 SuppliesTaken = true;
-                session.Telemetry?.Loot(12, 1);
-                session.reserve += 12;
+                int added = session.AddAmmoToCurrentWeapon(12);
+                session.Telemetry?.Loot(added, 1);
                 session.State.doses++;
                 supplies.gameObject.SetActive(false);
-                session.SetMessage("Suministros: +12 cartuchos y +1 dosis de suero.");
+                session.SetMessage($"Suministros: +{added} {session.CurrentCaliberShort} y +1 dosis de suero.");
             }
             else if (target == generator)
             {
