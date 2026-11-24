@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c87bcf197f8bdca4ea090decf6c370e4, type: 3}
   m_Name: SurvivorVisualCatalog
   m_EditorClassIdentifier: Zombtoy.Gameplay::Zombtoy.Gameplay.SurvivorVisualCatalog
-  version: 4
+  version: 8
   animatorController: {fileID: 9100000, guid: f274dc764b047ea43848171fbce363e4, type: 2}
   entries:
   - id: 0
@@ -79,7 +79,7 @@ MonoBehaviour:
     label: Brute_BurntHeavy
     modelPrefab: {fileID: 5586939813507766417, guid: cca868792e4124a4f87ce872fb01a03e, type: 3}
     avatar: {fileID: 9000000, guid: 288d362a4718bcb4b99c92ea52b299a3, type: 3}
-    targetHeight: 2.04
+    targetHeight: 2.06
   - kind: 3
     label: Screamer_Bio
     modelPrefab: {fileID: 4048099474575206705, guid: 385874de35bfeda49b6a4f75a7186e88, type: 3}

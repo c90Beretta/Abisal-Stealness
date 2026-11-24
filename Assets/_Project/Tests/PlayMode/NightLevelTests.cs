@@ -89,12 +89,12 @@ namespace Zombtoy.Tests
             yield return Load(); var director = session.Night.hordes;
             Assert.That(director.reserves.Length, Is.EqualTo(16)); Assert.That(director.Remaining, Is.EqualTo(16));
             int count = director.Release(session.player.transform.position);
-            Assert.That(count, Is.EqualTo(4)); Assert.That(director.Remaining, Is.EqualTo(12));
+            Assert.That(count, Is.EqualTo(8)); Assert.That(director.Remaining, Is.EqualTo(8));
             Assert.That(director.Release(session.player.transform.position), Is.Zero, "Cooldown prevents wave floods");
             Assert.That(session.Enemies.Count(e => e.gameObject.activeSelf && !e.IsDead), Is.LessThanOrEqualTo(HordeDirector.ActiveLimit));
             Assert.That(session.SaveCheckpoint(true), Is.True);
             director.Restore(new bool[16], 0, 0); Assert.That(session.LoadCheckpoint(), Is.True);
-            Assert.That(director.Remaining, Is.EqualTo(12)); Assert.That(director.waves, Is.EqualTo(1));
+            Assert.That(director.Remaining, Is.EqualTo(8)); Assert.That(director.waves, Is.EqualTo(1));
             yield return null;
         }
         [UnityTest] public IEnumerator MeleeCostsStaminaAndWallsBlockTheSwing()

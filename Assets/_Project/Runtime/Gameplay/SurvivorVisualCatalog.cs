@@ -31,7 +31,7 @@ namespace Zombtoy.Gameplay
     public sealed class SurvivorVisualCatalog : ScriptableObject
     {
         public const string ResourcePath = "SurvivorVisualCatalog";
-        public const int CurrentCatalogVersion = 4;
+        public const int CurrentCatalogVersion = 8;
 
         public int version;
         public RuntimeAnimatorController animatorController;

@@ -12,12 +12,14 @@ namespace Zombtoy.Gameplay
         public SandboxSession session;
         public EnemyDefinition definition;
         public float speed = 1.2f, health = 70f, sightRange = 7f;
+        public float damageMultiplier = 1f;
         public bool useNavigation;
         public EnemyMode Mode { get; private set; }
         public float LastDamagedAt { get; private set; } = -100;
         public bool IsDead => health <= 0;
-        public float MaxHealth => definition != null ? definition.health : maxHealth;
+        public float MaxHealth => scaledMaxHealth > 0f ? scaledMaxHealth : (definition != null ? definition.health : maxHealth);
         private float maxHealth = 70;
+        private float scaledMaxHealth;
         public float HealthFraction => Mathf.Clamp01(health / MaxHealth);
         public bool Alerted => Mode != EnemyMode.Patrol && Mode != EnemyMode.Dead;
         private CharacterController controller;
@@ -53,8 +55,10 @@ namespace Zombtoy.Gameplay
             renderers = GetComponentsInChildren<Renderer>();
             block = new MaterialPropertyBlock();
             motion = GetComponent<CharacterMotion>();
-            visual = transform.Find("Character visual") ?? transform.Find("CC0 visual");
-            VisualAdapter = GetComponent<EnemyVisualAdapter>() ?? gameObject.AddComponent<EnemyVisualAdapter>();
+            visual = transform.Find("Character visual");
+            if (visual == null) visual = transform.Find("CC0 visual");
+            VisualAdapter = GetComponent<EnemyVisualAdapter>();
+            if (VisualAdapter == null) VisualAdapter = gameObject.AddComponent<EnemyVisualAdapter>();
             VisualAdapter.Initialize(this);
             if (definition != null) { health = definition.health; speed = definition.speed; sightRange = definition.sightRange; }
             maxHealth = health;
@@ -121,8 +125,13 @@ namespace Zombtoy.Gameplay
                 r.SetPropertyBlock(block);
             }
             VisualAdapter?.ApplyVisualFeedback(isFlashing, isBurning);
-            if (motion != null) motion.SetMoving(false, 0);
-            VisualAdapter?.UpdateMovement(0f, Mode);
+            float movedSpeed = UpdateBehaviorAndMove();
+            if (motion != null) motion.SetMoving(movedSpeed > 0.05f, movedSpeed);
+            VisualAdapter?.UpdateMovement(movedSpeed, Mode);
+        }
+
+        private float UpdateBehaviorAndMove()
+        {
             bool sees = SeesPlayer(Mode == EnemyMode.Patrol);
             float distance = Vector3.Distance(session.player.transform.position, transform.position);
             if (Mode == EnemyMode.Windup)
@@ -133,22 +142,22 @@ namespace Zombtoy.Gameplay
                 {
                     if (distance < 1.8f && SeesPlayer(false))
                     {
-                        float dmg = (definition == null ? 12 : definition.damage) * (variant != null ? variant.DamageMultiplier : 1);
+                        float dmg = (definition == null ? 12 : definition.damage) * damageMultiplier * (variant != null ? variant.DamageMultiplier : 1);
                         if (session.player != null && session.player.TryInterceptEnemyAttack(this, ref dmg, out bool wound))
                         {
                             if (dmg > 0) session.TakeDamage(dmg, wound);
-                            return;
+                            return 0f;
                         }
                         session.TakeDamage(dmg);
                     }
                     Mode = EnemyMode.Recover; stateUntil = Time.time + (definition == null ? 1.2f : definition.attackRecovery);
                 }
-                return;
+                return 0f;
             }
             if (visual != null) visual.localRotation = Quaternion.Slerp(visual.localRotation, variant != null && variant.LegsLost > 0 ? Quaternion.Euler(65, 0, 0) : Quaternion.identity, Time.deltaTime * 8);
             if (Mode == EnemyMode.Recover || Mode == EnemyMode.Stagger)
             {
-                if (Time.time < stateUntil) return;
+                if (Time.time < stateUntil) return 0f;
                 Mode = EnemyMode.Investigate;
             }
             if (sees)
@@ -157,15 +166,15 @@ namespace Zombtoy.Gameplay
                 if (distance < 1.5f)
                 {
                     Mode = EnemyMode.Windup; stateUntil = Time.time + (definition == null ? 0.55f : definition.attackWindup);
-                    return;
+                    return 0f;
                 }
             }
             else if (Mode != EnemyMode.Patrol && Time.time >= alertedUntil) { Mode = EnemyMode.Patrol; destination = home; }
             Vector3 delta = destination - transform.position; delta.y = 0;
             if (delta.magnitude < 0.6f)
             {
-                if (Mode != EnemyMode.Patrol) { Mode = EnemyMode.Search; transform.Rotate(0, 45 * Time.deltaTime, 0); return; }
-                if (Time.time < patrolUntil) return;
+                if (Mode != EnemyMode.Patrol) { Mode = EnemyMode.Search; transform.Rotate(0, 45 * Time.deltaTime, 0); return 0f; }
+                if (Time.time < patrolUntil) return 0f;
                 patrolUntil = Time.time + 5;
                 Vector3 candidate = home + initialRotation * new Vector3((patrolIndex++ % 2 == 0 ? 2 : -2), 0, 1.5f);
                 destination = useNavigation && NavMesh.SamplePosition(candidate, out var sampled, 2, NavMesh.AllAreas) ? sampled.position : home;
@@ -186,9 +195,9 @@ namespace Zombtoy.Gameplay
                     delta = path.corners[1] - transform.position;
                     delta.y = 0;
                 }
-                else if (Mode == EnemyMode.Patrol) return;
+                else if (Mode == EnemyMode.Patrol) return 0f;
             }
-            if (delta.sqrMagnitude < 0.01f) return;
+            if (delta.sqrMagnitude < 0.01f) return 0f;
             Face(delta);
             float moveSpeed = speed * (Mode == EnemyMode.Patrol ? 0.45f : 1) * (variant != null ? variant.MoveMultiplier : 1);
             Vector3 separation = Vector3.zero;
@@ -199,8 +208,7 @@ namespace Zombtoy.Gameplay
                     if (away.sqrMagnitude > .001f && away.sqrMagnitude < .8f) separation += away.normalized * (1 - away.magnitude);
                 }
             controller.Move(((delta.normalized + separation * .8f).normalized * moveSpeed + Vector3.down * 8) * Time.deltaTime);
-            if (motion != null) motion.SetMoving(true, moveSpeed);
-            VisualAdapter?.UpdateMovement(moveSpeed, Mode);
+            return moveSpeed;
         }
 
         private void Face(Vector3 delta)
@@ -226,9 +234,33 @@ namespace Zombtoy.Gameplay
             lastHitMelee = cutting;
             lastImpact = point; lastImpulse = (transform.position - session.player.transform.position).normalized * Mathf.Clamp(amount * .045f, .5f, 5) + Vector3.up * .35f;
             CombatEffects.Blood(point, session.tracerMaterial);
-            if (gore != null && GetComponent<SpecialInfected>()?.Species != SpecialSpecies.Hound) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
+            if (gore != null) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
             if (variant != null && variant.kind == InfectedKind.Brute && !cutting && !armorPiercing && point.y - transform.position.y < 1.45f) amount *= .6f;
             Damage(amount);
+        }
+
+        public void ApplyWaveMultipliers(float hpMult, float speedMult, float dmgMult, float sightBonus = 0f)
+        {
+            Initialize();
+            float baseHp = definition != null ? definition.health : maxHealth;
+            float baseSpeed = definition != null ? definition.speed : 1.2f;
+            float baseSight = definition != null ? definition.sightRange : 7f;
+            scaledMaxHealth = Mathf.Clamp(baseHp * Mathf.Max(1f, hpMult), 1f, 2500f);
+            health = scaledMaxHealth;
+            speed = baseSpeed * Mathf.Max(1f, speedMult);
+            damageMultiplier = Mathf.Max(1f, dmgMult);
+            sightRange = baseSight + Mathf.Max(0f, sightBonus);
+        }
+
+        public void ResetWaveMultipliers()
+        {
+            scaledMaxHealth = 0f;
+            damageMultiplier = 1f;
+            if (definition != null)
+            {
+                speed = definition.speed;
+                sightRange = definition.sightRange;
+            }
         }
 
         public void Damage(float amount)

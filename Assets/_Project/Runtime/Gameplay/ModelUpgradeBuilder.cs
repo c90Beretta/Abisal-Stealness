@@ -202,27 +202,8 @@ namespace Zombtoy.Gameplay
 
         public static void EnhanceSpecialInfected(SpecialInfected special, SandboxSession session)
         {
-            if (special == null || session == null) return;
-            Material mat = session.tracerMaterial;
-            if (special.Species == SpecialSpecies.Bloater)
-            {
-                var chest = FindBone(special.transform, "Chest") ?? special.transform;
-                Color toxic = new Color(.48f, .88f, .22f);
-                Part(chest, "Toxic Sac Back", new Vector3(0, .08f, -.18f), new Vector3(.34f, .36f, .26f), toxic, mat, true, PrimitiveType.Sphere);
-                Part(chest, "Toxic Pustule L", new Vector3(-.16f, .16f, -.10f), new Vector3(.18f, .18f, .18f), HazardAmber, mat, true, PrimitiveType.Sphere);
-                Part(chest, "Toxic Pustule R", new Vector3(.17f, .02f, .14f), new Vector3(.20f, .20f, .20f), toxic, mat, true, PrimitiveType.Sphere);
-            }
-            else if (special.Species == SpecialSpecies.Colossus)
-            {
-                var chest = FindBone(special.transform, "Chest") ?? special.transform;
-                var head = FindBone(special.transform, "Head");
-                Part(chest, "Colossus Chest Plate", new Vector3(0, .06f, .16f), new Vector3(.44f, .38f, .12f), Gunmetal, mat);
-                Part(chest, "Colossus Bio Core", new Vector3(0, .08f, .23f), new Vector3(.14f, .14f, .04f), OpticRed, mat, true);
-                Part(chest, "Colossus Pauldron L", new Vector3(-.26f, .18f, 0), new Vector3(.20f, .18f, .26f), DarkSteel, mat);
-                Part(chest, "Colossus Pauldron R", new Vector3(.26f, .18f, 0), new Vector3(.20f, .18f, .26f), DarkSteel, mat);
-                if (head != null)
-                    Part(head, "Colossus Riot Mask", new Vector3(0, .08f, .08f), new Vector3(.22f, .20f, .18f), Gunmetal, mat);
-            }
+            // Intentionally left empty: bosses and special infected use clean scaled 3D zombie models
+            // instead of floating primitive gray/red boxes or spheres.
         }
 
         private static Transform FindBone(Transform root, string name)

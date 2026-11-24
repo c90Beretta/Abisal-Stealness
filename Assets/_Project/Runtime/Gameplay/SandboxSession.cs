@@ -336,6 +336,22 @@ namespace Zombtoy.Gameplay
             Mode = SessionMode.Playing; Hud.ClosePanels(); ApplyTime(); SetMessage("Checkpoint recuperado."); return true;
         }
         public void RestoreCounters(int kills, int shots, int hits) { Kills = kills; Shots = shots; Hits = hits; }
+
+        public void RegisterDynamicEnemy(SandboxEnemy enemy)
+        {
+            if (enemy == null) return;
+            if (Enemies == null)
+            {
+                Enemies = new[] { enemy };
+                return;
+            }
+            if (Array.IndexOf(Enemies, enemy) >= 0) return;
+            var expanded = new SandboxEnemy[Enemies.Length + 1];
+            Array.Copy(Enemies, expanded, Enemies.Length);
+            expanded[Enemies.Length] = enemy;
+            Enemies = expanded;
+        }
+
         private void OnDestroy() { Time.timeScale = 1; AudioListener.pause = false; }
     }
 }

@@ -29,7 +29,7 @@ namespace Zombtoy.Tests
             session.TogglePause();session.Resume();yield return null;
             Assert.That(session.reserve,Is.EqualTo(heavyReserve+24),"Pause cannot duplicate the deployment grant");
             var specials=session.Enemies.Select(e=>e.GetComponent<SpecialInfected>()).Where(e=>e!=null).ToArray();
-            Assert.That(specials.Select(e=>e.Species).Distinct().Count(),Is.EqualTo(3));
+            Assert.That(specials.Select(e=>e.Species).Distinct().Count(),Is.EqualTo(2));
             Assert.That(session.player.GetComponent<WeaponLoadout>().weapons[3].range,Is.GreaterThan(50));
             var roster=session.player.GetComponent<SurvivorRoster>();roster.ApplyCharacter(3,true);
             session.CheckpointPathOverride=System.IO.Path.Combine(Application.temporaryCachePath,"integrated-checkpoint.json");

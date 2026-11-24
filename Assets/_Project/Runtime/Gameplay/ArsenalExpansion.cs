@@ -54,14 +54,16 @@ namespace Zombtoy.Gameplay
             selectedMap = (int)initialMap;
             mapExpander.Initialize(session, initialMap);
 
+            SpecialSpecies[] initialSpecials = { SpecialSpecies.Bloater, SpecialSpecies.Colossus };
             int special = 0;
             var encounters = (SandboxEnemy[])session.Enemies.Clone();
             System.Array.Sort(encounters, (a, b) => string.CompareOrdinal(a.name, b.name));
             foreach (var enemy in encounters)
             {
-                enemy.gameObject.AddComponent<AttackPose>();
-                if (special < 3 && enemy.gameObject.activeInHierarchy)
-                    enemy.gameObject.AddComponent<SpecialInfected>().Initialize(session, (SpecialSpecies)special++);
+                if (enemy.GetComponent<AttackPose>() == null)
+                    enemy.gameObject.AddComponent<AttackPose>();
+                if (special < initialSpecials.Length && enemy.gameObject.activeInHierarchy)
+                    enemy.gameObject.AddComponent<SpecialInfected>().Initialize(session, initialSpecials[special++]);
             }
             session.player.gameObject.AddComponent<AttackPose>();
             BuildMenu();

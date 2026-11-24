@@ -121,7 +121,7 @@ namespace Zombtoy.Editor
 
                 EditorUtility.DisplayProgressBar("Abisal", "Integrando modelos 3D y animaciones de ataque/muerte de enemigos...", 0.94f);
                 var enemyController = BuildEnemyAnimatorController(clips);
-                var enemyEntries = BuildEnemyVisualEntries(enemyController);
+                var enemyEntries = BuildEnemyVisualEntries(enemyController, forceRebuild);
 
                 var catalog = AssetDatabase.LoadAssetAtPath<SurvivorVisualCatalog>(CatalogPath);
                 if (catalog == null)
@@ -366,16 +366,19 @@ namespace Zombtoy.Editor
                         clipAnims[c].loopTime = spec.loop;
                         clipAnims[c].loopPose = spec.loop;
 
-                        // Bake root transform into pose:
-                        // - Rotation based upon Body Orientation -> straight forward facing (no crooked angle)
-                        // - Position Y based upon Feet -> grounded at y=0 (no floating or sinking)
-                        // - Position XZ based upon Center of Mass -> stays centered in CharacterController
+                        // CRITICAL: All Pro Rifle Pack locomotion clips carry 1.8m-3.4m of horizontal root motion.
+                        // - lockRootPositionXZ = FALSE for looping locomotion so Unity strips root XZ travel into
+                        //   deltaPosition (which applyRootMotion=false discards), keeping characters 100% in-place
+                        //   with ZERO erratic left/right/forward lurching or loop snapping!
+                        // - lockRootPositionXZ = TRUE only for non-looping death clips so bodies fall naturally.
+                        // - keepOriginalOrientation = TRUE so all 8 directions stay aligned to +Z consistently.
+                        // - Position Y based upon Feet -> grounded at y=0.
                         clipAnims[c].lockRootRotation = true;
-                        clipAnims[c].keepOriginalOrientation = false;
+                        clipAnims[c].keepOriginalOrientation = true;
                         clipAnims[c].lockRootHeightY = true;
                         clipAnims[c].keepOriginalPositionY = false;
                         clipAnims[c].heightFromFeet = true;
-                        clipAnims[c].lockRootPositionXZ = true;
+                        clipAnims[c].lockRootPositionXZ = !spec.loop;
                         clipAnims[c].keepOriginalPositionXZ = false;
                     }
 
@@ -430,38 +433,40 @@ namespace Zombtoy.Editor
 
             var sm = controller.layers[0].stateMachine;
 
-            AnimationClip idleRelax = clips.TryGetValue("idle", out var r) ? r : (clips.TryGetValue("idle_aim", out var ia0) ? ia0 : null);
-            AnimationClip idleAim = clips.TryGetValue("idle_aim", out var ia) ? ia : idleRelax;
-            AnimationClip crouchIdle = clips.TryGetValue("crouch_idle", out var ci) ? ci : idleRelax;
+            AnimationClip idleAim = clips.TryGetValue("idle_aim", out var ia) ? ia : (clips.TryGetValue("idle", out var r0) ? r0 : null);
+            AnimationClip idleRelax = idleAim != null ? idleAim : (clips.TryGetValue("idle", out var r) ? r : null);
+            AnimationClip crouchIdle = clips.TryGetValue("crouch_aim", out var ca0) ? ca0 : (clips.TryGetValue("crouch_idle", out var ci) ? ci : idleRelax);
             AnimationClip crouchAim = clips.TryGetValue("crouch_aim", out var ca) ? ca : crouchIdle;
 
             // 1) Standing Locomotion (idle + 8-way Walk + 8-way Run + 8-way Sprint)
+            // Pro Rifle Pack run/sprint clips are 0.50s (4.56 m/s & 6.85 m/s) while gameplay speeds are 3.0 / 5.0 m/s,
+            // so timeScale is calibrated to match actual ground speed smoothly without frantic thrashing.
             var standState = controller.CreateBlendTreeInController("Standing_Locomotion", out BlendTree standTree, 0);
             Configure2DTree(standTree, BlendTreeType.FreeformDirectional2D);
             if (idleRelax != null) standTree.AddChild(idleRelax, Vector2.zero);
-            Add8WayRing(standTree, clips, "walk", 0.45f, idleRelax);
-            Add8WayRing(standTree, clips, "run", 1.0f, idleRelax);
-            Add8WayRing(standTree, clips, "sprint", 1.5f, idleRelax);
+            Add8WayRing(standTree, clips, "walk", 0.45f, idleRelax, 0.95f);
+            Add8WayRing(standTree, clips, "run", 1.0f, idleRelax, 0.68f);
+            Add8WayRing(standTree, clips, "sprint", 1.5f, idleRelax, 0.76f);
             sm.defaultState = standState;
 
             // 2) Standing Aiming (ADS idle aiming + 8-way Walk + 8-way Run)
             var aimState = controller.CreateBlendTreeInController("Standing_Aiming", out BlendTree aimTree, 0);
             Configure2DTree(aimTree, BlendTreeType.FreeformDirectional2D);
             if (idleAim != null) aimTree.AddChild(idleAim, Vector2.zero);
-            Add8WayRing(aimTree, clips, "walk", 0.50f, idleAim);
-            Add8WayRing(aimTree, clips, "run", 1.0f, idleAim);
+            Add8WayRing(aimTree, clips, "walk", 0.50f, idleAim, 0.90f);
+            Add8WayRing(aimTree, clips, "run", 1.0f, idleAim, 0.66f);
 
             // 3) Crouching Locomotion (crouch idle + 8-way Crouch Walk)
             var crouchState = controller.CreateBlendTreeInController("Crouching_Locomotion", out BlendTree crouchTree, 0);
             Configure2DTree(crouchTree, BlendTreeType.FreeformDirectional2D);
             if (crouchIdle != null) crouchTree.AddChild(crouchIdle, Vector2.zero);
-            Add8WayRing(crouchTree, clips, "cwalk", 0.60f, crouchIdle);
+            Add8WayRing(crouchTree, clips, "cwalk", 0.60f, crouchIdle, 0.90f);
 
             // 4) Crouching Aiming (crouch aiming idle + 8-way Crouch Walk)
             var crouchAimState = controller.CreateBlendTreeInController("Crouching_Aiming", out BlendTree crouchAimTree, 0);
             Configure2DTree(crouchAimTree, BlendTreeType.FreeformDirectional2D);
             if (crouchAim != null) crouchAimTree.AddChild(crouchAim, Vector2.zero);
-            Add8WayRing(crouchAimTree, clips, "cwalk", 0.60f, crouchAim);
+            Add8WayRing(crouchAimTree, clips, "cwalk", 0.60f, crouchAim, 0.90f);
 
             AddStanceTransition(standState, aimState, aiming: true, crouching: false);
             AddStanceTransition(standState, crouchState, aiming: false, crouching: true);
@@ -515,7 +520,7 @@ namespace Zombtoy.Editor
             tr.AddCondition(crouching ? AnimatorConditionMode.If : AnimatorConditionMode.IfNot, 0f, "Crouching");
         }
 
-        private static void Add8WayRing(BlendTree tree, Dictionary<string, AnimationClip> clips, string prefix, float radius, AnimationClip fallback)
+        private static void Add8WayRing(BlendTree tree, Dictionary<string, AnimationClip> clips, string prefix, float radius, AnimationClip fallback, float timeScale = 1f)
         {
             float d = radius * 0.70710678f;
             var directions = new (string suffix, Vector2 pos)[]
@@ -530,13 +535,21 @@ namespace Zombtoy.Editor
                 ("_fl", new Vector2(-d, d)),
             };
 
+            var children = new List<ChildMotion>(tree.children);
             foreach (var (suffix, pos) in directions)
             {
-                if (clips.TryGetValue(prefix + suffix, out var clip) && clip != null)
-                    tree.AddChild(clip, pos);
-                else if (fallback != null)
-                    tree.AddChild(fallback, pos);
+                AnimationClip chosen = (clips.TryGetValue(prefix + suffix, out var clip) && clip != null) ? clip : fallback;
+                if (chosen == null) continue;
+                children.Add(new ChildMotion
+                {
+                    motion = chosen,
+                    position = pos,
+                    timeScale = timeScale,
+                    cycleOffset = 0f,
+                    directBlendParameter = "Blend"
+                });
             }
+            tree.children = children.ToArray();
         }
 
         // =====================================================================
@@ -1416,30 +1429,79 @@ namespace Zombtoy.Editor
         }
 
         // =====================================================================
-        // 8. ENEMY 3D MODELS + HUMANOID ATTACK / SCREAM / STAGGER / DEATH ANIMATIONS
+        // 8. ENEMY 3D MODELS + GROUNDED MOCAP BASE + UPPER-BODY ZOMBIE LAYER
         // =====================================================================
+
+        private static readonly (string human, string bone)[] MakeHumanBurntMap =
+        {
+            ("Hips", "root"),
+            ("Spine", "spine05"),
+            ("Chest", "spine03"),
+            ("UpperChest", "spine01"),
+            ("Neck", "neck01"),
+            ("Head", "head"),
+            ("LeftShoulder", "clavicle_L"),
+            ("LeftUpperArm", "upperarm01_L"),
+            ("LeftLowerArm", "lowerarm01_L"),
+            ("LeftHand", "wrist_L"),
+            ("RightShoulder", "clavicle_R"),
+            ("RightUpperArm", "upperarm01_R"),
+            ("RightLowerArm", "lowerarm01_R"),
+            ("RightHand", "wrist_R"),
+            ("LeftUpperLeg", "upperleg01_L"),
+            ("LeftLowerLeg", "lowerleg01_L"),
+            ("LeftFoot", "foot_L"),
+            ("LeftToes", "toe1-1_L"),
+            ("RightUpperLeg", "upperleg01_R"),
+            ("RightLowerLeg", "lowerleg01_R"),
+            ("RightFoot", "foot_R"),
+            ("RightToes", "toe1-1_R"),
+        };
 
         private static AnimatorController BuildEnemyAnimatorController(Dictionary<string, AnimationClip> proClips)
         {
-            var idleClip = CreateOrUpdateMuscleClip("Enemy_ZombieIdle", 2.4f, loop: true, BuildZombieIdleCurves);
-            var armsReachClip = CreateOrUpdateMuscleClip("Enemy_ZombieArmsReach", 1.4f, loop: true, BuildZombieArmsReachCurves);
-            var attackClip = FindCustomEnemyClip("attack", "claw", "bite", "swipe", "punch")
-                ?? CreateOrUpdateMuscleClip("Enemy_AttackSwipe", 0.62f, loop: false, BuildZombieAttackSwipeCurves);
-            var heavyAttackClip = FindCustomEnemyClip("heavy", "slam", "smash")
-                ?? CreateOrUpdateMuscleClip("Enemy_HeavySlam", 0.92f, loop: false, BuildZombieHeavySlamCurves);
-            var screamClip = FindCustomEnemyClip("scream", "roar", "howl", "taunt")
-                ?? CreateOrUpdateMuscleClip("Enemy_Scream", 1.05f, loop: false, BuildZombieScreamCurves);
-            var staggerClip = FindCustomEnemyClip("stagger", "hit", "flinch", "reaction")
-                ?? CreateOrUpdateMuscleClip("Enemy_Stagger", 0.36f, loop: false, BuildZombieStaggerCurves);
+            // Auto-detect optional real Mixamo Drunken / Zombie clips if present in Assets/Animations (outside Rifle packs)
+            AnimationClip customDrunkIdle = FindCustomEnemyClip(loop: true, "drunk idle", "drunken idle");
+            AnimationClip customDrunkWalk = FindCustomEnemyClip(loop: true, "drunk walk", "drunken walk", "drunk", "drunken", "stumble");
+            AnimationClip customDrunkRun = FindCustomEnemyClip(loop: true, "drunk run", "drunken run");
+            AnimationClip customZombieIdle = FindCustomEnemyClip(loop: true, "zombie idle");
+            AnimationClip customZombieWalk = FindCustomEnemyClip(loop: true, "zombie walk");
+            AnimationClip customZombieRun = FindCustomEnemyClip(loop: true, "zombie run", "zombie sprint");
 
-            AnimationClip walkClip = proClips.TryGetValue("walk_f", out var wf) ? wf : idleClip;
-            AnimationClip runClip = proClips.TryGetValue("run_f", out var rf) ? rf : walkClip;
-            AnimationClip sprintClip = proClips.TryGetValue("sprint_f", out var sf) ? sf : runClip;
+            // Base Layer uses EXCLUSIVELY real MoCap clips (in-place via lockRootPositionXZ = false) so RootT.y
+            // and feet remain 100% grounded. Calibrate timeScale to match enemy ground speeds cleanly.
+            AnimationClip baseIdle = customZombieIdle ?? (proClips.TryGetValue("idle_aim", out var bia)
+                ? bia
+                : (proClips.TryGetValue("idle", out var bi) ? bi : null));
+            AnimationClip drunkBaseIdle = customDrunkIdle ?? baseIdle;
+            AnimationClip walkClip = customZombieWalk ?? (proClips.TryGetValue("walk_f", out var wf) ? wf : baseIdle);
+            AnimationClip drunkWalkClip = customDrunkWalk ?? walkClip;
+            AnimationClip runClip = customZombieRun ?? (proClips.TryGetValue("run_f", out var rf) ? rf : walkClip);
+            AnimationClip drunkRunClip = customDrunkRun ?? customDrunkWalk ?? runClip;
+            AnimationClip sprintClip = customZombieRun ?? (proClips.TryGetValue("sprint_f", out var sf) ? sf : runClip);
 
-            AnimationClip death0 = proClips.TryGetValue("death", out var d0) ? d0 : idleClip;
+            AnimationClip death0 = proClips.TryGetValue("death", out var d0) ? d0 : baseIdle;
             AnimationClip death1 = proClips.TryGetValue("death_back", out var d1) ? d1 : death0;
             AnimationClip death2 = proClips.TryGetValue("death_right", out var d2) ? d2 : death0;
             AnimationClip death3 = proClips.TryGetValue("death_headshot", out var d3) ? d3 : death0;
+
+            // Layer 1 (ZombieUpperBody): 2 distinct enemy style variations controlled by Style (0 = Simple Zombie, 1 = Drunken)
+            var idleUpperClip = CreateOrUpdateMuscleClip("Enemy_ZombieIdle", 2.4f, loop: true, BuildZombieIdleUpperCurves);
+            var walkUpperClip = CreateOrUpdateMuscleClip("Enemy_ZombieArmsReach", 1.2f, loop: true, BuildZombieWalkUpperCurves);
+            var chaseUpperClip = CreateOrUpdateMuscleClip("Enemy_ZombieChaseUpper", 0.9f, loop: true, BuildZombieChaseUpperCurves);
+
+            var drunkIdleUpperClip = CreateOrUpdateMuscleClip("Enemy_DrunkenIdleUpper", 2.8f, loop: true, BuildDrunkenIdleUpperCurves);
+            var drunkWalkUpperClip = CreateOrUpdateMuscleClip("Enemy_DrunkenWalkUpper", 1.8f, loop: true, BuildDrunkenWalkUpperCurves);
+            var drunkChaseUpperClip = CreateOrUpdateMuscleClip("Enemy_DrunkenChaseUpper", 1.2f, loop: true, BuildDrunkenChaseUpperCurves);
+
+            var attackClip = FindCustomEnemyClip(loop: false, "attack", "claw", "bite", "swipe", "punch")
+                ?? CreateOrUpdateMuscleClip("Enemy_AttackSwipe", 0.62f, loop: false, BuildZombieAttackSwipeCurves);
+            var heavyAttackClip = FindCustomEnemyClip(loop: false, "heavy", "slam", "smash")
+                ?? CreateOrUpdateMuscleClip("Enemy_HeavySlam", 0.92f, loop: false, BuildZombieHeavySlamCurves);
+            var screamClip = FindCustomEnemyClip(loop: false, "scream", "roar", "howl", "taunt")
+                ?? CreateOrUpdateMuscleClip("Enemy_Scream", 1.05f, loop: false, BuildZombieScreamCurves);
+            var staggerClip = FindCustomEnemyClip(loop: false, "stagger", "hit", "flinch", "reaction")
+                ?? CreateOrUpdateMuscleClip("Enemy_Stagger", 0.36f, loop: false, BuildZombieStaggerCurves);
 
             var upperMask = CreateOrUpdateEnemyUpperMask();
 
@@ -1448,6 +1510,7 @@ namespace Zombtoy.Editor
 
             var controller = AnimatorController.CreateAnimatorControllerAtPath(EnemyControllerPath);
             controller.AddParameter("Speed", AnimatorControllerParameterType.Float);
+            controller.AddParameter("Style", AnimatorControllerParameterType.Float); // 0 = Simple Zombie, 1 = Drunken
             controller.AddParameter("Attack", AnimatorControllerParameterType.Trigger);
             controller.AddParameter("HeavyAttack", AnimatorControllerParameterType.Trigger);
             controller.AddParameter("Scream", AnimatorControllerParameterType.Trigger);
@@ -1457,33 +1520,32 @@ namespace Zombtoy.Editor
 
             var sm = controller.layers[0].stateMachine;
 
-            // Base Layer: 1D Locomotion Blend Tree (Idle -> Shamble Walk -> Chase Run -> Feral Sprint)
+            // Base Layer (Layer 0): 2D Cartesian Locomotion (Speed on X, Style 0..1 on Y) with calibrated timeScales
             var locoState = controller.CreateBlendTreeInController("Locomotion", out BlendTree locoTree, 0);
-            locoTree.blendType = BlendTreeType.Simple1D;
+            locoTree.blendType = BlendTreeType.FreeformCartesian2D;
             locoTree.blendParameter = "Speed";
+            locoTree.blendParameterY = "Style";
             locoTree.useAutomaticThresholds = false;
-            locoTree.AddChild(idleClip, 0.0f);
-            locoTree.AddChild(walkClip, 0.5f);
-            locoTree.AddChild(runClip, 1.0f);
-            locoTree.AddChild(sprintClip, 1.5f);
+
+            var baseMotions = new List<ChildMotion>();
+            // Style = 0 (Simple Zombie)
+            if (baseIdle != null) baseMotions.Add(new ChildMotion { motion = baseIdle, position = new Vector2(0.0f, 0f), timeScale = 1.0f, directBlendParameter = "Blend" });
+            if (walkClip != null) baseMotions.Add(new ChildMotion { motion = walkClip, position = new Vector2(0.55f, 0f), timeScale = 0.72f, directBlendParameter = "Blend" });
+            if (runClip != null) baseMotions.Add(new ChildMotion { motion = runClip, position = new Vector2(1.05f, 0f), timeScale = 0.56f, directBlendParameter = "Blend" });
+            if (sprintClip != null) baseMotions.Add(new ChildMotion { motion = sprintClip, position = new Vector2(1.50f, 0f), timeScale = 0.64f, directBlendParameter = "Blend" });
+            // Style = 1 (Drunken variation: heavier/slower deliberate cadence, or real Drunken FBX clips when present)
+            if (drunkBaseIdle != null) baseMotions.Add(new ChildMotion { motion = drunkBaseIdle, position = new Vector2(0.0f, 1f), timeScale = 0.85f, directBlendParameter = "Blend" });
+            if (drunkWalkClip != null) baseMotions.Add(new ChildMotion { motion = drunkWalkClip, position = new Vector2(0.55f, 1f), timeScale = 0.62f, directBlendParameter = "Blend" });
+            if (drunkRunClip != null) baseMotions.Add(new ChildMotion { motion = drunkRunClip, position = new Vector2(1.05f, 1f), timeScale = 0.52f, directBlendParameter = "Blend" });
+            if (sprintClip != null) baseMotions.Add(new ChildMotion { motion = sprintClip, position = new Vector2(1.50f, 1f), timeScale = 0.60f, directBlendParameter = "Blend" });
+            locoTree.children = baseMotions.ToArray();
             sm.defaultState = locoState;
 
-            // Action states (Attack, HeavyAttack, Scream, Stagger)
-            var attackState = AddEnemyActionState(sm, "Attack", attackClip, new Vector3(320, -80, 0), locoState, "Attack", 0.08f, 0.88f);
-            var heavyState = AddEnemyActionState(sm, "HeavyAttack", heavyAttackClip, new Vector3(320, 0, 0), locoState, "HeavyAttack", 0.10f, 0.90f);
-            var screamState = AddEnemyActionState(sm, "Scream", screamClip, new Vector3(320, 80, 0), locoState, "Scream", 0.10f, 0.90f);
-            var staggerState = AddEnemyActionState(sm, "Stagger", staggerClip, new Vector3(320, 160, 0), locoState, "Stagger", 0.05f, 0.85f);
-
-            // Allow Stagger to interrupt Attack/Scream immediately when hit or parried
-            AddInterruptTrigger(attackState, staggerState, "Stagger", 0.05f);
-            AddInterruptTrigger(heavyState, staggerState, "Stagger", 0.05f);
-            AddInterruptTrigger(screamState, staggerState, "Stagger", 0.05f);
-
-            // 4 Death variants (front, back, side, headshot)
+            // 4 Real MoCap Death variants on Base Layer (front, back, side, headshot)
             AnimationClip[] deaths = { death0, death1, death2, death3 };
             for (int i = 0; i < deaths.Length; i++)
             {
-                var dState = sm.AddState("Dead_" + i, new Vector3(580, -40 + i * 70, 0));
+                var dState = sm.AddState("Dead_" + i, new Vector3(520, -40 + i * 70, 0));
                 dState.motion = deaths[i];
 
                 var toDead = sm.AddAnyStateTransition(dState);
@@ -1499,20 +1561,53 @@ namespace Zombtoy.Editor
                 revive.AddCondition(AnimatorConditionMode.IfNot, 0f, "Dead");
             }
 
-            // Layer 1: Upper-Body Zombie Arms Reach Override (replaces rifle-holding arms during walk/run/sprint)
-            var armsLayer = new AnimatorControllerLayer
+            // Layer 1: Upper-Body Zombie/Drunken Posture + Actions (Body + Head + Arms + Fingers ONLY; Root & Legs untouched)
+            var upperSm = new AnimatorStateMachine { name = "ZombieUpperBody", hideFlags = HideFlags.HideInHierarchy };
+            AssetDatabase.AddObjectToAsset(upperSm, controller);
+            var upperLayer = new AnimatorControllerLayer
             {
-                name = "ZombieArms",
+                name = "ZombieUpperBody",
                 avatarMask = upperMask,
                 blendingMode = AnimatorLayerBlendingMode.Override,
-                defaultWeight = 0.90f,
-                stateMachine = new AnimatorStateMachine { name = "ZombieArms", hideFlags = HideFlags.HideInHierarchy }
+                defaultWeight = 1.0f,
+                stateMachine = upperSm
             };
-            AssetDatabase.AddObjectToAsset(armsLayer.stateMachine, controller);
-            var reachState = armsLayer.stateMachine.AddState("ZombieReach", new Vector3(240, 40, 0));
-            reachState.motion = armsReachClip;
-            armsLayer.stateMachine.defaultState = reachState;
-            controller.AddLayer(armsLayer);
+            controller.AddLayer(upperLayer);
+
+            var upperLocoTree = new BlendTree
+            {
+                name = "UpperLocomotionTree",
+                blendType = BlendTreeType.FreeformCartesian2D,
+                blendParameter = "Speed",
+                blendParameterY = "Style",
+                useAutomaticThresholds = false,
+                hideFlags = HideFlags.HideInHierarchy
+            };
+            AssetDatabase.AddObjectToAsset(upperLocoTree, controller);
+            upperLocoTree.children = new[]
+            {
+                // Style = 0 (Simple Zombie)
+                new ChildMotion { motion = idleUpperClip, position = new Vector2(0.0f, 0f), timeScale = 1f, directBlendParameter = "Blend" },
+                new ChildMotion { motion = walkUpperClip, position = new Vector2(0.55f, 0f), timeScale = 1f, directBlendParameter = "Blend" },
+                new ChildMotion { motion = chaseUpperClip, position = new Vector2(1.20f, 0f), timeScale = 1f, directBlendParameter = "Blend" },
+                // Style = 1 (Drunken Zombie variation)
+                new ChildMotion { motion = drunkIdleUpperClip, position = new Vector2(0.0f, 1f), timeScale = 1f, directBlendParameter = "Blend" },
+                new ChildMotion { motion = drunkWalkUpperClip, position = new Vector2(0.55f, 1f), timeScale = 1f, directBlendParameter = "Blend" },
+                new ChildMotion { motion = drunkChaseUpperClip, position = new Vector2(1.20f, 1f), timeScale = 1f, directBlendParameter = "Blend" },
+            };
+
+            var upperLocoState = upperSm.AddState("UpperLocomotion", new Vector3(40, 40, 0));
+            upperLocoState.motion = upperLocoTree;
+            upperSm.defaultState = upperLocoState;
+
+            var attackState = AddEnemyActionState(upperSm, "Attack", attackClip, new Vector3(320, -80, 0), upperLocoState, "Attack", 0.08f, 0.88f);
+            var heavyState = AddEnemyActionState(upperSm, "HeavyAttack", heavyAttackClip, new Vector3(320, 0, 0), upperLocoState, "HeavyAttack", 0.10f, 0.90f);
+            var screamState = AddEnemyActionState(upperSm, "Scream", screamClip, new Vector3(320, 80, 0), upperLocoState, "Scream", 0.10f, 0.90f);
+            var staggerState = AddEnemyActionState(upperSm, "Stagger", staggerClip, new Vector3(320, 160, 0), upperLocoState, "Stagger", 0.05f, 0.85f);
+
+            AddInterruptTrigger(attackState, staggerState, "Stagger", 0.05f);
+            AddInterruptTrigger(heavyState, staggerState, "Stagger", 0.05f);
+            AddInterruptTrigger(screamState, staggerState, "Stagger", 0.05f);
 
             EditorUtility.SetDirty(controller);
             return controller;
@@ -1547,27 +1642,46 @@ namespace Zombtoy.Editor
             tr.AddCondition(AnimatorConditionMode.IfNot, 0f, "Dead");
         }
 
-        private static AnimationClip FindCustomEnemyClip(params string[] keywords)
+        private static AnimationClip FindCustomEnemyClip(bool loop, params string[] keywords)
         {
             if (!Directory.Exists("Assets/Animations")) return null;
             foreach (string file in Directory.GetFiles("Assets/Animations", "*.fbx", SearchOption.AllDirectories))
             {
-                string lower = Path.GetFileNameWithoutExtension(file).ToLowerInvariant();
-                if (file.Replace('\\', '/').Contains("/Pro Rifle Pack/") || file.Replace('\\', '/').Contains("/Rifle 8-Way Locomotion Pack/") || file.Replace('\\', '/').Contains("/Lite Rifle Pack/"))
+                string norm = file.Replace('\\', '/');
+                if (norm.Contains("/Pro Rifle Pack/") || norm.Contains("/Rifle 8-Way Locomotion Pack/") || norm.Contains("/Lite Rifle Pack/"))
                     continue;
+                string lower = Path.GetFileNameWithoutExtension(file).ToLowerInvariant();
                 for (int i = 0; i < keywords.Length; i++)
                 {
                     if (lower.Contains(keywords[i]))
                     {
-                        string assetPath = file.Replace('\\', '/');
-                        var imp = AssetImporter.GetAtPath(assetPath) as ModelImporter;
-                        if (imp != null && imp.animationType != ModelImporterAnimationType.Human)
+                        var imp = AssetImporter.GetAtPath(norm) as ModelImporter;
+                        if (imp != null)
                         {
-                            imp.animationType = ModelImporterAnimationType.Human;
-                            imp.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
-                            imp.SaveAndReimport();
+                            bool dirty = imp.animationType != ModelImporterAnimationType.Human || imp.clipAnimations == null || imp.clipAnimations.Length == 0;
+                            if (dirty)
+                            {
+                                imp.animationType = ModelImporterAnimationType.Human;
+                                imp.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
+                                imp.importAnimation = true;
+                                var clips = imp.clipAnimations != null && imp.clipAnimations.Length > 0 ? imp.clipAnimations : imp.defaultClipAnimations;
+                                for (int c = 0; c < clips.Length; c++)
+                                {
+                                    clips[c].loopTime = loop;
+                                    clips[c].loopPose = loop;
+                                    clips[c].lockRootRotation = true;
+                                    clips[c].keepOriginalOrientation = true;
+                                    clips[c].lockRootHeightY = true;
+                                    clips[c].keepOriginalPositionY = false;
+                                    clips[c].heightFromFeet = true;
+                                    clips[c].lockRootPositionXZ = !loop;
+                                    clips[c].keepOriginalPositionXZ = false;
+                                }
+                                imp.clipAnimations = clips;
+                                imp.SaveAndReimport();
+                            }
                         }
-                        var clip = LoadPrimaryClip(assetPath);
+                        var clip = LoadPrimaryClip(norm);
                         if (clip != null) return clip;
                     }
                 }
@@ -1584,9 +1698,13 @@ namespace Zombtoy.Editor
                 AssetDatabase.CreateAsset(mask, EnemyUpperMaskPath);
             }
 
+            // Disable EVERYTHING first (especially Root, LeftLeg, RightLeg, FootIK, HandIK)
             for (int i = 0; i < (int)AvatarMaskBodyPart.LastBodyPart; i++)
                 mask.SetHumanoidBodyPartActive((AvatarMaskBodyPart)i, false);
 
+            // Enable Body (Spine/Chest/UpperChest) + Head + Arms + Fingers so rifle sideways twist is fully replaced
+            // while Base Layer retains 100% control over RootT.y, RootQ, Pelvis, Legs, and Foot grounding.
+            mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.Body, true);
             mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.Head, true);
             mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.LeftArm, true);
             mask.SetHumanoidBodyPartActive(AvatarMaskBodyPart.RightArm, true);
@@ -1639,99 +1757,225 @@ namespace Zombtoy.Editor
             AnimationUtility.SetEditorCurve(clip, EditorCurveBinding.FloatCurve(string.Empty, typeof(Animator), muscleName), curve);
         }
 
-        private static void BuildZombieIdleCurves(AnimationClip clip, float d)
+        /// <summary>
+        /// Explicitly sets neutral baselines on all upper-body muscles so the rifle-holding torso twist
+        /// and arm rotations from Layer 0 never bleed through onto the zombie upper body.
+        /// </summary>
+        private static void NeutralizeUpperBodyBase(AnimationClip clip, float d)
         {
-            // Hunched, twitchy infected idle stance
-            SetMuscle(clip, "Spine Front-Back", (0f, -0.18f), (d * 0.5f, -0.26f), (d, -0.18f));
-            SetMuscle(clip, "Chest Front-Back", (0f, -0.15f), (d * 0.5f, -0.22f), (d, -0.15f));
-            SetMuscle(clip, "Spine Left-Right", (0f, -0.06f), (d * 0.5f, 0.08f), (d, -0.06f));
-            SetMuscle(clip, "Neck Nod Down-Up", (0f, 0.10f), (d * 0.5f, 0.20f), (d, 0.10f));
-            SetMuscle(clip, "Head Tilt Left-Right", (0f, -0.18f), (d * 0.5f, 0.14f), (d, -0.18f));
-            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.35f), (d * 0.5f, -0.22f), (d, -0.35f));
-            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.35f), (d * 0.5f, 0.45f), (d, 0.35f));
-            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.35f), (d * 0.5f, -0.25f), (d, -0.35f));
-            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.32f), (d * 0.5f, -0.18f), (d, -0.32f));
-            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.38f), (d * 0.5f, 0.48f), (d, 0.38f));
-            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.38f), (d * 0.5f, -0.28f), (d, -0.38f));
-            SetMuscle(clip, "Left Lower Leg Stretch", (0f, -0.10f), (d, -0.10f));
-            SetMuscle(clip, "Right Lower Leg Stretch", (0f, -0.10f), (d, -0.10f));
+            string[] zeroed =
+            {
+                "Spine Front-Back", "Spine Left-Right", "Spine Twist Left-Right",
+                "Chest Front-Back", "Chest Left-Right", "Chest Twist Left-Right",
+                "UpperChest Front-Back", "UpperChest Left-Right", "UpperChest Twist Left-Right",
+                "Neck Nod Down-Up", "Neck Tilt Left-Right", "Neck Turn Left-Right",
+                "Head Nod Down-Up", "Head Tilt Left-Right", "Head Turn Left-Right",
+                "Left Shoulder Down-Up", "Left Shoulder Front-Back",
+                "Right Shoulder Down-Up", "Right Shoulder Front-Back",
+                "Left Arm Down-Up", "Left Arm Front-Back", "Left Arm Twist In-Out",
+                "Right Arm Down-Up", "Right Arm Front-Back", "Right Arm Twist In-Out",
+                "Left Forearm Stretch", "Left Forearm Twist In-Out",
+                "Right Forearm Stretch", "Right Forearm Twist In-Out",
+                "Left Hand Down-Up", "Left Hand In-Out",
+                "Right Hand Down-Up", "Right Hand In-Out",
+            };
+            for (int i = 0; i < zeroed.Length; i++)
+                SetMuscle(clip, zeroed[i], (0f, 0f), (d, 0f));
         }
 
-        private static void BuildZombieArmsReachCurves(AnimationClip clip, float d)
+        private static void BuildZombieIdleUpperCurves(AnimationClip clip, float d)
         {
-            // Outstretched clawing zombie arms layered over MoCap legs during walk/run/sprint
-            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.12f), (d * 0.5f, -0.05f), (d, 0.12f));
-            SetMuscle(clip, "Head Tilt Left-Right", (0f, -0.14f), (d * 0.5f, 0.14f), (d, -0.14f));
-            SetMuscle(clip, "Left Shoulder Front-Back", (0f, 0.35f), (d * 0.5f, 0.50f), (d, 0.35f));
-            SetMuscle(clip, "Right Shoulder Front-Back", (0f, 0.50f), (d * 0.5f, 0.35f), (d, 0.50f));
-            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.08f), (d * 0.5f, 0.08f), (d, -0.08f));
-            SetMuscle(clip, "Right Arm Down-Up", (0f, 0.08f), (d * 0.5f, -0.08f), (d, 0.08f));
-            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.65f), (d * 0.5f, 0.80f), (d, 0.65f));
-            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.80f), (d * 0.5f, 0.65f), (d, 0.80f));
-            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.32f), (d * 0.5f, -0.18f), (d, -0.32f));
-            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.18f), (d * 0.5f, -0.32f), (d, -0.18f));
-            SetMuscle(clip, "Left Hand Down-Up", (0f, -0.35f), (d * 0.5f, -0.15f), (d, -0.35f));
-            SetMuscle(clip, "Right Hand Down-Up", (0f, -0.15f), (d * 0.5f, -0.35f), (d, -0.15f));
+            NeutralizeUpperBodyBase(clip, d);
+            // Steady, upright-with-slight-slouch zombie idle (ZERO side-to-side swaying, only subtle breathing)
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.08f), (d * 0.5f, -0.11f), (d, -0.08f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.06f), (d * 0.5f, -0.09f), (d, -0.06f));
+            SetMuscle(clip, "Neck Nod Down-Up", (0f, 0.05f), (d * 0.5f, 0.08f), (d, 0.05f));
+            SetMuscle(clip, "Left Shoulder Front-Back", (0f, 0.10f), (d, 0.10f));
+            SetMuscle(clip, "Right Shoulder Front-Back", (0f, 0.10f), (d, 0.10f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.60f), (d * 0.5f, -0.57f), (d, -0.60f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.60f), (d * 0.5f, -0.57f), (d, -0.60f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.16f), (d, 0.16f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.16f), (d, 0.16f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.28f), (d, -0.28f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.28f), (d, -0.28f));
+            SetMuscle(clip, "Left Hand Down-Up", (0f, -0.18f), (d, -0.18f));
+            SetMuscle(clip, "Right Hand Down-Up", (0f, -0.18f), (d, -0.18f));
+        }
+
+        private static void BuildZombieWalkUpperCurves(AnimationClip clip, float d)
+        {
+            NeutralizeUpperBodyBase(clip, d);
+            // Steady forward-facing zombie walk upper body (ZERO artificial lateral wobble/sway)
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.12f), (d * 0.5f, -0.14f), (d, -0.12f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.08f), (d * 0.5f, -0.10f), (d, -0.08f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.06f), (d, 0.06f));
+            SetMuscle(clip, "Left Shoulder Front-Back", (0f, 0.18f), (d, 0.18f));
+            SetMuscle(clip, "Right Shoulder Front-Back", (0f, 0.18f), (d, 0.18f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.34f), (d * 0.5f, -0.30f), (d, -0.34f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.30f), (d * 0.5f, -0.34f), (d, -0.30f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.40f), (d * 0.5f, 0.44f), (d, 0.40f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.44f), (d * 0.5f, 0.40f), (d, 0.44f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.30f), (d, -0.30f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.30f), (d, -0.30f));
+            SetMuscle(clip, "Left Hand Down-Up", (0f, -0.20f), (d, -0.20f));
+            SetMuscle(clip, "Right Hand Down-Up", (0f, -0.20f), (d, -0.20f));
+        }
+
+        private static void BuildZombieChaseUpperCurves(AnimationClip clip, float d)
+        {
+            NeutralizeUpperBodyBase(clip, d);
+            // Steady feral chase upper body (forward lean + outstretched arms, ZERO lateral swaying)
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.18f), (d * 0.5f, -0.20f), (d, -0.18f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.12f), (d * 0.5f, -0.14f), (d, -0.12f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.12f), (d, 0.12f));
+            SetMuscle(clip, "Left Shoulder Front-Back", (0f, 0.28f), (d, 0.28f));
+            SetMuscle(clip, "Right Shoulder Front-Back", (0f, 0.28f), (d, 0.28f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.14f), (d * 0.5f, -0.10f), (d, -0.14f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.10f), (d * 0.5f, -0.14f), (d, -0.10f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.56f), (d * 0.5f, 0.62f), (d, 0.56f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.62f), (d * 0.5f, 0.56f), (d, 0.62f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.26f), (d, -0.26f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.26f), (d, -0.26f));
+            SetMuscle(clip, "Left Hand Down-Up", (0f, -0.22f), (d, -0.22f));
+            SetMuscle(clip, "Right Hand Down-Up", (0f, -0.22f), (d, -0.22f));
+        }
+
+        private static void BuildDrunkenIdleUpperCurves(AnimationClip clip, float d)
+        {
+            NeutralizeUpperBodyBase(clip, d);
+            // Drunken lopsided infected idle: asymmetric dropped shoulder, slumped chest, tilted head, heavy loose arms
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.14f), (d * 0.5f, -0.20f), (d, -0.14f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.10f), (d * 0.5f, -0.15f), (d, -0.10f));
+            SetMuscle(clip, "Spine Left-Right", (0f, 0.14f), (d * 0.5f, 0.08f), (d, 0.14f));
+            SetMuscle(clip, "Chest Left-Right", (0f, 0.10f), (d * 0.5f, 0.06f), (d, 0.10f));
+            SetMuscle(clip, "Neck Tilt Left-Right", (0f, -0.18f), (d * 0.5f, -0.12f), (d, -0.18f));
+            SetMuscle(clip, "Head Tilt Left-Right", (0f, -0.24f), (d * 0.5f, -0.16f), (d, -0.24f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, -0.12f), (d * 0.5f, -0.04f), (d, -0.12f));
+            SetMuscle(clip, "Left Shoulder Down-Up", (0f, -0.20f), (d, -0.20f));
+            SetMuscle(clip, "Right Shoulder Down-Up", (0f, 0.12f), (d, 0.12f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.68f), (d * 0.5f, -0.62f), (d, -0.68f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.45f), (d * 0.5f, -0.40f), (d, -0.45f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.24f), (d, 0.24f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.08f), (d, 0.08f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.18f), (d, -0.18f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.42f), (d, -0.42f));
+            SetMuscle(clip, "Left Hand Down-Up", (0f, -0.28f), (d, -0.28f));
+            SetMuscle(clip, "Right Hand Down-Up", (0f, -0.15f), (d, -0.15f));
+        }
+
+        private static void BuildDrunkenWalkUpperCurves(AnimationClip clip, float d)
+        {
+            NeutralizeUpperBodyBase(clip, d);
+            // Drunken stumbling walk: sluggish asymmetric lurch, dropped left shoulder, head lolling, heavy hanging arms
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.18f), (d * 0.5f, -0.25f), (d, -0.18f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.14f), (d * 0.5f, -0.20f), (d, -0.14f));
+            SetMuscle(clip, "Spine Left-Right", (0f, 0.16f), (d * 0.5f, 0.06f), (d, 0.16f));
+            SetMuscle(clip, "Chest Left-Right", (0f, 0.12f), (d * 0.5f, 0.04f), (d, 0.12f));
+            SetMuscle(clip, "Spine Twist Left-Right", (0f, 0.10f), (d * 0.5f, 0.02f), (d, 0.10f));
+            SetMuscle(clip, "Neck Tilt Left-Right", (0f, -0.20f), (d * 0.5f, -0.12f), (d, -0.20f));
+            SetMuscle(clip, "Head Tilt Left-Right", (0f, -0.26f), (d * 0.5f, -0.14f), (d, -0.26f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, -0.06f), (d * 0.5f, 0.08f), (d, -0.06f));
+            SetMuscle(clip, "Left Shoulder Down-Up", (0f, -0.22f), (d, -0.22f));
+            SetMuscle(clip, "Right Shoulder Down-Up", (0f, 0.14f), (d, 0.14f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.58f), (d * 0.5f, -0.46f), (d, -0.58f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.28f), (d * 0.5f, -0.38f), (d, -0.28f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.34f), (d * 0.5f, 0.46f), (d, 0.34f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.20f), (d * 0.5f, 0.36f), (d, 0.20f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.16f), (d, -0.16f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.40f), (d, -0.40f));
+            SetMuscle(clip, "Left Hand Down-Up", (0f, -0.30f), (d, -0.30f));
+            SetMuscle(clip, "Right Hand Down-Up", (0f, -0.18f), (d, -0.18f));
+        }
+
+        private static void BuildDrunkenChaseUpperCurves(AnimationClip clip, float d)
+        {
+            NeutralizeUpperBodyBase(clip, d);
+            // Drunken aggressive lunge: heavy off-kilter forward plunge with asymmetric grabbing arms
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.24f), (d * 0.5f, -0.30f), (d, -0.24f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.18f), (d * 0.5f, -0.22f), (d, -0.18f));
+            SetMuscle(clip, "Spine Left-Right", (0f, 0.12f), (d * 0.5f, 0.04f), (d, 0.12f));
+            SetMuscle(clip, "Head Tilt Left-Right", (0f, -0.20f), (d * 0.5f, -0.10f), (d, -0.20f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.14f), (d, 0.14f));
+            SetMuscle(clip, "Left Shoulder Down-Up", (0f, -0.16f), (d, -0.16f));
+            SetMuscle(clip, "Right Shoulder Down-Up", (0f, 0.12f), (d, 0.12f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.32f), (d * 0.5f, -0.22f), (d, -0.32f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.06f), (d * 0.5f, -0.16f), (d, -0.06f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.52f), (d * 0.5f, 0.62f), (d, 0.52f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.64f), (d * 0.5f, 0.52f), (d, 0.64f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.22f), (d, -0.22f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.34f), (d, -0.34f));
+            SetMuscle(clip, "Left Hand Down-Up", (0f, -0.26f), (d, -0.26f));
+            SetMuscle(clip, "Right Hand Down-Up", (0f, -0.20f), (d, -0.20f));
         }
 
         private static void BuildZombieAttackSwipeCurves(AnimationClip clip, float d)
         {
+            NeutralizeUpperBodyBase(clip, d);
             // Anticipation windup -> violent forward claw lunge & horizontal slash -> follow-through
-            SetMuscle(clip, "Spine Front-Back", (0f, -0.10f), (d * 0.32f, 0.22f), (d * 0.62f, -0.45f), (d, -0.18f));
-            SetMuscle(clip, "Chest Front-Back", (0f, -0.10f), (d * 0.32f, 0.25f), (d * 0.62f, -0.42f), (d, -0.15f));
-            SetMuscle(clip, "Spine Twist Left-Right", (0f, 0f), (d * 0.32f, 0.45f), (d * 0.65f, -0.55f), (d, 0f));
-            SetMuscle(clip, "Chest Twist Left-Right", (0f, 0f), (d * 0.32f, 0.50f), (d * 0.65f, -0.55f), (d, 0f));
-            SetMuscle(clip, "Right Arm Down-Up", (0f, 0f), (d * 0.32f, 0.65f), (d * 0.60f, -0.10f), (d, -0.25f));
-            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.35f), (d * 0.32f, -0.35f), (d * 0.62f, 0.95f), (d, 0.40f));
-            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.35f), (d * 0.32f, -0.65f), (d * 0.62f, -0.05f), (d, -0.35f));
-            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.15f), (d * 0.32f, 0.30f), (d * 0.65f, -0.20f), (d, -0.25f));
-            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.40f), (d * 0.32f, 0.55f), (d * 0.65f, 0.80f), (d, 0.40f));
-            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.05f), (d * 0.32f, 0.30f), (d * 0.62f, -0.30f), (d, 0.05f));
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.12f), (d * 0.32f, 0.16f), (d * 0.62f, -0.36f), (d, -0.14f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.10f), (d * 0.32f, 0.18f), (d * 0.62f, -0.34f), (d, -0.12f));
+            SetMuscle(clip, "Spine Twist Left-Right", (0f, 0f), (d * 0.32f, 0.38f), (d * 0.65f, -0.45f), (d, 0f));
+            SetMuscle(clip, "Chest Twist Left-Right", (0f, 0f), (d * 0.32f, 0.42f), (d * 0.65f, -0.45f), (d, 0f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.25f), (d * 0.32f, 0.45f), (d * 0.60f, -0.15f), (d, -0.35f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.30f), (d * 0.32f, -0.25f), (d * 0.62f, 0.78f), (d, 0.35f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.35f), (d * 0.32f, -0.60f), (d * 0.62f, -0.10f), (d, -0.35f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.30f), (d * 0.32f, 0.15f), (d * 0.65f, -0.25f), (d, -0.35f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.35f), (d * 0.32f, 0.45f), (d * 0.65f, 0.65f), (d, 0.35f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.30f), (d * 0.32f, -0.40f), (d * 0.65f, -0.20f), (d, -0.30f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.05f), (d * 0.32f, 0.25f), (d * 0.62f, -0.22f), (d, 0.05f));
         }
 
         private static void BuildZombieHeavySlamCurves(AnimationClip clip, float d)
         {
-            // Brute / Colossus two-handed overhead windup and earth-shaking slam
-            SetMuscle(clip, "Spine Front-Back", (0f, -0.15f), (d * 0.42f, 0.40f), (d * 0.72f, -0.65f), (d, -0.20f));
-            SetMuscle(clip, "Chest Front-Back", (0f, -0.12f), (d * 0.42f, 0.38f), (d * 0.72f, -0.55f), (d, -0.18f));
-            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.10f), (d * 0.42f, 0.90f), (d * 0.72f, -0.45f), (d, -0.20f));
-            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.10f), (d * 0.42f, 0.90f), (d * 0.72f, -0.45f), (d, -0.20f));
-            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.40f), (d * 0.42f, 0.25f), (d * 0.72f, 0.90f), (d, 0.40f));
-            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.40f), (d * 0.42f, 0.25f), (d * 0.72f, 0.90f), (d, 0.40f));
-            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.35f), (d * 0.42f, -0.55f), (d * 0.72f, -0.05f), (d, -0.30f));
-            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.35f), (d * 0.42f, -0.55f), (d * 0.72f, -0.05f), (d, -0.30f));
-            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.05f), (d * 0.42f, 0.45f), (d * 0.72f, -0.40f), (d, 0.05f));
+            NeutralizeUpperBodyBase(clip, d);
+            // Brute / Large Boss two-handed overhead windup and heavy slam
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.14f), (d * 0.42f, 0.30f), (d * 0.72f, -0.48f), (d, -0.16f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.12f), (d * 0.42f, 0.28f), (d * 0.72f, -0.42f), (d, -0.14f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.25f), (d * 0.42f, 0.78f), (d * 0.72f, -0.40f), (d, -0.30f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.25f), (d * 0.42f, 0.78f), (d * 0.72f, -0.40f), (d, -0.30f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.35f), (d * 0.42f, 0.20f), (d * 0.72f, 0.75f), (d, 0.35f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.35f), (d * 0.42f, 0.20f), (d * 0.72f, 0.75f), (d, 0.35f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.35f), (d * 0.42f, -0.50f), (d * 0.72f, -0.10f), (d, -0.30f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.35f), (d * 0.42f, -0.50f), (d * 0.72f, -0.10f), (d, -0.30f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, 0.05f), (d * 0.42f, 0.35f), (d * 0.72f, -0.30f), (d, 0.05f));
         }
 
         private static void BuildZombieScreamCurves(AnimationClip clip, float d)
         {
+            NeutralizeUpperBodyBase(clip, d);
             // Screamer arches torso backward, throws head up, flares arms outward
-            SetMuscle(clip, "Spine Front-Back", (0f, -0.15f), (d * 0.25f, 0.42f), (d * 0.72f, 0.35f), (d, -0.15f));
-            SetMuscle(clip, "Chest Front-Back", (0f, -0.12f), (d * 0.25f, 0.45f), (d * 0.72f, 0.38f), (d, -0.12f));
-            SetMuscle(clip, "Neck Nod Down-Up", (0f, 0f), (d * 0.25f, 0.55f), (d * 0.75f, 0.48f), (d, 0f));
-            SetMuscle(clip, "Head Nod Down-Up", (0f, 0f), (d * 0.25f, 0.65f), (d * 0.75f, 0.55f), (d, 0f));
-            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.20f), (d * 0.25f, 0.25f), (d * 0.75f, 0.15f), (d, -0.20f));
-            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.20f), (d * 0.25f, 0.25f), (d * 0.75f, 0.15f), (d, -0.20f));
-            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.40f), (d * 0.25f, -0.45f), (d * 0.75f, -0.35f), (d, 0.40f));
-            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.40f), (d * 0.25f, -0.45f), (d * 0.75f, -0.35f), (d, 0.40f));
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.14f), (d * 0.25f, 0.34f), (d * 0.72f, 0.28f), (d, -0.14f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.12f), (d * 0.25f, 0.36f), (d * 0.72f, 0.30f), (d, -0.12f));
+            SetMuscle(clip, "Neck Nod Down-Up", (0f, 0f), (d * 0.25f, 0.48f), (d * 0.75f, 0.42f), (d, 0f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, 0f), (d * 0.25f, 0.55f), (d * 0.75f, 0.48f), (d, 0f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.30f), (d * 0.25f, 0.15f), (d * 0.75f, 0.08f), (d, -0.30f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.30f), (d * 0.25f, 0.15f), (d * 0.75f, 0.08f), (d, -0.30f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.30f), (d * 0.25f, -0.35f), (d * 0.75f, -0.28f), (d, 0.30f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.30f), (d * 0.25f, -0.35f), (d * 0.75f, -0.28f), (d, 0.30f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.30f), (d * 0.25f, -0.45f), (d, -0.30f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.30f), (d * 0.25f, -0.45f), (d, -0.30f));
         }
 
         private static void BuildZombieStaggerCurves(AnimationClip clip, float d)
         {
-            // Sharp recoil when shot or parried
-            SetMuscle(clip, "Spine Front-Back", (0f, -0.10f), (d * 0.35f, 0.45f), (d, -0.15f));
-            SetMuscle(clip, "Chest Front-Back", (0f, -0.10f), (d * 0.35f, 0.50f), (d, -0.15f));
-            SetMuscle(clip, "Head Nod Down-Up", (0f, 0f), (d * 0.35f, 0.60f), (d, 0.05f));
-            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.10f), (d * 0.35f, 0.40f), (d, -0.20f));
-            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.10f), (d * 0.35f, 0.45f), (d, -0.20f));
-            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.50f), (d * 0.35f, -0.35f), (d, 0.40f));
-            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.50f), (d * 0.35f, -0.35f), (d, 0.40f));
+            NeutralizeUpperBodyBase(clip, d);
+            // Sharp upper-body recoil when shot or parried (legs stay firmly grounded)
+            SetMuscle(clip, "Spine Front-Back", (0f, -0.10f), (d * 0.35f, 0.36f), (d, -0.12f));
+            SetMuscle(clip, "Chest Front-Back", (0f, -0.10f), (d * 0.35f, 0.40f), (d, -0.12f));
+            SetMuscle(clip, "Head Nod Down-Up", (0f, 0f), (d * 0.35f, 0.48f), (d, 0.05f));
+            SetMuscle(clip, "Left Arm Down-Up", (0f, -0.25f), (d * 0.35f, 0.25f), (d, -0.30f));
+            SetMuscle(clip, "Right Arm Down-Up", (0f, -0.25f), (d * 0.35f, 0.30f), (d, -0.30f));
+            SetMuscle(clip, "Left Arm Front-Back", (0f, 0.35f), (d * 0.35f, -0.28f), (d, 0.30f));
+            SetMuscle(clip, "Right Arm Front-Back", (0f, 0.35f), (d * 0.35f, -0.28f), (d, 0.30f));
+            SetMuscle(clip, "Left Forearm Stretch", (0f, -0.30f), (d * 0.35f, -0.45f), (d, -0.30f));
+            SetMuscle(clip, "Right Forearm Stretch", (0f, -0.30f), (d * 0.35f, -0.45f), (d, -0.30f));
         }
 
-        private static EnemyVisualEntry[] BuildEnemyVisualEntries(RuntimeAnimatorController enemyController)
+        private static EnemyVisualEntry[] BuildEnemyVisualEntries(RuntimeAnimatorController enemyController, bool forceRebuild)
         {
-            // Ensure zombie_theBurnt.fbx is Humanoid and has textures extracted if any
-            ConfigureEnemyFbxHumanoid(BurntZombieModelPath, TexturesDir + "/BurntZombie");
+            // Configure zombie_theBurnt.fbx with an explicit upright T-Pose MakeHuman avatar
+            // (its raw FBX bind pose is crouched mid-stride with arms pointing forward!)
+            ConfigureBurntZombieHumanoid(BurntZombieModelPath, TexturesDir + "/BurntZombie", forceRebuild);
 
             var clothTex = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/Industrial/Textures/WornCloth_v1.png");
             var burntTex = FindTextureInFolder(TexturesDir + "/BurntZombie", "Diffuse")
@@ -1745,42 +1989,192 @@ namespace Zombtoy.Editor
             var runnerMat = CreateEnemyMaterial("Enemy_Runner_Feral", clothTex, null, new Color(0.48f, 0.24f, 0.22f), new Color(0.08f, 0.01f, 0.01f), 0.05f, 0.32f);
             var screamerMat = CreateEnemyMaterial("Enemy_Screamer_Bio", clothTex, null, new Color(0.56f, 0.62f, 0.50f), new Color(0.08f, 0.26f, 0.12f), 0.05f, 0.28f);
 
+            // Always use UNIFORM scaling on every Humanoid enemy prefab so limbs and torsos are never squashed!
             var list = new List<EnemyVisualEntry>();
-            list.Add(BuildEnemyPrefabEntry(InfectedKind.Walker, "Walker_Burnt", BurntZombieModelPath, 1.80f, Vector3.one, walkerMat, enemyController));
-            list.Add(BuildEnemyPrefabEntry(InfectedKind.Runner, "Runner_Feral", AnimSourceSkeletonPath, 1.74f, new Vector3(0.92f, 1.0f, 0.92f), runnerMat, enemyController));
-            list.Add(BuildEnemyPrefabEntry(InfectedKind.Brute, "Brute_BurntHeavy", BurntZombieModelPath, 2.04f, new Vector3(1.22f, 1.0f, 1.22f), bruteMat, enemyController));
-            list.Add(BuildEnemyPrefabEntry(InfectedKind.Screamer, "Screamer_Bio", AnimSourceSkeletonPath, 1.84f, new Vector3(0.90f, 1.04f, 0.90f), screamerMat, enemyController));
+            list.Add(BuildEnemyPrefabEntry(InfectedKind.Walker, "Walker_Burnt", BurntZombieModelPath, 1.80f, walkerMat, enemyController));
+            list.Add(BuildEnemyPrefabEntry(InfectedKind.Runner, "Runner_Feral", AnimSourceSkeletonPath, 1.74f, runnerMat, enemyController));
+            list.Add(BuildEnemyPrefabEntry(InfectedKind.Brute, "Brute_BurntHeavy", BurntZombieModelPath, 2.06f, bruteMat, enemyController));
+            list.Add(BuildEnemyPrefabEntry(InfectedKind.Screamer, "Screamer_Bio", AnimSourceSkeletonPath, 1.84f, screamerMat, enemyController));
             return list.Where(e => e != null).ToArray();
         }
 
-        private static void ConfigureEnemyFbxHumanoid(string fbxPath, string extractDir)
+        private static void ConfigureBurntZombieHumanoid(string fbxPath, string extractDir, bool forceRebuild)
         {
             var importer = AssetImporter.GetAtPath(fbxPath) as ModelImporter;
             if (importer == null) return;
 
             Directory.CreateDirectory(extractDir);
             AssetDatabase.Refresh();
-            importer.ExtractTextures(extractDir);
-            AssetDatabase.Refresh();
-            MarkNormalMapsInFolder(extractDir);
+            bool hasExtracted = Directory.GetFiles(extractDir, "*.png").Length > 0 || Directory.GetFiles(extractDir, "*.jpg").Length > 0;
+            if (forceRebuild || !hasExtracted)
+            {
+                importer.ExtractTextures(extractDir);
+                AssetDatabase.Refresh();
+                MarkNormalMapsInFolder(extractDir);
+            }
+
+            var sourceGo = AssetDatabase.LoadAssetAtPath<GameObject>(fbxPath);
+            if (sourceGo == null) return;
 
             var existingAvatar = LoadAvatarFromAsset(fbxPath);
-            if (importer.animationType != ModelImporterAnimationType.Human || existingAvatar == null || !existingAvatar.isValid || !existingAvatar.isHuman)
+            bool hasExplicitMap = importer.humanDescription.human != null && importer.humanDescription.human.Length >= 15;
+            if (forceRebuild || importer.animationType != ModelImporterAnimationType.Human || !hasExplicitMap || existingAvatar == null || !existingAvatar.isValid || !existingAvatar.isHuman)
             {
                 importer.animationType = ModelImporterAnimationType.Human;
                 importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
                 importer.importAnimation = false;
+
+                var temp = Object.Instantiate(sourceGo);
+                temp.name = sourceGo.name;
+                temp.transform.position = Vector3.zero;
+                temp.transform.rotation = Quaternion.identity;
+                temp.transform.localScale = Vector3.one;
+                try
+                {
+                    var byName = new Dictionary<string, Transform>(StringComparer.Ordinal);
+                    foreach (var t in temp.GetComponentsInChildren<Transform>(true))
+                    {
+                        if (!byName.ContainsKey(t.name))
+                            byName.Add(t.name, t);
+                    }
+
+                    EnforceMakeHumanBurntTPose(byName);
+                    var desc = BuildHumanDescriptionFromHierarchy(temp, MakeHumanBurntMap, straightenLimbsOnly: false);
+                    importer.humanDescription = desc;
+                }
+                finally
+                {
+                    Object.DestroyImmediate(temp);
+                }
+
                 importer.SaveAndReimport();
+                var rebuilt = LoadAvatarFromAsset(fbxPath);
+                Debug.Log($"[Zombtoy] Avatar zombie_theBurnt (upright MakeHuman T-Pose): valid={rebuilt != null && rebuilt.isValid}, human={rebuilt != null && rebuilt.isHuman}");
             }
+        }
+
+        /// <summary>
+        /// Straightens zombie_theBurnt.fbx into a clean upright Unity T-Pose by rotating ONLY mapped Humanoid bones
+        /// (never modifying unmapped MakeHuman in-between bones like upperleg02/lowerleg02/spine04 so Unity reports zero rig errors).
+        /// </summary>
+        private static void EnforceMakeHumanBurntTPose(Dictionary<string, Transform> byName)
+        {
+            Transform Get(string boneName) => byName.TryGetValue(boneName, out var t) ? t : null;
+
+            const float minSeg = 0.02f;
+
+            var root = Get("root");
+            var spine = Get("spine05");
+            var chest = Get("spine03");
+            var upperChest = Get("spine01");
+            var neck = Get("neck01");
+            var head = Get("head");
+
+            var lUpperArm = Get("upperarm01_L");
+            var lLowerArm = Get("lowerarm01_L");
+            var lHand = Get("wrist_L");
+
+            var rUpperArm = Get("upperarm01_R");
+            var rLowerArm = Get("lowerarm01_R");
+            var rHand = Get("wrist_R");
+
+            var lThigh = Get("upperleg01_L");
+            var lCalf = Get("lowerleg01_L");
+            var lFoot = Get("foot_L");
+            var lToe = Get("toe1-1_L");
+
+            var rThigh = Get("upperleg01_R");
+            var rCalf = Get("lowerleg01_R");
+            var rFoot = Get("foot_R");
+            var rToe = Get("toe1-1_R");
+
+            // 1) Yaw-align root so hips face +Z (Left -> -X, Right -> +X)
+            if (root != null && lThigh != null && rThigh != null)
+            {
+                Vector3 hipRight = rThigh.position - lThigh.position;
+                hipRight.y = 0f;
+                if (hipRight.sqrMagnitude > 0.0001f)
+                {
+                    float yaw = Vector3.SignedAngle(hipRight.normalized, Vector3.right, Vector3.up);
+                    if (Mathf.Abs(yaw) > 1f)
+                        root.rotation = Quaternion.AngleAxis(yaw, Vector3.up) * root.rotation;
+                }
+            }
+
+            // 2) Straighten ONLY mapped spine/neck bones vertically along +Y
+            AlignLimbSegmentSafe(spine, chest, Vector3.up, minSeg);
+            AlignLimbSegmentSafe(chest, upperChest, Vector3.up, minSeg);
+            AlignLimbSegmentSafe(upperChest, neck, Vector3.up, minSeg);
+            AlignLimbSegmentSafe(neck, head, Vector3.up, minSeg);
+
+            // 3) Straighten ONLY mapped arm bones horizontally to -X / +X
+            AlignLimbSegmentSafe(lUpperArm, lLowerArm, Vector3.left, minSeg);
+            AlignLimbSegmentSafe(lLowerArm, lHand, Vector3.left, minSeg);
+            AlignLimbSegmentSafe(rUpperArm, rLowerArm, Vector3.right, minSeg);
+            AlignLimbSegmentSafe(rLowerArm, rHand, Vector3.right, minSeg);
+
+            // 4) Straighten ONLY mapped leg bones vertically to -Y and feet forward to +Z
+            AlignLimbSegmentSafe(lThigh, lCalf, Vector3.down, minSeg);
+            AlignLimbSegmentSafe(lCalf, lFoot, Vector3.down, minSeg);
+            AlignLimbSegmentSafe(lFoot, lToe, Vector3.forward, minSeg * 0.5f);
+
+            AlignLimbSegmentSafe(rThigh, rCalf, Vector3.down, minSeg);
+            AlignLimbSegmentSafe(rCalf, rFoot, Vector3.down, minSeg);
+            AlignLimbSegmentSafe(rFoot, rToe, Vector3.forward, minSeg * 0.5f);
+
+            // 5) Lift root vertically so feet rest cleanly near y = 0.09
+            if (root != null && lFoot != null && rFoot != null)
+            {
+                float lowestFootY = Mathf.Min(lFoot.position.y, rFoot.position.y);
+                float lift = 0.09f - lowestFootY;
+                if (Mathf.Abs(lift) > 0.01f)
+                    root.position += new Vector3(0f, lift, 0f);
+            }
+        }
+
+        private static float MeasureStandingHeight(GameObject root)
+        {
+            var byName = new Dictionary<string, Transform>(StringComparer.Ordinal);
+            foreach (var t in root.GetComponentsInChildren<Transform>(true))
+            {
+                if (!byName.ContainsKey(t.name))
+                    byName.Add(t.name, t);
+            }
+
+            // For MakeHuman burnt zombie, sum actual straightened bone lengths (raw pose is crouched!)
+            if (byName.ContainsKey("spine05") && byName.ContainsKey("upperleg01_L") && byName.ContainsKey("foot_L") && byName.ContainsKey("head"))
+            {
+                float legLen = ChainLength(byName, "upperleg01_L", "upperleg02_L", "lowerleg01_L", "lowerleg02_L", "foot_L");
+                float spineLen = ChainLength(byName, "root", "spine05", "spine04", "spine03", "spine02", "spine01", "neck01", "neck02", "neck03", "head");
+                float total = legLen + spineLen;
+                if (total > 0.3f)
+                    return total * 1.14f; // +14% for foot sole + skull crown
+            }
+
+            if (TryComputeVisibleBounds(root, out Bounds b) && b.size.y > 0.05f)
+                return b.size.y;
+
+            return 1.80f;
+        }
+
+        private static float ChainLength(Dictionary<string, Transform> byName, params string[] names)
+        {
+            float sum = 0f;
+            for (int i = 0; i < names.Length - 1; i++)
+            {
+                if (byName.TryGetValue(names[i], out var a) && byName.TryGetValue(names[i + 1], out var b))
+                    sum += Vector3.Distance(a.position, b.position);
+            }
+            return sum;
         }
 
         private static EnemyVisualEntry BuildEnemyPrefabEntry(
             InfectedKind kind, string slug, string fbxPath, float targetHeight,
-            Vector3 proportionScale, Material mat, RuntimeAnimatorController controller)
+            Material mat, RuntimeAnimatorController controller)
         {
             var source = AssetDatabase.LoadAssetAtPath<GameObject>(fbxPath);
             var avatar = LoadAvatarFromAsset(fbxPath);
-            if (source == null || avatar == null || !avatar.isValid)
+            if (source == null || avatar == null || !avatar.isValid || !avatar.isHuman)
             {
                 // Fallback to Zombie1.fbx if burnt zombie avatar failed
                 source = AssetDatabase.LoadAssetAtPath<GameObject>(AnimSourceSkeletonPath);
@@ -1829,10 +2223,12 @@ namespace Zombtoy.Editor
                     }
                 }
 
-                if (TryComputeVisibleBounds(instance, out Bounds b) && b.size.y > 0.05f)
+                // Always use UNIFORM scale based on true standing height so Humanoid rigs never squash or shear
+                float standingHeight = MeasureStandingHeight(instance);
+                if (standingHeight > 0.05f)
                 {
-                    float uniform = targetHeight / b.size.y;
-                    instance.transform.localScale = Vector3.Scale(Vector3.one * uniform, proportionScale);
+                    float uniform = targetHeight / standingHeight;
+                    instance.transform.localScale = Vector3.one * uniform;
                 }
 
                 ConfigureAnimatorAndRenderers(instance, avatar, controller);

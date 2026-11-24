@@ -90,7 +90,7 @@ namespace Zombtoy.Gameplay
                     s.rounds < 0 || s.rounds > 100 || s.reserve < 0 || (s.version >= 4 && s.ammoPool != null && !s.ammoPool.Valid()) ||
                     s.state.doses < 0 || s.state.medkits < 0 || s.state.bandages < 0 ||
                     s.kills < 0 || s.shots < 0 || s.hits < 0 || s.weapon < 0 || s.weapon > 5 || (s.expansion != null && !s.expansion.Valid) || s.survivor < 0 || s.survivor > 3 || s.ammoGrade < 0 || s.ammoGrade > 2 ||
-                    s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 1000))) return false;
+                    s.enemies.Any(e => e == null || string.IsNullOrEmpty(e.id) || !Finite(e.position) || !Bounded(e.health, 0, 3000))) return false;
                 if (s.version >= 2 && (s.inventory == null || !s.inventory.Valid || s.loot == null || s.released == null || s.released.Length > 64 || s.waves < 0 || !Bounded(s.pressure, 0, 100) ||
                     s.loot.Any(l => l == null || string.IsNullOrEmpty(l.id) || l.stock == null || !l.stock.Valid) || s.loot.Select(l => l.id).Distinct().Count() != s.loot.Length ||
                     s.enemies.Any(e => (s.version >= 3 && (!float.IsFinite(e.rotation.x) || !float.IsFinite(e.rotation.y) || !float.IsFinite(e.rotation.z) || !float.IsFinite(e.rotation.w) || Mathf.Abs(Quaternion.Dot(e.rotation, e.rotation) - 1) > .05f)) || ((int)e.severed & ~31) != 0 || (e.ragdoll != null && e.ragdoll.present && !e.ragdoll.Valid)))) return false;

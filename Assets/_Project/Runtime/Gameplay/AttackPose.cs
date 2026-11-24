@@ -17,7 +17,7 @@ namespace Zombtoy.Gameplay
         }
         private void LateUpdate()
         {
-            if(enemy!=null&&enemy.IsDead)return;
+            if(enemy!=null&&(enemy.IsDead||(enemy.VisualAdapter!=null&&enemy.VisualAdapter.ModelInstance!=null)))return;
             if(swing==null)swing=GetComponent<MeleeSwing>();
             bool active=enemy!=null?enemy.Mode==EnemyMode.Windup||enemy.Mode==EnemyMode.Recover:swing!=null&&swing.Active;
             if(active&&!attacking)started=Time.time;

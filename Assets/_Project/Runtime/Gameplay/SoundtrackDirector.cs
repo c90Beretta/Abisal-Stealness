@@ -6,7 +6,7 @@ namespace Zombtoy.Gameplay
     /// <summary>
     /// Controla la musica ambiental aleatoria de fondo y realiza crossfade dinamico
     /// hacia musica de horda segun la vida del jugador:
-    /// - Vida > 80: pistas de DILLOM (aleatorias).
+    /// - Vida > 80: pista de DILLOM ((Irreversible)).
     /// - Vida <= 80: temas de horda de Left 4 Dead 2 (aleatorios).
     /// </summary>
     public sealed class SoundtrackDirector : MonoBehaviour
@@ -23,8 +23,7 @@ namespace Zombtoy.Gameplay
 
         public static readonly string[] DefaultHordeHighHealthPaths =
         {
-            "Assets/Soundtrack/stage_1/(Irreversible) - DILLOM (Video) - KAT1AM.mp3",
-            "Assets/Soundtrack/stage_1/DILLOM - 'Coyote' [instrumental_karaoke] Letra.mp3"
+            "Assets/Soundtrack/stage_1/(Irreversible) - DILLOM (Video) - KAT1AM.mp3"
         };
 
         public static readonly string[] DefaultHordeLowHealthPaths =
@@ -37,7 +36,7 @@ namespace Zombtoy.Gameplay
         [Tooltip("Musica ambiental de fondo que se reproduce aleatoriamente durante la exploracion.")]
         public AudioClip[] ambientClips;
 
-        [Tooltip("Pistas de horda cuando la vida del personaje es mayor a 80 (DILLOM).")]
+        [Tooltip("Pista de horda cuando la vida del personaje es mayor a 80 (DILLOM - Irreversible).")]
         public AudioClip[] hordeHighHealthClips;
 
         [Tooltip("Pistas de horda cuando la vida del personaje es 80 o menor (Left 4 Dead 2).")]
@@ -319,6 +318,9 @@ namespace Zombtoy.Gameplay
 
         private void EnsureDefaultClipsInEditor()
         {
+            ambientClips = FilterExcludedClips(ambientClips);
+            hordeHighHealthClips = FilterExcludedClips(hordeHighHealthClips);
+            hordeLowHealthClips = FilterExcludedClips(hordeLowHealthClips);
 #if UNITY_EDITOR
             if (!HasAnyClip(ambientClips))
                 ambientClips = LoadClipsFromPaths(DefaultAmbientPaths);
@@ -329,6 +331,20 @@ namespace Zombtoy.Gameplay
             if (!HasAnyClip(hordeLowHealthClips))
                 hordeLowHealthClips = LoadClipsFromPaths(DefaultHordeLowHealthPaths);
 #endif
+        }
+
+        private static AudioClip[] FilterExcludedClips(AudioClip[] clips)
+        {
+            if (clips == null || clips.Length == 0) return clips;
+            var filtered = new List<AudioClip>(clips.Length);
+            for (int i = 0; i < clips.Length; i++)
+            {
+                var clip = clips[i];
+                if (clip == null) continue;
+                if (clip.name.IndexOf("Coyote", System.StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                filtered.Add(clip);
+            }
+            return filtered.ToArray();
         }
 
 #if UNITY_EDITOR

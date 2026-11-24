@@ -12,6 +12,7 @@ namespace Zombtoy.Gameplay
     public sealed class EnemyVisualAdapter : MonoBehaviour
     {
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
+        private static readonly int StyleHash = Animator.StringToHash("Style");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int HeavyAttackHash = Animator.StringToHash("HeavyAttack");
         private static readonly int ScreamHash = Animator.StringToHash("Scream");
@@ -31,9 +32,8 @@ namespace Zombtoy.Gameplay
         private Vector3 baseModelScale = Vector3.one;
         private EnemyMode lastMode = EnemyMode.Patrol;
         private float smoothedSpeed;
-        private float armsLayerWeight = 0.9f;
-        private float actionHoldUntil;
-        private bool suppressedByHound;
+        private float upperLayerWeight = 1f;
+        private float zombieStyle = 1f;
         private bool initialized;
 
         public void Initialize(SandboxEnemy owner)
@@ -45,12 +45,6 @@ namespace Zombtoy.Gameplay
             variant = GetComponent<InfectedVariant>();
             visibility = GetComponent<InfectedVisibility>();
             propBlock = new MaterialPropertyBlock();
-
-            if (GetComponent<SpecialInfected>()?.Species == SpecialSpecies.Hound)
-            {
-                SuppressForHound();
-                return;
-            }
 
             var catalog = Resources.Load<SurvivorVisualCatalog>(SurvivorVisualCatalog.ResourcePath);
             if (catalog == null || catalog.enemyAnimatorController == null) return;
@@ -81,112 +75,119 @@ namespace Zombtoy.Gameplay
             EnemyAnimator.applyRootMotion = false;
             EnemyAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             EnemyAnimator.Rebind();
+
+            // Variation between Drunken (1.0) and Simple Zombie (0.0), favoring Drunken (~70% drunken / mixed)
+            int hash = Mathf.Abs(gameObject.name.GetHashCode() ^ ((int)kind * 397));
+            int bucket = hash % 4;
+            zombieStyle = kind == InfectedKind.Walker
+                ? (bucket == 0 ? 0.0f : bucket == 1 ? 0.65f : 1.0f)
+                : kind == InfectedKind.Brute
+                    ? (bucket == 0 ? 0.5f : 1.0f)
+                    : (bucket < 2 ? 1.0f : 0.0f);
+            EnemyAnimator.SetFloat(StyleHash, zombieStyle);
             EnemyAnimator.Update(0.02f);
 
             modelRenderers = ModelInstance.GetComponentsInChildren<Renderer>(true);
             HideLegacyRenderers();
         }
 
-        public void SuppressForHound()
-        {
-            suppressedByHound = true;
-            if (ModelInstance != null)
-            {
-                Destroy(ModelInstance);
-                ModelInstance = null;
-                EnemyAnimator = null;
-                modelRenderers = null;
-            }
-        }
-
         public void ApplySpecialScale(SpecialSpecies species, bool isBoss)
         {
-            if (species == SpecialSpecies.Hound)
-            {
-                SuppressForHound();
-                return;
-            }
             if (ModelInstance == null) return;
 
-            Vector3 mult = isBoss
-                ? new Vector3(1.42f, 1.32f, 1.42f)
+            // Always apply UNIFORM scaling on Humanoid Animator roots so zombies are never squashed or sheared.
+            // Bosses and Colossi render simply as larger, imposing zombies with clean proportions.
+            float mult = isBoss
+                ? 1.45f
                 : species == SpecialSpecies.Colossus
-                    ? new Vector3(1.28f, 1.20f, 1.28f)
-                    : new Vector3(1.38f, 1.02f, 1.38f); // Bloater wide silhouette
-            ModelInstance.transform.localScale = Vector3.Scale(baseModelScale, mult);
+                    ? 1.28f
+                    : 1.15f;
+            ModelInstance.transform.localScale = baseModelScale * mult;
         }
 
         public void UpdateMovement(float currentSpeed, EnemyMode mode)
         {
-            if (suppressedByHound || EnemyAnimator == null || !EnemyAnimator.isActiveAndEnabled) return;
+            if (EnemyAnimator == null || !EnemyAnimator.isActiveAndEnabled) return;
 
             if (mode != lastMode)
             {
                 if (mode == EnemyMode.Windup)
                 {
+                    var sp = GetComponent<SpecialInfected>();
                     bool heavy = (variant != null && variant.kind == InfectedKind.Brute)
-                        || GetComponent<SpecialInfected>()?.Species == SpecialSpecies.Colossus;
+                        || (sp != null && sp.Species == SpecialSpecies.Colossus);
                     EnemyAnimator.ResetTrigger(StaggerHash);
                     EnemyAnimator.SetTrigger(heavy ? HeavyAttackHash : AttackHash);
-                    actionHoldUntil = Time.time + (heavy ? 0.95f : 0.65f);
                 }
                 else if (mode == EnemyMode.Stagger)
                 {
                     EnemyAnimator.SetTrigger(StaggerHash);
-                    actionHoldUntil = Time.time + 0.38f;
                 }
                 lastMode = mode;
             }
 
-            float targetSpeed = mode == EnemyMode.Dead || mode == EnemyMode.Windup || mode == EnemyMode.Recover || mode == EnemyMode.Stagger
-                ? 0f
-                : Mathf.Clamp(currentSpeed / 1.8f, 0f, 1.55f);
+            float targetSpeed;
+            if (mode == EnemyMode.Dead || mode == EnemyMode.Windup || mode == EnemyMode.Recover || mode == EnemyMode.Stagger || currentSpeed <= 0.05f)
+            {
+                targetSpeed = 0f;
+            }
+            else if (currentSpeed <= 1.35f)
+            {
+                targetSpeed = Mathf.Lerp(0.45f, 0.70f, Mathf.InverseLerp(0.35f, 1.35f, currentSpeed));
+            }
+            else if (currentSpeed <= 2.35f)
+            {
+                targetSpeed = Mathf.Lerp(0.70f, 1.10f, Mathf.InverseLerp(1.35f, 2.35f, currentSpeed));
+            }
+            else
+            {
+                targetSpeed = Mathf.Lerp(1.10f, 1.50f, Mathf.InverseLerp(2.35f, 3.20f, currentSpeed));
+            }
 
             float damp = 1f - Mathf.Exp(-10f * Time.deltaTime);
             smoothedSpeed = Mathf.Lerp(smoothedSpeed, targetSpeed, damp);
+            if (smoothedSpeed < 0.01f && targetSpeed <= 0f) smoothedSpeed = 0f;
             EnemyAnimator.SetFloat(SpeedHash, smoothedSpeed);
 
-            // Fade out the ZombieArms reach layer during dedicated full-body actions (Attack/Scream/Stagger/Dead)
-            bool inFullBodyAction = mode == EnemyMode.Dead
-                || mode == EnemyMode.Windup
-                || mode == EnemyMode.Stagger
-                || Time.time < actionHoldUntil;
-            float targetLayerWeight = inFullBodyAction ? 0f : (smoothedSpeed > 0.15f ? 0.90f : 0.45f);
-            armsLayerWeight = Mathf.MoveTowards(armsLayerWeight, targetLayerWeight, Time.deltaTime * 6f);
+            float targetLayerWeight = mode == EnemyMode.Dead ? 0f : 1f;
+            upperLayerWeight = Mathf.MoveTowards(upperLayerWeight, targetLayerWeight, Time.deltaTime * 10f);
             if (EnemyAnimator.layerCount > 1)
-                EnemyAnimator.SetLayerWeight(1, armsLayerWeight);
+                EnemyAnimator.SetLayerWeight(1, upperLayerWeight);
         }
 
         public void TriggerScream()
         {
-            if (suppressedByHound || EnemyAnimator == null || !EnemyAnimator.isActiveAndEnabled) return;
+            if (EnemyAnimator == null || !EnemyAnimator.isActiveAndEnabled) return;
             EnemyAnimator.SetTrigger(ScreamHash);
-            actionHoldUntil = Time.time + 1.05f;
         }
 
         public void OnDeath(bool headshot)
         {
-            if (suppressedByHound || EnemyAnimator == null || !EnemyAnimator.isActiveAndEnabled) return;
+            if (EnemyAnimator == null || !EnemyAnimator.isActiveAndEnabled) return;
             int deathKind = headshot ? 3 : Random.Range(0, 3);
             EnemyAnimator.SetInteger(DeathKindHash, deathKind);
             EnemyAnimator.SetBool(DeadHash, true);
             EnemyAnimator.SetFloat(SpeedHash, 0f);
+            upperLayerWeight = 0f;
             if (EnemyAnimator.layerCount > 1) EnemyAnimator.SetLayerWeight(1, 0f);
             lastMode = EnemyMode.Dead;
         }
 
         public void OnRestore(bool dead)
         {
-            if (suppressedByHound || EnemyAnimator == null) return;
+            if (EnemyAnimator == null) return;
             smoothedSpeed = 0f;
-            actionHoldUntil = 0f;
+            upperLayerWeight = dead ? 0f : 1f;
             lastMode = dead ? EnemyMode.Dead : EnemyMode.Patrol;
             EnemyAnimator.SetBool(DeadHash, dead);
             EnemyAnimator.SetFloat(SpeedHash, 0f);
+            EnemyAnimator.SetFloat(StyleHash, zombieStyle);
             EnemyAnimator.ResetTrigger(AttackHash);
             EnemyAnimator.ResetTrigger(HeavyAttackHash);
             EnemyAnimator.ResetTrigger(ScreamHash);
             EnemyAnimator.ResetTrigger(StaggerHash);
+            if (EnemyAnimator.layerCount > 1)
+                EnemyAnimator.SetLayerWeight(1, upperLayerWeight);
             if (ModelInstance != null)
             {
                 ModelInstance.transform.localPosition = Vector3.zero;
@@ -198,7 +199,7 @@ namespace Zombtoy.Gameplay
 
         public void ApplyVisualFeedback(bool flashing, bool burning)
         {
-            if (suppressedByHound || modelRenderers == null) return;
+            if (modelRenderers == null) return;
             for (int i = 0; i < modelRenderers.Length; i++)
             {
                 var r = modelRenderers[i];
@@ -219,11 +220,10 @@ namespace Zombtoy.Gameplay
 
         private void LateUpdate()
         {
-            if (suppressedByHound || ModelInstance == null) return;
+            if (ModelInstance == null) return;
 
             HideLegacyRenderers();
 
-            // Mirror flashlight / night perception visibility onto the 3D enemy model
             bool visible = visibility == null || visibility.Visible;
             if (modelRenderers != null)
             {
