@@ -91,7 +91,7 @@ namespace Zombtoy.Editor
             string meshPath = Root + "/Body_" + key + ".asset"; var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(meshPath);
             var authoredMesh = Body(key, soldier, kind, variant); authoredMesh.bindposes = bones.Select(b => b.worldToLocalMatrix * visual.transform.localToWorldMatrix).ToArray();
             if (mesh == null) { mesh = authoredMesh; AssetDatabase.CreateAsset(mesh, meshPath); }
-            else { mesh.Clear(); mesh.vertices = authoredMesh.vertices; mesh.uv = authoredMesh.uv; mesh.boneWeights = authoredMesh.boneWeights; mesh.bindposes = authoredMesh.bindposes; mesh.subMeshCount = authoredMesh.subMeshCount; for (int s = 0; s < mesh.subMeshCount; s++) mesh.SetTriangles(authoredMesh.GetTriangles(s), s); mesh.RecalculateNormals(); mesh.RecalculateBounds(); EditorUtility.SetDirty(mesh); Object.DestroyImmediate(authoredMesh); }
+            else { mesh.name = "Body_" + key; mesh.Clear(); mesh.vertices = authoredMesh.vertices; mesh.uv = authoredMesh.uv; mesh.boneWeights = authoredMesh.boneWeights; mesh.bindposes = authoredMesh.bindposes; mesh.subMeshCount = authoredMesh.subMeshCount; for (int s = 0; s < mesh.subMeshCount; s++) mesh.SetTriangles(authoredMesh.GetTriangles(s), s); mesh.RecalculateNormals(); mesh.RecalculateBounds(); EditorUtility.SetDirty(mesh); Object.DestroyImmediate(authoredMesh); }
             skin.sharedMesh = mesh;
             var clothing = Mat("Cloth_" + key, soldier ? new Color(.50f, .52f, .54f) : variant == 0 ? new Color(.68f, .56f, .42f) : new Color(.75f, .76f, .64f));
             var tactical=AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/Industrial/Textures/TacticalAtlas_v2.png");
@@ -186,7 +186,7 @@ namespace Zombtoy.Editor
                 m.Rings(new[] { new Vector3(0, 1.78f, -.012f), new Vector3(0, 1.83f, -.01f), new Vector3(0, 1.856f, -.01f) }, new[] { .092f, .073f, .025f }, new[] { .091f, .077f, .033f }, new[] { 4, 4, 4 }, 2, false);
                 if (variant == 1) m.Box(new Vector3(.11f, 1.25f, .135f), new Vector3(.11f, .2f, .012f), 2, 4);
             }
-            return m.Finish("Adult body " + key);
+            return m.Finish("Body_" + key);
         }
         private static AnimationClip Animation(string key, Transform[] bones, Transform rig, bool soldier, bool moving)
         {
