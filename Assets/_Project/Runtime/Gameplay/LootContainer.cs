@@ -19,6 +19,7 @@ namespace Zombtoy.Gameplay
         {
             if (!s.Running || s.Busy || s.State.InventoryLocked || !Reachable(s)) return false;
             int transferred = s.Night.Inventory.Transfer(s, stock);
+            if (transferred > 0) TacticalAudio.Play(Point, TacticalCue.Interact, 1.05f);
             s.SetMessage(transferred > 0 ? "Botin guardado en la mochila." : stock.Empty ? "Contenedor vacio." : "Mochila o pila llena. Usa suministros para hacer espacio.");
             return transferred > 0;
         }

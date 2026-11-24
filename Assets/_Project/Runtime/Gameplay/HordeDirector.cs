@@ -175,6 +175,7 @@ namespace Zombtoy.Gameplay
 
                 bool isBossWave = forceBoss || (waves >= 3 && waves % 2 == 1);
                 PromoteWaveSpecials(spawnedList, waves, isBossWave);
+                TacticalAudio.Play(target, isBossWave ? TacticalCue.EnemyAlert : TacticalCue.Growl, isBossWave ? 1.25f : 1.0f);
 
                 OnHordeStarted?.Invoke(waves, isBossWave);
                 session.SetMessage(isBossWave

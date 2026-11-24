@@ -162,10 +162,18 @@ namespace Zombtoy.Gameplay
             }
             if (sees)
             {
+                bool newlyAlerted = Mode == EnemyMode.Patrol || Mode == EnemyMode.Search;
                 destination = session.player.transform.position; alertedUntil = Time.time + 8; Mode = EnemyMode.Chase;
+                if (newlyAlerted)
+                {
+                    float pitchTone = variant != null && variant.kind == InfectedKind.Brute ? 1.3f : variant != null && variant.kind == InfectedKind.Runner ? 0.85f : 1f;
+                    TacticalAudio.Play(transform.position, TacticalCue.EnemyAlert, pitchTone);
+                }
                 if (distance < 1.5f)
                 {
                     Mode = EnemyMode.Windup; stateUntil = Time.time + (definition == null ? 0.55f : definition.attackWindup);
+                    float swipeTone = variant != null && variant.kind == InfectedKind.Brute ? 1.25f : 1f;
+                    TacticalAudio.Play(transform.position, TacticalCue.EnemyAttack, swipeTone);
                     return 0f;
                 }
             }
@@ -234,6 +242,7 @@ namespace Zombtoy.Gameplay
             lastHitMelee = cutting;
             lastImpact = point; lastImpulse = (transform.position - session.player.transform.position).normalized * Mathf.Clamp(amount * .045f, .5f, 5) + Vector3.up * .35f;
             CombatEffects.Blood(point, session.tracerMaterial);
+            TacticalAudio.Play(point, TacticalCue.Impact, cutting ? 0.92f : 1.05f);
             if (gore != null) { gore.Hit(point, amount, cutting); if ((gore.Lost & Severed.Head) != 0) amount = health + 1; }
             if (variant != null && variant.kind == InfectedKind.Brute && !cutting && !armorPiercing && point.y - transform.position.y < 1.45f) amount *= .6f;
             Damage(amount);
@@ -276,6 +285,8 @@ namespace Zombtoy.Gameplay
             if (motion != null) motion.Stop();
             bool isHeadshot = (gore != null && (gore.Lost & Severed.Head) != 0) || (lastImpact.y - transform.position.y >= 1.45f);
             VisualAdapter?.OnDeath(isHeadshot);
+            float deathTone = variant != null && variant.kind == InfectedKind.Brute ? 1.3f : variant != null && variant.kind == InfectedKind.Runner ? 0.88f : 1f;
+            TacticalAudio.Play(transform.position, TacticalCue.EnemyDeath, deathTone);
             session.Kills++;
             if (lastHitMelee) session.player?.Roster?.OnMeleeKill();
             if (ragdoll != null) ragdoll.Activate(lastImpulse.sqrMagnitude > 0 ? lastImpulse : transform.forward * -2, lastImpact.sqrMagnitude > 0 ? lastImpact : transform.position + Vector3.up, gore != null ? gore.Lost : Severed.None);

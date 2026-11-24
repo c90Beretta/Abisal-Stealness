@@ -47,6 +47,7 @@ namespace Zombtoy.Gameplay
             climbPitch = 0f;
             if (!restoring && player != null && player.session != null)
             {
+                TacticalAudio.Play(transform.position, TacticalCue.Interact, 1.12f);
                 string cal = WeaponAmmoPool.GetCaliberName(index);
                 player.session.SetMessage($"Arma: {weapons[index].displayName} [{cal} · {AmmoShortNames[(int)AmmoType]}] ({player.session.rounds}/{player.session.reserve}).");
             }
@@ -59,7 +60,7 @@ namespace Zombtoy.Gameplay
         {
             if (player == null || player.session == null || !player.session.Running || player.session.Busy) return;
             AmmoType = (AmmoGrade)(((int)AmmoType + 1) % 3);
-            TacticalAudio.Play(transform.position, TacticalCue.Swing, 1.35f);
+            TacticalAudio.Play(transform.position, TacticalCue.Interact, 1.18f);
             string desc = AmmoType == AmmoGrade.StandardFMJ ? "Equilibrada" :
                 AmmoType == AmmoGrade.HollowPoint ? "+25% dano a carne y desmembramiento" :
                 "Perfora armadura, atraviesa objetivos e incendia";

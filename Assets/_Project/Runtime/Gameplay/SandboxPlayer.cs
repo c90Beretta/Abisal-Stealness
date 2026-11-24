@@ -15,6 +15,7 @@ namespace Zombtoy.Gameplay
         private float nextShot;
         private float nextStep;
         private AudioSource audioSource;
+        private AudioSource footstepSource;
         private CharacterMotion motion;
         private float nextMelee, strikeAt;
         private bool strikePending, strikeHeavy;
@@ -61,6 +62,11 @@ namespace Zombtoy.Gameplay
             if (controller != null && controller.height > 0.5f) standingHeight = controller.height;
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.spatialBlend = 0f;
+            footstepSource = gameObject.AddComponent<AudioSource>();
+            footstepSource.spatialBlend = 0f;
+            footstepSource.loop = true;
+            footstepSource.playOnAwake = false;
+            footstepSource.volume = 0f;
             motion = GetComponent<CharacterMotion>();
             flashlight = GetComponentInChildren<Light>();
             loadout = GetComponent<WeaponLoadout>();
@@ -94,6 +100,7 @@ namespace Zombtoy.Gameplay
                 isMoving = false;
                 isSprinting = false;
                 lastMoveSpeed = 0f;
+                UpdateFootstepLoop(false, false, false, false);
                 if (motion != null)
                 {
                     bool dead = session != null && session.State.health <= 0f;
@@ -161,6 +168,7 @@ namespace Zombtoy.Gameplay
                 isMoving = true;
                 isSprinting = true;
                 lastMoveSpeed = 5f;
+                UpdateFootstepLoop(false, false, false, false);
                 controller.Move((worldMoveVelocity + Vector3.down * 8f) * Time.deltaTime);
                 if (motion != null) motion.SetLocomotion(dodgeDirection * 4.8f, 3f, false, false, false);
             }
@@ -189,8 +197,11 @@ namespace Zombtoy.Gameplay
                     nextStep = Time.time + (sprint ? 0.28f : isCrouching ? 0.68f : 0.48f);
                     float stanceNoise = sprint ? 10f : isCrouching ? 1.2f : 3f;
                     session.EmitNoise(transform.position, stanceNoise * charNoiseMult);
-                    if (stepSound != null) audioSource.PlayOneShot(stepSound, sprint ? .22f : isCrouching ? .05f : .12f);
+                    if (stepSound != null && (footstepSource == null || footstepSource.clip == null))
+                        audioSource.PlayOneShot(stepSound, sprint ? .22f : isCrouching ? .05f : .12f);
                 }
+                bool injured = session.State.health <= 35f || session.State.bleeding > 0.05f;
+                UpdateFootstepLoop(isMoving, sprint, isCrouching, injured);
             }
 
             if (Mouse.current != null)
@@ -235,6 +246,31 @@ namespace Zombtoy.Gameplay
             if (kb.spaceKey.wasPressedThisFrame) TryMelee();
             if (kb.gKey.wasPressedThisFrame) TryHeavyMelee();
             if (kb.vKey.wasPressedThisFrame) Shove();
+        }
+
+        private void UpdateFootstepLoop(bool moving, bool sprint, bool crouching, bool injured)
+        {
+            if (footstepSource == null) return;
+            AudioClip desiredClip = moving ? TacticalAudio.GetFootstepClip(sprint && !injured, injured) : null;
+            if (desiredClip != null && footstepSource.clip != desiredClip)
+            {
+                footstepSource.clip = desiredClip;
+                footstepSource.time = 0f;
+            }
+
+            float targetVol = !moving || footstepSource.clip == null
+                ? 0f
+                : injured ? 0.24f : sprint ? 0.28f : crouching ? 0.06f : 0.17f;
+            float targetPitch = injured ? 0.96f : sprint ? 1.06f : crouching ? 0.80f : 1.0f;
+
+            if (targetVol > 0.005f && !footstepSource.isPlaying && footstepSource.clip != null)
+                footstepSource.Play();
+
+            footstepSource.volume = Mathf.MoveTowards(footstepSource.volume, targetVol, Time.unscaledDeltaTime * 2.4f);
+            footstepSource.pitch = Mathf.Lerp(footstepSource.pitch, targetPitch, Time.unscaledDeltaTime * 8f);
+
+            if (targetVol <= 0.001f && footstepSource.volume <= 0.005f && footstepSource.isPlaying)
+                footstepSource.Pause();
         }
 
         private void SetBlockState(bool active)
@@ -342,7 +378,8 @@ namespace Zombtoy.Gameplay
             nextMelee = Time.time + (heavy ? baseCooldown * 1.25f : baseCooldown);
             float noise = (meleeKind == 0 ? 5f : meleeKind == 1 ? 8f : meleeKind == 2 ? 6f : 10f) * (heavy ? 1.35f : 1f) * (Roster != null ? Roster.Current.NoiseMultiplier : 1f);
             session.EmitNoise(transform.position, noise);
-            if (meleeSound != null) audioSource.PlayOneShot(meleeSound, heavy ? .48f : .35f);
+            TacticalAudio.Play(transform.position, TacticalCue.Swing, heavy ? 0.82f : 1.05f);
+            if (meleeSound != null) audioSource.PlayOneShot(meleeSound, heavy ? .26f : .18f);
             if (heavy) CombatEffects.HeavySwing(transform, session.tracerMaterial, meleeKind == 3 ? 2.25f : 1.95f);
             else CombatEffects.Swing(transform, session.tracerMaterial);
 

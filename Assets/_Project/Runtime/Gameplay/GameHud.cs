@@ -116,8 +116,8 @@ namespace Zombtoy.Gameplay
         public AccuracyReticle Reticle => reticle;
         public void OpenLoot(LootContainer box) { session.ClearMessage();showingEquipment = true; equipment.gameObject.SetActive(true); fieldHud?.Select(box); }
 
-        public void ToggleHelp() { showingHelp = !showingHelp; if (showingHelp) { showingEquipment = false; equipment.gameObject.SetActive(false); } help.gameObject.SetActive(showingHelp); }
-        public void ToggleEquipment() { showingEquipment = !showingEquipment; if (showingEquipment) { session.ClearMessage();showingHelp = false; help.gameObject.SetActive(false); } equipment.gameObject.SetActive(showingEquipment); }
+        public void ToggleHelp() { showingHelp = !showingHelp; if (showingHelp) { showingEquipment = false; equipment.gameObject.SetActive(false); } help.gameObject.SetActive(showingHelp); TacticalAudio.Play(Vector3.zero, TacticalCue.UiPause); }
+        public void ToggleEquipment() { showingEquipment = !showingEquipment; if (showingEquipment) { session.ClearMessage();showingHelp = false; help.gameObject.SetActive(false); } equipment.gameObject.SetActive(showingEquipment); TacticalAudio.Play(Vector3.zero, TacticalCue.UiPause); }
         public void ClosePanels() { showingHelp = showingEquipment = false; help.gameObject.SetActive(false); equipment.gameObject.SetActive(false); }
 
         private void LateUpdate()
@@ -243,7 +243,7 @@ namespace Zombtoy.Gameplay
             Place(image.rectTransform, x, y, 382, 48); image.raycastTarget = true;
             var button = image.gameObject.AddComponent<Button>(); button.targetGraphic = image;
             var colors = button.colors; colors.highlightedColor = new Color(1.4f, 1.4f, 1.4f); colors.selectedColor = colors.highlightedColor; colors.disabledColor = new Color(.45f, .43f, .38f); button.colors = colors;
-            button.onClick.AddListener(action);
+            button.onClick.AddListener(() => { TacticalAudio.Play(Vector3.zero, TacticalCue.UiClick); action?.Invoke(); });
             text = Label(image.transform, label, 20, Color.white, 16, -11, 350, 30); return button;
         }
         private void OnDestroy() { if (whiteSprite != null) Destroy(whiteSprite); }

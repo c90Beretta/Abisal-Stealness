@@ -207,7 +207,7 @@ namespace Zombtoy.Gameplay
             child.alignment = TextAnchor.MiddleCenter;
             var button = obj.GetComponent<Button>();
             button.targetGraphic = image;
-            button.onClick.AddListener(click);choices[button]=child;
+            button.onClick.AddListener(() => { TacticalAudio.Play(Vector3.zero, TacticalCue.UiClick); click?.Invoke(); });choices[button]=child;
             var outline=obj.AddComponent<Outline>();outline.effectColor=new Color(.95f,.9f,.73f);outline.effectDistance=new Vector2(2,2);
         }
 

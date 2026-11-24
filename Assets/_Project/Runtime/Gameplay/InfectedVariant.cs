@@ -24,10 +24,16 @@ namespace Zombtoy.Gameplay
         private void Update()
         {
             if (enemy.session == null || !enemy.session.Running || enemy.IsDead) return;
-            if (groan != null && Time.time >= nextGroan && Vector3.Distance(transform.position, enemy.session.player.transform.position) < 12)
-            { nextGroan = Time.time + Random.Range(5f, 9f); voice.PlayOneShot(groan, .3f); }
+            if (Time.time >= nextGroan && Vector3.Distance(transform.position, enemy.session.player.transform.position) < 14f)
+            {
+                nextGroan = Time.time + Random.Range(6f, 11f);
+                float tone = kind == InfectedKind.Brute ? 1.32f : kind == InfectedKind.Runner ? 0.86f : 1f;
+                TacticalAudio.Play(transform.position, TacticalCue.Growl, tone);
+                if (groan != null && Random.value < 0.35f) voice.PlayOneShot(groan, .22f);
+            }
             if (kind != InfectedKind.Screamer || enemy.Mode != EnemyMode.Chase || Time.time < nextCry) return;
-            if (scream != null) voice.PlayOneShot(scream, .65f);
+            if (scream != null) voice.PlayOneShot(scream, .55f);
+            TacticalAudio.Play(transform.position, TacticalCue.EnemyAlert, 0.82f);
             enemy.VisualAdapter?.TriggerScream();
             nextCry = Time.time + 18; enemy.session.EmitNoise(transform.position, 32);
             CombatEffects.Cry(transform.position + Vector3.up, enemy.session.tracerMaterial);

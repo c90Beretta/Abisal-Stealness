@@ -101,6 +101,8 @@ namespace Zombtoy.Gameplay
             if (State.health <= 0 && Mode == SessionMode.Playing)
             {
                 actionLeft = reloadLeft = 0;
+                if (player != null)
+                    TacticalAudio.Play(player.transform.position, TacticalCue.PlayerDeath);
                 Mode = SessionMode.Dead;
                 ApplyTime();
             }
@@ -146,6 +148,7 @@ namespace Zombtoy.Gameplay
         {
             if (Mode != SessionMode.Title) return;
             Hud.ClosePanels();
+            TacticalAudio.Play(Vector3.zero, TacticalCue.UiClick);
             Mode = SessionMode.Playing; ApplyTime();
             SetMessage("WASD para moverte. Busca el repuesto del almacen.");
         }
@@ -154,11 +157,13 @@ namespace Zombtoy.Gameplay
             if (Mode != SessionMode.Playing && Mode != SessionMode.Paused) return;
             Mode = Mode == SessionMode.Playing ? SessionMode.Paused : SessionMode.Playing;
             Hud.ClosePanels(); ApplyTime();
+            TacticalAudio.Play(Vector3.zero, TacticalCue.UiPause);
         }
         public void Resume()
         {
             if (Mode != SessionMode.Paused) return;
             Mode = SessionMode.Playing; Hud.ClosePanels(); ApplyTime();
+            TacticalAudio.Play(Vector3.zero, TacticalCue.UiPause);
         }
         public void Restart() { Telemetry?.Export("Restart"); Time.timeScale = 1; SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
         public void ReturnToTitle() => Restart();
@@ -247,6 +252,7 @@ namespace Zombtoy.Gameplay
             reloadDuration = player != null && player.Roster != null ? player.Roster.Current.ReloadSeconds : 1.5f;
             reloadLeft = reloadDuration;
             EmitNoise(player.transform.position, 4);
+            TacticalAudio.Play(player.transform.position, TacticalCue.Interact, 0.92f);
         }
         public void GrantImmunity(float duration)
         {
@@ -264,6 +270,7 @@ namespace Zombtoy.Gameplay
             float speedMult = player != null && player.Roster != null ? player.Roster.Current.ActionSpeedMultiplier : 1f;
             action = item; actionDuration = actionLeft = duration / Mathf.Max(0.5f, speedMult);
             EmitNoise(player.transform.position, item == "suero" ? 7 : 3);
+            TacticalAudio.Play(player.transform.position, TacticalCue.Interact, 1.05f);
         }
         public void TakeDamage(float amount, bool wound = true)
         {
@@ -273,6 +280,8 @@ namespace Zombtoy.Gameplay
             State.health = Mathf.Max(0, State.health - amount);
             if (wound) State.bleeding = Mathf.Min(1, State.bleeding + 0.2f);
             actionLeft = 0; DamageFlash = 1;
+            if (player != null)
+                TacticalAudio.Play(player.transform.position, TacticalCue.PlayerDamage);
             SetMessage(wound ? "Herida abierta. Usa B para vendarte." : "Has recibido dano.");
         }
         public WorldPickup NearestPickup()
@@ -291,17 +300,19 @@ namespace Zombtoy.Gameplay
         {
             if (!Running || Busy) return;
             var loot = Night != null ? Night.NearestLoot() : null;
-            if (loot != null) { Hud.OpenLoot(loot); return; }
+            if (loot != null) { TacticalAudio.Play(player.transform.position, TacticalCue.Interact); Hud.OpenLoot(loot); return; }
             var pickup = NearestPickup();
-            if (pickup != null) { pickup.Collect(this); return; }
-            if (portMission != null) { portMission.Interact(); return; }
+            if (pickup != null) { TacticalAudio.Play(player.transform.position, TacticalCue.Interact); pickup.Collect(this); return; }
+            if (portMission != null) { TacticalAudio.Play(player.transform.position, TacticalCue.Interact); portMission.Interact(); return; }
             if (Vector3.Distance(player.transform.position, terminal.position) < 2.5f)
             {
+                TacticalAudio.Play(terminal.position, TacticalCue.Interact);
                 terminalActivated = true; SetMessage("Terminal activada. Busca EXTRACCION.");
                 EmitNoise(terminal.position, 12);
             }
             else if (Vector3.Distance(player.transform.position, extraction.position) < 2.5f)
             {
+                TacticalAudio.Play(extraction.position, TacticalCue.Interact);
                 if (terminalActivated) CompleteRoute("Ruta completada.");
                 else SetMessage("Activa primero la terminal.");
             }
